@@ -3,11 +3,16 @@
 
 #include "PDPlayer.h"
 
+#include "Camera/CameraComponent.h"
+
 // Sets default values
 APDPlayer::APDPlayer()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetRelativeLocationAndRotation(FVector(0, 0, 600), FQuat::MakeFromEuler(FVector(0, -90, 0)));
 }
 
 // Called when the game starts or when spawned
