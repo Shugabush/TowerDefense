@@ -4,9 +4,11 @@
 #include "PrisonerDefenseGameModeBase.h"
 
 #include "PDPlayer.h"
+#include "UObject/ConstructorHelpers.h"
 
 APrisonerDefenseGameModeBase::APrisonerDefenseGameModeBase()
 {
-	DefaultPawnClass = APDPlayer::StaticClass();
+	static ConstructorHelpers::FClassFinder<APawn> PlayerClass(TEXT("/Game/Blueprints/BP_PDPlayer"));
+	DefaultPawnClass = PlayerClass.Class;
 }
 

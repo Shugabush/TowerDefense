@@ -4,6 +4,8 @@
 #include "PDPlayer.h"
 
 #include "Camera/CameraComponent.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
 
 // Sets default values
 APDPlayer::APDPlayer()
@@ -13,6 +15,10 @@ APDPlayer::APDPlayer()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetRelativeLocationAndRotation(FVector(0, 0, 600), FQuat::MakeFromEuler(FVector(0, -90, 0)));
+
+	RootComponent = Camera;
+
+	Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 }
 
 // Called when the game starts or when spawned
@@ -20,21 +26,19 @@ void APDPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AController* controller = GetController();
-
-	if (controller != nullptr)
-	{
-		APlayerController* pc = Cast<APlayerController>(controller);
-		if (pc != nullptr)
-		{
-			pc->bShowMouseCursor = true;
-		}
-	}
+	Controller->bShowMouseCursor = true;
 }
 
 void APDPlayer::OnMouseClicked()
 {
-	GEngine->AddOnScreenDebugMessage(0, 1, FColor::Blue, TEXT("Mouse Pressed!"));
+	FHitResult result;
+	FVector2D mousePos;
+
+	Controller->GetMousePosition(mousePos.X, mousePos.Y);
+
+	Controller->GetHitResultAtScreenPosition(mousePos, ECollisionChannel::ECC_Camera, false, result);
+
+	GEngine->AddOnScreenDebugMessage(0, 1, FColor::Blue, result.GetActor()->GetName());
 }
 
 // Called every frame

@@ -30,5 +30,6 @@ public:
 
 private:
 	class UCameraComponent* Camera;
+	class APlayerController* Controller;
 	
 };
