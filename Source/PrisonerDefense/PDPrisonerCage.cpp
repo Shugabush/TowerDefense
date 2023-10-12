@@ -15,8 +15,7 @@ APDPrisonerCage::APDPrisonerCage()
 void APDPrisonerCage::BeginPlay()
 {
 	Super::BeginPlay();
-	APDPrisoner* prisoner = GetWorld()->SpawnActor<APDPrisoner>(PrisonerReference);
-	prisoner->SetActorLocation(GetActorLocation());
+	
 }
 
 // Called every frame
@@ -24,6 +23,20 @@ void APDPrisonerCage::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (PrisonersSpawned.Num() < PrisonersToSpawn)
+	{
+		SpawnTimer.Update(DeltaTime);
+		if (SpawnTimer.OutOfTime())
+		{
+			APDPrisoner* prisoner = GetWorld()->SpawnActor<APDPrisoner>(PrisonerReference);
+			prisoner->SetActorLocation(GetActorLocation());
+			prisoner->Cage = this;
+
+			PrisonersSpawned.Add(prisoner);
+
+			SpawnTimer.Reset();
+		}
+	}
 }
 
 TArray<FVector> APDPrisonerCage::GetPatrolPoints() const
