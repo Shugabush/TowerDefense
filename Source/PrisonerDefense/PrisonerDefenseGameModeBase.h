@@ -13,5 +13,7 @@ UCLASS()
 class PRISONERDEFENSE_API APrisonerDefenseGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+		APrisonerDefenseGameModeBase();
 	
 };
