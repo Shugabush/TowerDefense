@@ -22,4 +22,15 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	FVector GetGroundVelocity() const;
+
+private:
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+	class UCapsuleComponent* Capsule;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+	class USkeletalMeshComponent* Mesh;
+
+	FVector Velocity;
 };

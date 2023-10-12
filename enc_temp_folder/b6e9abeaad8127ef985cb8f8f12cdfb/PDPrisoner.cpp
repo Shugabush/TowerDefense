@@ -16,6 +16,8 @@ APDPrisoner::APDPrisoner()
 
 	Mesh->AttachTo(Capsule);
 
+	//Mesh->SetRelativeLocation(FVector::ZeroVector);
+
 	RootComponent = Capsule;
 }
 
@@ -23,6 +25,8 @@ APDPrisoner::APDPrisoner()
 void APDPrisoner::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//Mesh->SetRelativeLocation(FVector::ZeroVector);
 }
 
 // Called every frame

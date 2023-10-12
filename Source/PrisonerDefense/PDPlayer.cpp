@@ -38,7 +38,10 @@ void APDPlayer::OnMouseClicked()
 
 	Controller->GetHitResultAtScreenPosition(mousePos, ECollisionChannel::ECC_Camera, false, result);
 
-	GEngine->AddOnScreenDebugMessage(0, 1, FColor::Blue, result.GetActor()->GetName());
+	if (result.GetActor() != nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(0, 1, FColor::Blue, result.GetActor()->GetName());
+	}
 }
 
 // Called every frame
