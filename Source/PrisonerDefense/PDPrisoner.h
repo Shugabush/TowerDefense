@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "PDTimer.h"
+
 #include "GameFramework/Pawn.h"
 #include "PDPrisoner.generated.h"
 
@@ -36,4 +39,11 @@ private:
 		class USkeletalMeshComponent* Mesh;
 
 	FVector Velocity;
+
+	int TargetIndex;
+	bool TryGetTargetPoint(FVector& TargetPoint) const;
+	bool TryGetPreviousPoint(FVector& PreviousPoint) const;
+	
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		float MovementSpeed = 5;
 };

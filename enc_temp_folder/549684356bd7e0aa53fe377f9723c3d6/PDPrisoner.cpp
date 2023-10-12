@@ -51,7 +51,7 @@ void APDPrisoner::Tick(float DeltaTime)
 
 		if (dstToPosition > 0.1f)
 		{
-			lerpedPosition = GetActorLocation() + (lerpDirection * MovementSpeed);
+			lerpedPosition = previousPatrolPoint + (lerpDirection * MovementSpeed);
 		}
 		else
 		{
@@ -59,7 +59,7 @@ void APDPrisoner::Tick(float DeltaTime)
 			lerpedPosition = targetPatrolPoint;
 		}
 
-		lerpedPosition.Z = GetActorLocation().Z;
+		lerpedPosition.Y = GetActorLocation().Y;
 
 		SetActorLocation(lerpedPosition);
 	}
