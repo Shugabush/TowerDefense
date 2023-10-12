@@ -4,6 +4,7 @@
 #include "PDPrisoner.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "PDPrisonerCage.h"
 
 // Sets default values
 APDPrisoner::APDPrisoner()

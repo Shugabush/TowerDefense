@@ -23,4 +23,18 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	// Read-only access to the patrol points
+	TArray<FVector> GetPatrolPoints() const;
+
+private:
+	TArray<class APDPrisoner*> PrisonersSpawned;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		TSubclassOf<class APDPrisoner> PrisonerReference;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		TArray<FVector> PatrolPoints;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		int PrisonersToSpawn = 5;
 };

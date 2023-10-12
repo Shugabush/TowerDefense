@@ -24,13 +24,16 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	FVector GetGroundVelocity() const;
+		FVector GetGroundVelocity() const;
+
+	// The prisoner cage will assign this pointer
+	class APDPrisonerCage* Cage;
 
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-	class UCapsuleComponent* Capsule;
+		class UCapsuleComponent* Capsule;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-	class USkeletalMeshComponent* Mesh;
+		class USkeletalMeshComponent* Mesh;
 
 	FVector Velocity;
 };
