@@ -14,7 +14,7 @@ APDPlayer::APDPlayer()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetRelativeLocationAndRotation(FVector(0, 0, 600), FQuat::MakeFromEuler(FVector(0, -90, 0)));
+	Camera->SetRelativeLocationAndRotation(FVector(0, 0, 1000), FQuat::MakeFromEuler(FVector(0, -90, 0)));
 
 	RootComponent = Camera;
 
