@@ -39,15 +39,19 @@ void APDPrisoner::Tick(float DeltaTime)
 	{
 		FVector lerpedPosition;
 
+		targetPatrolPoint.Z = GetActorLocation().Z;
+		previousPatrolPoint.Z = GetActorLocation().Z;
+
 		float dstToPosition = FVector::Distance(GetActorLocation(), targetPatrolPoint);
 
 		// Normalize the position offset for movement
-		FVector lerpDirection = targetPatrolPoint - previousPatrolPoint;
-		lerpDirection.Normalize();
+		Velocity = targetPatrolPoint - previousPatrolPoint;
+		Velocity.Normalize();
+		Velocity *= MovementSpeed;
 
 		if (dstToPosition > 0.1f)
 		{
-			lerpedPosition = GetActorLocation() + (lerpDirection * MovementSpeed);
+			lerpedPosition = GetActorLocation() + Velocity;
 		}
 		else
 		{
