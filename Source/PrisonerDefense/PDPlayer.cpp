@@ -3,6 +3,9 @@
 
 #include "PDPlayer.h"
 
+#include "PDTurret.h"
+#include "PDPrisonerCage.h"
+
 #include "Camera/CameraComponent.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
@@ -49,6 +52,35 @@ void APDPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (ActiveTurret != nullptr)
+	{
+		FHitResult result;
+		FVector2D mousePos;
+
+		Controller->GetMousePosition(mousePos.X, mousePos.Y);
+
+		Controller->GetHitResultAtScreenPosition(mousePos, ECollisionChannel::ECC_Camera, false, result);
+
+		ActiveTurret->SetActorLocation(result.ImpactPoint);
+
+		AActor* resultActor = result.GetActor();
+
+		if (resultActor != nullptr)
+		{
+			APDPrisonerCage* cage = Cast<APDPrisonerCage>(resultActor);
+
+			// We can't place a turret on top of a prisoner cage
+			ValidTurretPlacement = cage == nullptr;
+		}
+		else
+		{
+			ValidTurretPlacement = true;
+		}
+	}
+	else
+	{
+		ValidTurretPlacement = false;
+	}
 }
 
 // Called to bind functionality to input
@@ -57,5 +89,14 @@ void APDPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	InputComponent->BindAction("MouseLeftClick", IE_Pressed, this, &APDPlayer::OnMouseClicked);
+}
+
+void APDPlayer::SpawnTurret()
+{
+	// Only spawn a new turret if ActiveTurret doesn't exist
+	if (ActiveTurret == nullptr)
+	{
+		ActiveTurret = GetWorld()->SpawnActor<APDTurret>(TurretReference);
+	}
 }
 

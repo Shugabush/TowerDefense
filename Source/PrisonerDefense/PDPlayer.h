@@ -28,8 +28,17 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void SpawnTurret();
+
 private:
 	class UCameraComponent* Camera;
 	class APlayerController* Controller;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		TSubclassOf<class APDTurret> TurretReference;
+
+	class APDTurret* ActiveTurret;
+
+	bool ValidTurretPlacement;
 	
 };
