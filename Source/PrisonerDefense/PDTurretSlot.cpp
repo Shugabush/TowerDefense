@@ -3,6 +3,8 @@
 
 #include "PDTurretSlot.h"
 
+#include "Kismet/KismetMathLibrary.h"
+
 // Sets default values
 APDTurretSlot::APDTurretSlot()
 {
@@ -10,16 +12,23 @@ APDTurretSlot::APDTurretSlot()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
+	VolumeTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("VolumeTrigger"));
+
+	VolumeTrigger->OnComponentBeginOverlap.AddDynamic(this, &APDTurretSlot::OnVolumeTriggerBeginOverlap);
+
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 	Mesh->AttachTo(Box);
+	VolumeTrigger->AttachTo(Box);
 
-	FVector boxScale = Box->GetRelativeScale3D();
+	FVector boxExtent = Box->GetUnscaledBoxExtent();
 
-	Box->SetRelativeScale3D(FVector(boxScale.X, boxScale.Y, 0.01f));
+	Box->SetBoxExtent(FVector(boxExtent.X, boxExtent.Y, 0));
 	Box->SetCollisionResponseToChannel(ECC_Camera, ECR_Block);
 
 	RootComponent = Box;
+
+	Turret = nullptr;
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +36,17 @@ void APDTurretSlot::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void APDTurretSlot::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, OverlappedComponent->GetName());
+	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Blue, OtherComp->GetName());
+
+	if (Turret != nullptr)
+	{
+		Turret->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(OverlappedComponent->GetComponentLocation(), OtherComp->GetComponentLocation()));
+	}
 }
 
 // Called every frame

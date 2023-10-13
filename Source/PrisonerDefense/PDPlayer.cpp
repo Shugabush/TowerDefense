@@ -38,7 +38,7 @@ void APDPlayer::BeginPlay()
 
 void APDPlayer::OnMouseClicked()
 {
-	if (ValidTurretPlacement)
+	if (SelectedSlot != nullptr)
 	{
 		PlaceTurret();
 	}
@@ -67,21 +67,20 @@ void APDPlayer::Tick(float DeltaTime)
 		{
 			ActiveTurret->SetActorLocation(result.ImpactPoint);
 
-			APDTurretSlot* turretSlot = Cast<APDTurretSlot>(resultActor);
-			ValidTurretPlacement = turretSlot != nullptr;
+			SelectedSlot = Cast<APDTurretSlot>(resultActor);
 		}
 		else
 		{
-			ValidTurretPlacement = false;
+			SelectedSlot = nullptr;
 		}
 
-		FLinearColor targetColor = ValidTurretPlacement ? FLinearColor::White : FLinearColor::Red;
+		FLinearColor targetColor = SelectedSlot != nullptr ? FLinearColor::White : FLinearColor::Red;
 
 		ActiveTurret->BlendMeshColors(targetColor);
 	}
 	else
 	{
-		ValidTurretPlacement = false;
+		SelectedSlot = nullptr;
 	}
 }
 
@@ -109,6 +108,7 @@ void APDPlayer::PlaceTurret()
 
 	ActiveTurret->GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);
 
+	SelectedSlot->Turret = ActiveTurret;
 
 	ActiveTurret = nullptr;
 }

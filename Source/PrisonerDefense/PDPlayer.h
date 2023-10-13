@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Character.h"
 #include "PDPlayer.generated.h"
 
@@ -40,6 +41,6 @@ private:
 
 	class APDTurret* ActiveTurret;
 
-	bool ValidTurretPlacement;
+	class APDTurretSlot* SelectedSlot;
 	
 };
