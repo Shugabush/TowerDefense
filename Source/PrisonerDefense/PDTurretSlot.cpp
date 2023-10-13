@@ -45,7 +45,7 @@ void APDTurretSlot::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedC
 
 	if (Turret != nullptr)
 	{
-		Turret->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(OverlappedComponent->GetComponentLocation(), OtherComp->GetComponentLocation()));
+		Turret->TargetRotation = UKismetMathLibrary::FindLookAtRotation(OverlappedComponent->GetComponentLocation(), OtherComp->GetComponentLocation()).Quaternion();
 	}
 }
 
@@ -53,6 +53,6 @@ void APDTurretSlot::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedC
 void APDTurretSlot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 

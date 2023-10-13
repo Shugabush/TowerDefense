@@ -27,6 +27,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 		class UStaticMeshComponent* Mesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+		float RotationLerpSpeed = 5;
+
 	MeshRenderData MeshData;
 
 public:	
@@ -36,4 +39,6 @@ public:
 	void BlendMeshColors(FLinearColor newColor);
 	void SetMeshColors(FLinearColor newColor);
 	void ResetMeshColors();
+
+	FQuat TargetRotation;
 };

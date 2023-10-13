@@ -36,6 +36,7 @@ void APDTurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
 }
 
 void APDTurret::BlendMeshColors(FLinearColor newColor)
