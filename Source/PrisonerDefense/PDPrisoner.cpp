@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "PDPrisonerCage.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 APDPrisoner::APDPrisoner()
@@ -55,6 +56,10 @@ void APDPrisoner::Tick(float DeltaTime)
 		}
 
 		lerpedPosition.Z = GetActorLocation().Z;
+		
+		TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), lerpedPosition).Quaternion();
+
+		SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationSpeed));
 
 		SetActorLocation(lerpedPosition);
 	}

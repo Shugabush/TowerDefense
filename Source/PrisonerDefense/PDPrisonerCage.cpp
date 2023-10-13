@@ -16,6 +16,7 @@ void APDPrisonerCage::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	SpawnTimer = FPDTimer(SpawnInterval);
 }
 
 // Called every frame

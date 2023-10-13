@@ -39,11 +39,14 @@ private:
 		class USkeletalMeshComponent* Mesh;
 
 	FVector Velocity;
+	FQuat TargetRotation;
 
 	int TargetIndex;
 	bool TryGetTargetPoint(FVector& TargetPoint) const;
 	bool TryGetPreviousPoint(FVector& PreviousPoint) const;
 	
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-		float MovementSpeed = 5;
+		float MovementSpeed = 1;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		float RotationSpeed = 10;
 };
