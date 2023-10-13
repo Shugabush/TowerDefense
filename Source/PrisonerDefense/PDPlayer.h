@@ -29,6 +29,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void SpawnTurret();
+	void PlaceTurret();
 
 private:
 	class UCameraComponent* Camera;
@@ -36,6 +37,11 @@ private:
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		TSubclassOf<class APDTurret> TurretReference;
+
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		// Ignore any actor that contains this tag
+		FName InvalidTurretPlacementTag = TEXT("BlockTurrets");
 
 	class APDTurret* ActiveTurret;
 

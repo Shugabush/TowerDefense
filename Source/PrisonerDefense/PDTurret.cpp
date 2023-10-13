@@ -3,15 +3,24 @@
 
 #include "PDTurret.h"
 
+#include "Components/StaticMeshComponent.h"
+
 // Sets default values
 APDTurret::APDTurret()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Mesh = CreateDefaultSubobject<UMeshComponent>(TEXT("Mesh"));
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
-	RootComponent = Mesh;
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+
+	Mesh->AttachTo(RootComponent);
+}
+
+UStaticMeshComponent* APDTurret::GetMesh()
+{
+	return Mesh;
 }
 
 // Called when the game starts or when spawned

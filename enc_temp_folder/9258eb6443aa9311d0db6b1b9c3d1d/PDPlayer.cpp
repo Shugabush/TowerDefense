@@ -85,9 +85,16 @@ void APDPlayer::Tick(float DeltaTime)
 		ValidTurretPlacement = false;
 	}
 
-	FVector targetColor = ValidTurretPlacement ? FLinearColor::White : FLinearColor::Red;
+	TArray<UMaterialInterface*> turretMaterials = ActiveTurret->GetMesh()->GetMaterials();
+	TArray<UMaterialInterface*> newTurretMaterials;
 
-	ActiveTurret->GetMesh()->SetVectorParameterValueOnMaterials(FName(TEXT("Color")), targetColor);
+	for (size_t i = 0; i < turretMaterials.Num(); i++)
+	{
+		UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(turretMaterials[i], NULL);
+		material->SetVectorParameterValue(FName(TEXT("Color")), FLinearColor(1, 0, 0, 1));
+
+		ActiveTurret->GetMesh()->SetMaterial(i, material);
+	}
 }
 
 // Called to bind functionality to input

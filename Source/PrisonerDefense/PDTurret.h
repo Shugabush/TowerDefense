@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Actor.h"
 #include "PDTurret.generated.h"
 
@@ -15,12 +16,14 @@ public:
 	// Sets default values for this actor's properties
 	APDTurret();
 
+	class UStaticMeshComponent* GetMesh();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-	class UMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+		class UStaticMeshComponent* Mesh;
 
 public:	
 	// Called every frame
