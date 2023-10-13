@@ -41,12 +41,12 @@ void APDPrisonerCage::Tick(float DeltaTime)
 
 bool APDPrisonerCage::TryGetPatrolPoint(int index, FVector& patrolPoint) const
 {
-	if (index <= 0)
+	if (index < 0)
 	{
 		patrolPoint = GetActorLocation();
 		return true;
 	}
-	else if (index > GetPatrolPointCount())
+	else if (index >= GetPatrolPointCount())
 	{
 		return false;
 	}

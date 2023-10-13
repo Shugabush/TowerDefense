@@ -34,11 +34,6 @@ void APDPrisoner::Tick(float DeltaTime)
 	FVector targetPatrolPoint;
 	FVector previousPatrolPoint;
 
-	if (TargetIndex <= 0)
-	{
-		TargetIndex = 1;
-	}
-
 	if (Cage != nullptr && TryGetTargetPoint(targetPatrolPoint) && TryGetPreviousPoint(previousPatrolPoint))
 	{
 		FVector lerpedPosition;
