@@ -5,6 +5,7 @@
 
 #include "PDTurret.h"
 #include "PDPrisonerCage.h"
+#include "PDTurretSlot.h"
 
 #include "Camera/CameraComponent.h"
 #include "Materials/MaterialInterface.h"
@@ -37,16 +38,9 @@ void APDPlayer::BeginPlay()
 
 void APDPlayer::OnMouseClicked()
 {
-	FHitResult result;
-	FVector2D mousePos;
-
-	Controller->GetMousePosition(mousePos.X, mousePos.Y);
-
-	Controller->GetHitResultAtScreenPosition(mousePos, ECollisionChannel::ECC_Camera, false, result);
-
-	if (result.GetActor() != nullptr)
+	if (ValidTurretPlacement)
 	{
-		GEngine->AddOnScreenDebugMessage(0, 1, FColor::Blue, result.GetActor()->GetName());
+		PlaceTurret();
 	}
 }
 
@@ -73,21 +67,22 @@ void APDPlayer::Tick(float DeltaTime)
 		{
 			ActiveTurret->SetActorLocation(result.ImpactPoint);
 
-			ValidTurretPlacement = !resultActor->ActorHasTag(InvalidTurretPlacementTag);
+			APDTurretSlot* turretSlot = Cast<APDTurretSlot>(resultActor);
+			ValidTurretPlacement = turretSlot != nullptr;
 		}
 		else
 		{
-			ValidTurretPlacement = true;
+			ValidTurretPlacement = false;
 		}
+
+		FLinearColor targetColor = ValidTurretPlacement ? FLinearColor::White : FLinearColor::Red;
+
+		ActiveTurret->BlendMeshColors(targetColor);
 	}
 	else
 	{
 		ValidTurretPlacement = false;
 	}
-
-	FLinearColor targetColor = ValidTurretPlacement ? FLinearColor::White : FLinearColor::Red;
-
-	ActiveTurret->BlendMeshColors(targetColor);
 }
 
 // Called to bind functionality to input
@@ -113,5 +108,8 @@ void APDPlayer::PlaceTurret()
 	if (ActiveTurret == nullptr) { return; }
 
 	ActiveTurret->GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);
+
+
+	ActiveTurret = nullptr;
 }
 
