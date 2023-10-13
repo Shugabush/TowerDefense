@@ -28,6 +28,7 @@ void APDTurret::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	MeshData = MeshRenderData(Mesh, "Color");
 }
 
 // Called every frame
@@ -35,5 +36,20 @@ void APDTurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void APDTurret::BlendMeshColors(FLinearColor newColor)
+{
+	MeshData.BlendColors(newColor);
+}
+
+void APDTurret::SetMeshColors(FLinearColor newColor)
+{
+	MeshData.SetColors(newColor);
+}
+
+void APDTurret::ResetMeshColors()
+{
+	MeshData.ResetColors();
 }
 

@@ -85,9 +85,9 @@ void APDPlayer::Tick(float DeltaTime)
 		ValidTurretPlacement = false;
 	}
 
-	FVector targetColor = ValidTurretPlacement ? FLinearColor::White : FLinearColor::Red;
+	FLinearColor targetColor = ValidTurretPlacement ? FLinearColor::White : FLinearColor::Red;
 
-	ActiveTurret->GetMesh()->SetVectorParameterValueOnMaterials(FName(TEXT("Color")), targetColor);
+	ActiveTurret->BlendMeshColors(targetColor);
 }
 
 // Called to bind functionality to input
