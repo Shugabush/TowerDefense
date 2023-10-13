@@ -16,7 +16,7 @@ void APDPrisonerCage::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	SpawnTimer = FPDTimer(SpawnInterval);
+	SpawnTimer = FCooldownTimer(SpawnInterval);
 }
 
 // Called every frame
@@ -26,7 +26,7 @@ void APDPrisonerCage::Tick(float DeltaTime)
 
 	if (PrisonersSpawned.Num() < PrisonersToSpawn)
 	{
-		SpawnTimer.Update(DeltaTime);
+		SpawnTimer.Tick(DeltaTime);
 		if (SpawnTimer.OutOfTime())
 		{
 			APDPrisoner* prisoner = GetWorld()->SpawnActor<APDPrisoner>(PrisonerReference);

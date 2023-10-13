@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#include "PDTimer.h"
+#include "CooldownTimer.h"
 
 #include "GameFramework/Pawn.h"
 #include "PDPrisoner.generated.h"

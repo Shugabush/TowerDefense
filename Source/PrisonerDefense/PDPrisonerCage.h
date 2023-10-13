@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#include "PDTimer.h"
+#include "CooldownTimer.h"
 
 #include "GameFramework/Actor.h"
 #include "PDPrisonerCage.generated.h"
@@ -43,7 +43,7 @@ private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		float SpawnInterval = 2;
 
-	FPDTimer SpawnTimer;
+	FCooldownTimer SpawnTimer;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		int PrisonersToSpawn = 5;
