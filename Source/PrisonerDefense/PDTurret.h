@@ -41,4 +41,6 @@ public:
 	void ResetMeshColors();
 
 	FQuat TargetRotation;
+
+	TArray<AActor*> LookAtTargets;
 };

@@ -15,6 +15,7 @@ APDTurretSlot::APDTurretSlot()
 	VolumeTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("VolumeTrigger"));
 
 	VolumeTrigger->OnComponentBeginOverlap.AddDynamic(this, &APDTurretSlot::OnVolumeTriggerBeginOverlap);
+	VolumeTrigger->OnComponentEndOverlap.AddDynamic(this, &APDTurretSlot::OnVolumeTriggerEndOverlap);
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
@@ -45,7 +46,15 @@ void APDTurretSlot::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedC
 
 	if (Turret != nullptr)
 	{
-		Turret->TargetRotation = UKismetMathLibrary::FindLookAtRotation(OverlappedComponent->GetComponentLocation(), OtherComp->GetComponentLocation()).Quaternion();
+		Turret->LookAtTargets.Add(OtherActor);
+	}
+}
+
+void APDTurretSlot::OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (Turret != nullptr)
+	{
+		Turret->LookAtTargets.Remove(OtherActor);
 	}
 }
 

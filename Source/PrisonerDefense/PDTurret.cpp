@@ -4,6 +4,7 @@
 #include "PDTurret.h"
 
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 APDTurret::APDTurret()
@@ -36,7 +37,18 @@ void APDTurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
+	// Look at the last object in the look at target list
+	AActor* LookAtTarget = LookAtTargets.Num() > 0 ? LookAtTargets.Last() : nullptr;
+
+	if (LookAtTarget != nullptr)
+	{
+		TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LookAtTarget->GetActorLocation()).Quaternion();
+
+		TargetRotation.X = 0;
+		TargetRotation.Y = 0;
+
+		SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
+	}
 }
 
 void APDTurret::BlendMeshColors(FLinearColor newColor)
