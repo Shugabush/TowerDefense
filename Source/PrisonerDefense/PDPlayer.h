@@ -29,15 +29,16 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void ClearTurret();
-	void SpawnTurret();
-	void PlaceTurret();
-
+	UFUNCTION()
 	void OnTurretButtonClicked();
 
 	bool HasTurret();
 
 private:
+	void ClearTurret();
+	void SpawnTurret();
+	void PlaceTurret();
+
 	class UCameraComponent* Camera;
 	class APlayerController* Controller;
 

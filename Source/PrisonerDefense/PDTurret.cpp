@@ -37,8 +37,8 @@ void APDTurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// Look at the last object in the look at target list
-	AActor* LookAtTarget = LookAtTargets.Num() > 0 ? LookAtTargets.Last() : nullptr;
+	// Look at the closest object in the look at target list
+	AActor* LookAtTarget = GetClosestTarget();
 
 	if (LookAtTarget != nullptr)
 	{
@@ -64,5 +64,31 @@ void APDTurret::SetMeshColors(FLinearColor newColor)
 void APDTurret::ResetMeshColors()
 {
 	MeshData.ResetColors();
+}
+
+AActor* APDTurret::GetClosestTarget() const
+{
+	float closestDst = 10000;
+	int targetIndex = -1;
+
+	for (size_t i = 0; i < LookAtTargets.Num(); i++)
+	{
+		AActor* target = LookAtTargets[i];
+
+		float dstToTarget = FVector::Dist(GetActorLocation(), target->GetActorLocation());
+		if (dstToTarget < closestDst)
+		{
+			closestDst = dstToTarget;
+			targetIndex = i;
+		}
+	}
+	if (LookAtTargets.IsValidIndex(targetIndex))
+	{
+		return LookAtTargets[targetIndex];
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 

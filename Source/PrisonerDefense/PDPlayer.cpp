@@ -122,7 +122,14 @@ void APDPlayer::PlaceTurret()
 
 void APDPlayer::OnTurretButtonClicked()
 {
-
+	if (ActiveTurret == nullptr)
+	{
+		SpawnTurret();
+	}
+	else
+	{
+		ClearTurret();
+	}
 }
 
 bool APDPlayer::HasTurret()

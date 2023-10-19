@@ -43,4 +43,7 @@ public:
 	FQuat TargetRotation;
 
 	TArray<AActor*> LookAtTargets;
+
+	UFUNCTION()
+	AActor* GetClosestTarget() const;
 };
