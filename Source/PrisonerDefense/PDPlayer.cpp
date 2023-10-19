@@ -116,6 +116,7 @@ void APDPlayer::PlaceTurret()
 	ActiveTurret->GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);
 
 	SelectedSlot->Turret = ActiveTurret;
+	ActiveTurret->ParentSlot = SelectedSlot;
 
 	ActiveTurret = nullptr;
 }

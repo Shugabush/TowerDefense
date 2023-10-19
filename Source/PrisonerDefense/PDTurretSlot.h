@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 
-#include "PDTurret.h"
-
 #include "Components/BoxComponent.h"
 
 #include "GameFramework/Actor.h"
@@ -38,9 +36,16 @@ protected:
 
 	UFUNCTION()
 		virtual void OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	APDTurret* Turret;
+	class APDTurret* Turret;
+
+	UFUNCTION()
+		class APDPrisoner* GetClosestTarget() const;
+
+private:
+	TArray<APDPrisoner*> LookAtTargets;
 };

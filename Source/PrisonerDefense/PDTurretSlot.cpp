@@ -2,6 +2,8 @@
 
 
 #include "PDTurretSlot.h"
+#include "PDTurret.h"
+#include "PDPrisoner.h"
 
 #include "Kismet/KismetMathLibrary.h"
 
@@ -41,17 +43,19 @@ void APDTurretSlot::BeginPlay()
 
 void APDTurretSlot::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (Turret != nullptr)
+	APDPrisoner* prisoner = Cast<APDPrisoner>(OtherActor);
+	if (prisoner != nullptr)
 	{
-		Turret->LookAtTargets.Add(OtherActor);
+		LookAtTargets.Add(prisoner);
 	}
 }
 
 void APDTurretSlot::OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (Turret != nullptr)
+	APDPrisoner* prisoner = Cast<APDPrisoner>(OtherActor);
+	if (prisoner != nullptr)
 	{
-		Turret->LookAtTargets.Remove(OtherActor);
+		LookAtTargets.Remove(prisoner);
 	}
 }
 
@@ -60,5 +64,33 @@ void APDTurretSlot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+}
+
+APDPrisoner* APDTurretSlot::GetClosestTarget() const
+{
+	float closestDst = 10000;
+	int targetIndex = -1;
+
+	if (Turret == nullptr) { return nullptr; }
+
+	for (size_t i = 0; i < LookAtTargets.Num(); i++)
+	{
+		APDPrisoner* target = LookAtTargets[i];
+
+		float dstToTarget = FVector::Dist(Turret->GetActorLocation(), target->GetActorLocation());
+		if (dstToTarget < closestDst)
+		{
+			closestDst = dstToTarget;
+			targetIndex = i;
+		}
+	}
+	if (LookAtTargets.IsValidIndex(targetIndex))
+	{
+		return LookAtTargets[targetIndex];
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 

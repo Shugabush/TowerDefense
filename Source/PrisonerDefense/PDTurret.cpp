@@ -2,6 +2,8 @@
 
 
 #include "PDTurret.h"
+#include "PDTurretSlot.h"
+#include "PDPrisoner.h"
 
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -37,17 +39,20 @@ void APDTurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// Look at the closest object in the look at target list
-	AActor* LookAtTarget = GetClosestTarget();
-
-	if (LookAtTarget != nullptr)
+	if (ParentSlot != nullptr)
 	{
-		TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LookAtTarget->GetActorLocation()).Quaternion();
+		// Look at the closest object in the look at target list
+		APDPrisoner* LookAtTarget = ParentSlot->GetClosestTarget();
 
-		TargetRotation.X = 0;
-		TargetRotation.Y = 0;
+		if (LookAtTarget != nullptr)
+		{
+			TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LookAtTarget->GetActorLocation()).Quaternion();
 
-		SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
+			TargetRotation.X = 0;
+			TargetRotation.Y = 0;
+
+			SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
+		}
 	}
 }
 
@@ -64,31 +69,5 @@ void APDTurret::SetMeshColors(FLinearColor newColor)
 void APDTurret::ResetMeshColors()
 {
 	MeshData.ResetColors();
-}
-
-AActor* APDTurret::GetClosestTarget() const
-{
-	float closestDst = 10000;
-	int targetIndex = -1;
-
-	for (size_t i = 0; i < LookAtTargets.Num(); i++)
-	{
-		AActor* target = LookAtTargets[i];
-
-		float dstToTarget = FVector::Dist(GetActorLocation(), target->GetActorLocation());
-		if (dstToTarget < closestDst)
-		{
-			closestDst = dstToTarget;
-			targetIndex = i;
-		}
-	}
-	if (LookAtTargets.IsValidIndex(targetIndex))
-	{
-		return LookAtTargets[targetIndex];
-	}
-	else
-	{
-		return nullptr;
-	}
 }
 
