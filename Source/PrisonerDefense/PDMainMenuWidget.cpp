@@ -6,15 +6,8 @@
 
 void UPDMainMenuWidget::NativeConstruct()
 {
-	if (PlayButton != nullptr)
-	{
-		PlayButton->OnClicked.AddDynamic(this, &UPDMainMenuWidget::Play);
-	}
-
-	if (QuitButton != nullptr)
-	{
-		QuitButton->OnClicked.AddDynamic(this, &UPDMainMenuWidget::Quit);
-	}
+	PlayButton->OnClicked.AddDynamic(this, &UPDMainMenuWidget::Play);
+	QuitButton->OnClicked.AddDynamic(this, &UPDMainMenuWidget::Quit);
 }
 
 void UPDMainMenuWidget::Play()

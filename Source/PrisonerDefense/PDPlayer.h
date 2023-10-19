@@ -21,6 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void OnMouseClicked();
+	virtual void OnPauseButtonPressed();
 
 public:	
 	// Called every frame
@@ -33,6 +34,8 @@ public:
 	void OnTurretButtonClicked();
 
 	bool HasTurret();
+
+	bool GetIsPaused() const;
 
 private:
 	void ClearTurret();
@@ -48,4 +51,8 @@ private:
 	class APDTurret* ActiveTurret;
 
 	class APDTurretSlot* SelectedSlot;
+
+	bool IsPaused;
+
+	class APDHUD* HUD;
 };

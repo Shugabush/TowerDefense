@@ -7,28 +7,28 @@
 
 #include "Components/Button.h"
 
-#include "PDMainMenuWidget.generated.h"
+#include "PDPauseWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PRISONERDEFENSE_API UPDMainMenuWidget : public UUserWidget
+class PRISONERDEFENSE_API UPDPauseWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
 protected:
 	virtual void NativeConstruct() override;
 
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UButton* PlayButton;
+		UButton* ResumeButton;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		UButton* QuitButton;
 
 	UFUNCTION()
-		void Play();
+		void Resume();
 
 	UFUNCTION()
 		void Quit();

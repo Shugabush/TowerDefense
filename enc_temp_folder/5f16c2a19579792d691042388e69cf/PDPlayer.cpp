@@ -7,9 +7,7 @@
 #include "PDPrisonerCage.h"
 #include "PDTurretSlot.h"
 #include "PDHUD.h"
-#include "PDUserWidget.h"
 #include "PDPauseWidget.h"
-#include "GameFramework/WorldSettings.h"
 
 #include "Camera/CameraComponent.h"
 #include "Materials/MaterialInterface.h"
@@ -52,22 +50,8 @@ void APDPlayer::OnPauseButtonPressed()
 {
 	if (HUD != nullptr)
 	{
-		if (IsPaused)
-		{
-			// Resume
-			TSubclassOf<UUserWidget> MainWidget = UPDUserWidget::StaticClass();
-			HUD->SetWidgetActive(MainWidget);
-			GetWorld()->GetWorldSettings()->SetTimeDilation(1);
-			IsPaused = false;
-		}
-		else
-		{
-			// Pause
-			TSubclassOf<UUserWidget> PauseWidget = UPDPauseWidget::StaticClass();
-			HUD->SetWidgetActive(PauseWidget);
-			GetWorld()->GetWorldSettings()->SetTimeDilation(0);
-			IsPaused = true;
-		}
+		TSubclassOf<UUserWidget> PauseWidget = UPDPauseWidget::StaticClass();
+		HUD->SetWidgetActive(PauseWidget);
 	}
 }
 
