@@ -25,15 +25,7 @@ void APDBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (TargetPrisoner != nullptr)
-	{
-		SetActorLocation(FMath::Lerp<FVector>(GetActorLocation(), TargetPrisoner->GetActorLocation(), DeltaTime * MovementSpeed));
-	}
-	else
-	{
-		// Destroy this object if there is no prisoner to target
-		Destroy();
-	}
+	SetActorLocation(FMath::Lerp<FVector>(GetActorLocation(), TargetPrisoner->GetActorLocation(), DeltaTime * MovementSpeed));
 }
 
 void APDBullet::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
