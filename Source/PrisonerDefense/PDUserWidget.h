@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Components/Button.h"
+
 #include "Blueprint/UserWidget.h"
 #include "PDUserWidget.generated.h"
 
@@ -16,4 +19,8 @@ class PRISONERDEFENSE_API UPDUserWidget : public UUserWidget
 
 protected:
 	virtual void NativeConstruct() override;
+
+private:
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+		UButton* TurretButton;
 };

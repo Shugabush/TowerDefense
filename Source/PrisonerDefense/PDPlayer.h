@@ -33,6 +33,8 @@ public:
 	void SpawnTurret();
 	void PlaceTurret();
 
+	void OnTurretButtonClicked();
+
 	bool HasTurret();
 
 private:

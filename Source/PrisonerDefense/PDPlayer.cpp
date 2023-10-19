@@ -120,6 +120,11 @@ void APDPlayer::PlaceTurret()
 	ActiveTurret = nullptr;
 }
 
+void APDPlayer::OnTurretButtonClicked()
+{
+
+}
+
 bool APDPlayer::HasTurret()
 {
 	return ActiveTurret != nullptr;

@@ -2,8 +2,9 @@
 
 
 #include "PDUserWidget.h"
+#include "PDPlayer.h"
 
 void UPDUserWidget::NativeConstruct()
 {
-
+	GetOwningPlayerPawn<APDPlayer>();
 }
