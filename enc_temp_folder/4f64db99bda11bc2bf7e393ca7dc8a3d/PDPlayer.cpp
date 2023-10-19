@@ -7,7 +7,9 @@
 #include "PDPrisonerCage.h"
 #include "PDTurretSlot.h"
 #include "PDHUD.h"
+#include "PDUserWidget.h"
 #include "PDPauseWidget.h"
+#include "GameFramework/WorldSettings.h"
 
 #include "Camera/CameraComponent.h"
 #include "Materials/MaterialInterface.h"
@@ -51,7 +53,23 @@ void APDPlayer::OnPauseButtonPressed()
 	if (HUD != nullptr)
 	{
 		TSubclassOf<UUserWidget> PauseWidget = UPDPauseWidget::StaticClass();
-		HUD->SetWidgetActive(PauseWidget);
+
+		if (Controller->IsPaused())
+		{
+			// Resume
+			HUD->DisableWidget(PauseWidget);
+			GetWorld()->GetWorldSettings()->SetTimeDilation(1);
+			Controller->SetPause(false);
+			PauseWidget->GetDefaultObject<UPDPauseWidget>()->Resume();
+		}
+		else
+		{
+			// Pause
+			HUD->EnableWidget(PauseWidget);
+			GetWorld()->GetWorldSettings()->SetTimeDilation(0);
+			Controller->SetPause(true);
+			PauseWidget->GetDefaultObject<UPDPauseWidget>()->Pause();
+		}
 	}
 }
 
@@ -101,7 +119,7 @@ void APDPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	InputComponent->BindAction("MouseLeftClick", IE_Pressed, this, &APDPlayer::OnMouseClicked);
-	InputComponent->BindAction("PauseButton", IE_Pressed, this, &APDPlayer::OnPauseButtonPressed);
+	InputComponent->BindAction("PauseButton", IE_Pressed, this, &APDPlayer::OnPauseButtonPressed).bExecuteWhenPaused = true;
 }
 
 void APDPlayer::ClearTurret()
@@ -148,10 +166,5 @@ void APDPlayer::OnTurretButtonClicked()
 bool APDPlayer::HasTurret()
 {
 	return ActiveTurret != nullptr;
-}
-
-bool APDPlayer::GetIsPaused() const
-{
-	return IsPaused;
 }
 

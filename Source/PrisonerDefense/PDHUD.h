@@ -17,9 +17,12 @@ class PRISONERDEFENSE_API APDHUD : public AHUD
 	GENERATED_BODY()
 
 public:
-	void SetWidgetActive(TSubclassOf<UUserWidget> WidgetClass);
-	void SetWidgetsActive(TArray<TSubclassOf<UUserWidget>> WidgetClasses);
-	
+	void EnableWidget(TSubclassOf<UUserWidget> WidgetClass, bool disableOthers = false);
+	void EnableWidgets(TArray<TSubclassOf<UUserWidget>> WidgetClasses, bool disableOthers = false);
+
+	void DisableWidget(TSubclassOf<UUserWidget> WidgetClass);
+	void DisableWidgets(TArray<TSubclassOf<UUserWidget>> WidgetClasses);
+
 protected:
 	virtual void BeginPlay() override;
 

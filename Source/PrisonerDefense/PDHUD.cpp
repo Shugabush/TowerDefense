@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "PDPlayer.h"
 
-void APDHUD::SetWidgetActive(TSubclassOf<UUserWidget> WidgetClass)
+void APDHUD::EnableWidget(TSubclassOf<UUserWidget> WidgetClass, bool disableOthers)
 {
 	for (auto Widget : ActiveWidgets)
 	{
@@ -16,7 +16,7 @@ void APDHUD::SetWidgetActive(TSubclassOf<UUserWidget> WidgetClass)
 			{
 				Widget->SetVisibility(ESlateVisibility::Visible);
 			}
-			else
+			else if (disableOthers)
 			{
 				Widget->SetVisibility(ESlateVisibility::Hidden);
 			}
@@ -24,7 +24,7 @@ void APDHUD::SetWidgetActive(TSubclassOf<UUserWidget> WidgetClass)
 	}
 }
 
-void APDHUD::SetWidgetsActive(TArray<TSubclassOf<UUserWidget>> WidgetClasses)
+void APDHUD::EnableWidgets(TArray<TSubclassOf<UUserWidget>> WidgetClasses, bool disableOthers)
 {
 	for (auto Widget : ActiveWidgets)
 	{
@@ -36,10 +36,35 @@ void APDHUD::SetWidgetsActive(TArray<TSubclassOf<UUserWidget>> WidgetClasses)
 				{
 					Widget->SetVisibility(ESlateVisibility::Visible);
 				}
-				else
+				else if (disableOthers)
 				{
 					Widget->SetVisibility(ESlateVisibility::Hidden);
 				}
+			}
+		}
+	}
+}
+
+void APDHUD::DisableWidget(TSubclassOf<UUserWidget> WidgetClass)
+{
+	for (auto Widget : ActiveWidgets)
+	{
+		if (Widget != nullptr && Widget->IsA(WidgetClass))
+		{
+			Widget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+}
+
+void APDHUD::DisableWidgets(TArray<TSubclassOf<UUserWidget>> WidgetClasses)
+{
+	for (auto Widget : ActiveWidgets)
+	{
+		for (auto WidgetClass : WidgetClasses)
+		{
+			if (Widget != nullptr && Widget->IsA(WidgetClass))
+			{
+				Widget->SetVisibility(ESlateVisibility::Hidden);
 			}
 		}
 	}

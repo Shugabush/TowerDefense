@@ -52,21 +52,23 @@ void APDPlayer::OnPauseButtonPressed()
 {
 	if (HUD != nullptr)
 	{
-		if (IsPaused)
+		TSubclassOf<UUserWidget> PauseWidget = UPDPauseWidget::StaticClass();
+
+		if (Controller->IsPaused())
 		{
 			// Resume
-			TSubclassOf<UUserWidget> MainWidget = UPDUserWidget::StaticClass();
-			HUD->SetWidgetActive(MainWidget);
+			HUD->DisableWidget(PauseWidget);
 			GetWorld()->GetWorldSettings()->SetTimeDilation(1);
-			IsPaused = false;
+			Controller->SetPause(false);
+			PauseWidget->GetDefaultObject<UPDPauseWidget>()->Resume();
 		}
 		else
 		{
 			// Pause
-			TSubclassOf<UUserWidget> PauseWidget = UPDPauseWidget::StaticClass();
-			HUD->SetWidgetActive(PauseWidget);
+			HUD->EnableWidget(PauseWidget);
 			GetWorld()->GetWorldSettings()->SetTimeDilation(0);
-			IsPaused = true;
+			Controller->SetPause(true);
+			PauseWidget->GetDefaultObject<UPDPauseWidget>()->Pause();
 		}
 	}
 }
@@ -117,7 +119,7 @@ void APDPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	InputComponent->BindAction("MouseLeftClick", IE_Pressed, this, &APDPlayer::OnMouseClicked);
-	InputComponent->BindAction("PauseButton", IE_Pressed, this, &APDPlayer::OnPauseButtonPressed);
+	InputComponent->BindAction("PauseButton", IE_Pressed, this, &APDPlayer::OnPauseButtonPressed).bExecuteWhenPaused = true;
 }
 
 void APDPlayer::ClearTurret()
@@ -129,8 +131,8 @@ void APDPlayer::ClearTurret()
 
 void APDPlayer::SpawnTurret()
 {
-	// Only spawn a new turret if ActiveTurret doesn't exist
-	if (ActiveTurret == nullptr)
+	// Only spawn a new turret if ActiveTurret doesn't exist and the game isn't paused
+	if (ActiveTurret == nullptr && !Controller->IsPaused())
 	{
 		ActiveTurret = GetWorld()->SpawnActor<APDTurret>(TurretReference);
 	}
@@ -164,10 +166,5 @@ void APDPlayer::OnTurretButtonClicked()
 bool APDPlayer::HasTurret()
 {
 	return ActiveTurret != nullptr;
-}
-
-bool APDPlayer::GetIsPaused() const
-{
-	return IsPaused;
 }
 

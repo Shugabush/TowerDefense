@@ -35,8 +35,6 @@ public:
 
 	bool HasTurret();
 
-	bool GetIsPaused() const;
-
 private:
 	void ClearTurret();
 	void SpawnTurret();

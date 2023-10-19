@@ -16,6 +16,16 @@ UCLASS()
 class PRISONERDEFENSE_API UPDPauseWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+	UFUNCTION()
+		void Pause();
+
+	UFUNCTION()
+		void Resume();
+
+	UFUNCTION()
+		void Quit();
 	
 protected:
 	virtual void NativeConstruct() override;
@@ -26,10 +36,4 @@ private:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		UButton* QuitButton;
-
-	UFUNCTION()
-		void Resume();
-
-	UFUNCTION()
-		void Quit();
 };

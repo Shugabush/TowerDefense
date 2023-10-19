@@ -10,6 +10,11 @@ void UPDPauseWidget::NativeConstruct()
 	QuitButton->OnClicked.AddDynamic(this, &UPDPauseWidget::Quit);
 }
 
+void UPDPauseWidget::Pause()
+{
+	
+}
+
 void UPDPauseWidget::Resume()
 {
 
