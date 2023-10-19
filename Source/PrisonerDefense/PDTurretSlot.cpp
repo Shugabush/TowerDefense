@@ -41,9 +41,6 @@ void APDTurretSlot::BeginPlay()
 
 void APDTurretSlot::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, OverlappedComponent->GetName());
-	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Blue, OtherComp->GetName());
-
 	if (Turret != nullptr)
 	{
 		Turret->LookAtTargets.Add(OtherActor);

@@ -4,6 +4,7 @@
 #include "PDHUD.h"
 
 #include "Blueprint/UserWidget.h"
+#include "PDPlayer.h"
 
 void APDHUD::BeginPlay()
 {

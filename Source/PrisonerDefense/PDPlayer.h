@@ -29,8 +29,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void ClearTurret();
 	void SpawnTurret();
 	void PlaceTurret();
+
+	bool HasTurret();
 
 private:
 	class UCameraComponent* Camera;
@@ -42,5 +45,4 @@ private:
 	class APDTurret* ActiveTurret;
 
 	class APDTurretSlot* SelectedSlot;
-	
 };

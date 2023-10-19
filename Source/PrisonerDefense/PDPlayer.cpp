@@ -92,6 +92,13 @@ void APDPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	InputComponent->BindAction("MouseLeftClick", IE_Pressed, this, &APDPlayer::OnMouseClicked);
 }
 
+void APDPlayer::ClearTurret()
+{
+	ActiveTurret->Destroy();
+
+	ActiveTurret = nullptr;
+}
+
 void APDPlayer::SpawnTurret()
 {
 	// Only spawn a new turret if ActiveTurret doesn't exist
@@ -111,5 +118,10 @@ void APDPlayer::PlaceTurret()
 	SelectedSlot->Turret = ActiveTurret;
 
 	ActiveTurret = nullptr;
+}
+
+bool APDPlayer::HasTurret()
+{
+	return ActiveTurret != nullptr;
 }
 

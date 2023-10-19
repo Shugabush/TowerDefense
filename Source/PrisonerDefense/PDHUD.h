@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/HUD.h"
+
 #include "PDHUD.generated.h"
 
 /**
@@ -19,8 +21,8 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-	TSubclassOf<UUserWidget> WidgetHUDClass;
+		TSubclassOf<UUserWidget> WidgetHUDClass;
 
 	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = true))
-	UUserWidget* RootWidget;
+		UUserWidget* RootWidget;
 };
