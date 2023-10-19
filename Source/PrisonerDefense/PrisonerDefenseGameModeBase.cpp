@@ -3,12 +3,15 @@
 
 #include "PrisonerDefenseGameModeBase.h"
 
-#include "PDPlayer.h"
+#include "PDHUD.h"
 #include "UObject/ConstructorHelpers.h"
 
 APrisonerDefenseGameModeBase::APrisonerDefenseGameModeBase()
 {
-	static ConstructorHelpers::FClassFinder<APawn> PlayerClass(TEXT("/Game/Blueprints/BP_PDPlayer"));
-	DefaultPawnClass = PlayerClass.Class;
+	static ConstructorHelpers::FClassFinder<APawn> PlayerBlueprint(TEXT("/Game/Blueprints/BP_PDPlayer"));
+	DefaultPawnClass = PlayerBlueprint.Class;
+
+	static ConstructorHelpers::FClassFinder<AHUD> HUDBlueprint(TEXT("/Game/Blueprints/BP_PDHUD"));
+	HUDClass = HUDBlueprint.Class;
 }
 
