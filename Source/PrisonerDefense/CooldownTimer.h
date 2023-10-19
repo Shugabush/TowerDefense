@@ -27,4 +27,11 @@ public:
 	void Tick(float time);
 	bool OutOfTime() const;
 	void Reset();
+
+	float GetTimeLimit() const;
+	float GetTimeElapsed() const;
+	float GetTimeRemaining() const;
+
+	float GetFractionOfTimeElapsed() const;
+	float GetFractionOfTimeRemaining() const;
 };
