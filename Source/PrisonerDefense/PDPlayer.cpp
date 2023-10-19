@@ -31,8 +31,6 @@ void APDPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SpawnTurret();
-
 	Controller->bShowMouseCursor = true;
 }
 

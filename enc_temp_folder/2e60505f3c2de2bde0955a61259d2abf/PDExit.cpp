@@ -35,7 +35,8 @@ void APDExit::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	if (prisoner != nullptr)
 	{
 		// A prisoner made it to the exit, so we lose the game
-		UGameplayStatics::OpenLevel(this, TEXT("GameOverScreen"));
+		FLatentActionInfo latentInfo;
+		UGameplayStatics::LoadStreamLevel(this, TEXT("GameOver"), true, true, latentInfo);
 	}
 }
 

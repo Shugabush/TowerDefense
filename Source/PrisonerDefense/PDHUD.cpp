@@ -8,8 +8,15 @@
 
 void APDHUD::BeginPlay()
 {
-	UUserWidget* rootWidget = CreateWidget<UUserWidget>(GetWorld(), WidgetHUDClass);
-	rootWidget->AddToViewport();
+	if (WidgetHUDClass != nullptr)
+	{
+		UUserWidget* rootWidget = CreateWidget<UUserWidget>(GetWorld(), WidgetHUDClass);
+		rootWidget->AddToViewport();
 
-	RootWidget = rootWidget;
+		RootWidget = rootWidget;
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, TEXT("No widget HUD class!"));
+	}
 }
