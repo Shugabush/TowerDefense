@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "MeshRenderData.h"
+#include "CooldownTimer.h"
 
 #include "GameFramework/Actor.h"
 #include "PDTurret.generated.h"
@@ -40,7 +41,13 @@ public:
 	void SetMeshColors(FLinearColor newColor);
 	void ResetMeshColors();
 
-	FQuat TargetRotation;
-
 	class APDTurretSlot* ParentSlot;
+
+	FQuat TargetRotation;
+private:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		TSubclassOf<class APDBullet> BulletBlueprint;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		FCooldownTimer BulletSpawnTimer;
 };

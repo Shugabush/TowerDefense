@@ -24,7 +24,7 @@ void APDPrisonerCage::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (PrisonersSpawned.Num() < PrisonersToSpawn)
+	if (PrisonersSpawned < PrisonersToSpawn)
 	{
 		SpawnTimer.Tick(DeltaTime);
 		if (SpawnTimer.OutOfTime())
@@ -33,7 +33,7 @@ void APDPrisonerCage::Tick(float DeltaTime)
 			prisoner->SetActorLocation(GetActorLocation());
 			prisoner->Cage = this;
 
-			PrisonersSpawned.Add(prisoner);
+			PrisonersSpawned++;
 
 			SpawnTimer.Reset();
 		}

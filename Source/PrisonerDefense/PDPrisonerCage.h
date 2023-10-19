@@ -32,8 +32,6 @@ public:
 	int GetPatrolPointCount() const;
 
 private:
-	TArray<class APDPrisoner*> PrisonersSpawned;
-
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		TSubclassOf<class APDPrisoner> PrisonerReference;
 
@@ -46,5 +44,9 @@ private:
 	FCooldownTimer SpawnTimer;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		// How many prisoners should spawn from this cage?
 		int PrisonersToSpawn = 5;
+
+	// How many prisoners have been spawned from this cage?
+	int PrisonersSpawned = 0;
 };
