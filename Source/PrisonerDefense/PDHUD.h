@@ -44,11 +44,12 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-		TSubclassOf<UUserWidget> WidgetRootHUDClass;
 
-	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-		TArray<TSubclassOf<UUserWidget>> WidgetHUDClasses;
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true, ToolTip = "Active widgets to spawn. The first one will be the root widget."))
+		TArray<TSubclassOf<UUserWidget>> ActiveWidgetClasses;
+
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true, ToolTip = "Inactive widgets to spawn."))
+		TArray<TSubclassOf<UUserWidget>> InactiveWidgetClasses;
 
 	TArray<UUserWidget*> ActiveWidgets;
 

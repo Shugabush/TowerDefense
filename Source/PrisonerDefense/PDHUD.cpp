@@ -71,34 +71,44 @@ void APDHUD::DisableWidgets(TArray<TSubclassOf<UUserWidget>> WidgetClasses)
 
 void APDHUD::BeginPlay()
 {
-	for (size_t i = 0; i < WidgetHUDClasses.Num(); i++)
+	// Create active widgets
+	for (size_t i = 0; i < ActiveWidgetClasses.Num(); i++)
 	{
-		auto WidgetHUDClass = WidgetHUDClasses[i];
-		if (WidgetHUDClass != nullptr)
+		auto ActiveWidgetClass = ActiveWidgetClasses[i];
+		if (ActiveWidgetClass != nullptr)
 		{
-			UUserWidget* otherWidget = CreateWidget<UUserWidget>(GetWorld(), WidgetHUDClass);
-			otherWidget->AddToViewport(WidgetHUDClasses.Num() - i);
+			UUserWidget* activeWidget = CreateWidget<UUserWidget>(GetWorld(), ActiveWidgetClass);
+			activeWidget->AddToViewport(InactiveWidgetClasses.Num() + 1);
 
-			otherWidget->SetVisibility(ESlateVisibility::Hidden);
+			if (RootWidget == nullptr)
+			{
+				RootWidget = activeWidget;
+			}
 
-			ActiveWidgets.Add(otherWidget);
+			ActiveWidgets.Add(activeWidget);
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, TEXT("Null widget class at index " + FString::FromInt(i) + "!"));
+		}
+	}
+
+	// Create inactive widgets
+	for (size_t i = 0; i < InactiveWidgetClasses.Num(); i++)
+	{
+		auto InactiveWidgetClass = InactiveWidgetClasses[i];
+		if (InactiveWidgetClass != nullptr)
+		{
+			UUserWidget* inactiveWidget = CreateWidget<UUserWidget>(GetWorld(), InactiveWidgetClass);
+			inactiveWidget->AddToViewport(InactiveWidgetClasses.Num() - i);
+
+			inactiveWidget->SetVisibility(ESlateVisibility::Hidden);
+
+			ActiveWidgets.Add(inactiveWidget);
 		}
 		else
 		{
 			GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, TEXT("No widget HUD class!"));
 		}
-	}
-	if (WidgetRootHUDClass != nullptr)
-	{
-		UUserWidget* rootWidget = CreateWidget<UUserWidget>(GetWorld(), WidgetRootHUDClass);
-		rootWidget->AddToViewport(WidgetHUDClasses.Num() + 1);
-
-		RootWidget = rootWidget;
-
-		ActiveWidgets.Add(rootWidget);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, TEXT("No widget HUD class!"));
 	}
 }
