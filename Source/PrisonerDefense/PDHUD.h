@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 
+#include "PDUserWidget.h"
+
+#include "Blueprint/UserWidget.h"
 #include "GameFramework/HUD.h"
 
 #include "PDHUD.generated.h"
@@ -22,6 +25,20 @@ public:
 
 	void DisableWidget(TSubclassOf<UUserWidget> WidgetClass);
 	void DisableWidgets(TArray<TSubclassOf<UUserWidget>> WidgetClasses);
+
+	template<typename T>
+	T* GetWidget(TSubclassOf<T> WidgetClass) const
+	{
+		for (auto Widget : ActiveWidgets)
+		{
+			if (Widget->IsA(WidgetClass))
+			{
+				return Cast<T>(Widget);
+			}
+		}
+
+		return nullptr;
+	}
 
 protected:
 	virtual void BeginPlay() override;

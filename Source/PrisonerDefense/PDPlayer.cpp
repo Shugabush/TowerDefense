@@ -36,6 +36,7 @@ void APDPlayer::BeginPlay()
 	Super::BeginPlay();
 
 	HUD = Cast<APDHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+	Widget = HUD->GetWidget<UPDUserWidget>(UPDUserWidget::StaticClass());
 
 	Controller->bShowMouseCursor = true;
 }
@@ -132,7 +133,9 @@ void APDPlayer::ClearTurret()
 void APDPlayer::SpawnTurret()
 {
 	// Only spawn a new turret if ActiveTurret doesn't exist and the game isn't paused
-	if (ActiveTurret == nullptr && !Controller->IsPaused())
+	// and we have enough power to get one
+	if (ActiveTurret == nullptr && !Controller->IsPaused() &&
+		Widget->CanAffordTurret())
 	{
 		ActiveTurret = GetWorld()->SpawnActor<APDTurret>(TurretReference);
 	}
@@ -149,6 +152,8 @@ void APDPlayer::PlaceTurret()
 	ActiveTurret->ParentSlot = SelectedSlot;
 
 	ActiveTurret = nullptr;
+
+	Widget->UpdatePower(-Widget->GetTurretCost());
 }
 
 void APDPlayer::OnTurretButtonClicked()

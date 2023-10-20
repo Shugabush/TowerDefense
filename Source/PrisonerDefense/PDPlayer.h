@@ -53,4 +53,5 @@ private:
 	bool IsPaused;
 
 	class APDHUD* HUD;
+	class UPDUserWidget* Widget;
 };

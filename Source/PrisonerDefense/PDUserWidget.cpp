@@ -4,6 +4,27 @@
 #include "PDUserWidget.h"
 #include "PDPlayer.h"
 
+int UPDUserWidget::GetPower() const
+{
+	return Power;
+}
+
+void UPDUserWidget::UpdatePower(int additionalPower)
+{
+	Power += additionalPower;
+	PowerText->SetText(FText::FromString("Power: " + FString::FromInt(Power)));
+}
+
+int UPDUserWidget::GetTurretCost() const
+{
+	return TurretCost;
+}
+
+bool UPDUserWidget::CanAffordTurret() const
+{
+	return Power >= TurretCost;
+}
+
 void UPDUserWidget::NativeConstruct()
 {
 	OwningPlayer = GetOwningPlayerPawn<APDPlayer>();
@@ -16,4 +37,7 @@ void UPDUserWidget::NativeConstruct()
 	{
 		GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, TEXT("Turret button hasn't been assigned!"));
 	}
+
+	TurretCostText->SetText(FText::FromString(FString::FromInt(TurretCost) + " Power"));
+	PowerText->SetText(FText::FromString("Power: " + FString::FromInt(Power)));
 }
