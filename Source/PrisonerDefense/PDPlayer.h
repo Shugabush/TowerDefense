@@ -66,7 +66,7 @@ private:
 	class UStaticMeshComponent* ActiveMesh;
 
 	class APDTurretSlot* SelectedTurretSlot;
-	class APDPowerGenerator* SelectedPowerGeneratorSlot;
+	class APDPowerGeneratorSlot* SelectedPowerGeneratorSlot;
 
 	bool IsPaused;
 

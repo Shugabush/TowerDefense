@@ -217,13 +217,6 @@ void APDPlayer::PlacePowerGenerator()
 	// Can't place the power generator if it doesn't exist
 	if (!HasPowerGenerator()) { return; }
 
-	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);
-
-	ActivePowerGenerator->ParentSlot = SelectedPowerGeneratorSlot;
-
-	ActiveObject = nullptr;
-	ActivePowerGenerator = nullptr;
-
 	Widget->UpdatePower(-Widget->GetPowerGeneratorCost());
 }
 
