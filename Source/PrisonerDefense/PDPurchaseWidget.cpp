@@ -28,6 +28,11 @@ void UPDPurchaseWidget::SynchronizeProperties()
 	PriceText->SetText(FText::FromString(FString::FromInt(Price) + " Power"));
 }
 
+int UPDPurchaseWidget::GetPrice() const
+{
+	return Price;
+}
+
 void UPDPurchaseWidget::TryPurchase()
 {
 	if (ParentWidget != nullptr && ParentWidget->GetPower() >= Price)

@@ -32,7 +32,7 @@ public:
 		int GetTurretCost() const;
 
 	UFUNCTION(BlueprintCallable)
-		bool CanAffordTurret() const;
+		int GetPowerGeneratorCost() const;
 
 protected:
 	virtual void NativeConstruct() override;

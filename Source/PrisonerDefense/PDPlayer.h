@@ -31,14 +31,24 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
-	void OnTurretButtonClicked();
+		void OnTurretButtonClicked();
+
+	UFUNCTION()
+		void OnPowerGeneratorButtonClicked();
 
 	bool HasTurret();
+	bool HasPowerGenerator();
 
 private:
 	void ClearTurret();
 	void SpawnTurret();
 	void PlaceTurret();
+	void UpdateTurret();
+
+	void ClearPowerGenerator();
+	void SpawnPowerGenerator();
+	void PlacePowerGenerator();
+	void UpdatePowerGenerator();
 
 	class UCameraComponent* Camera;
 	class APlayerController* Controller;
@@ -46,9 +56,17 @@ private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		TSubclassOf<class APDTurret> TurretReference;
 
-	class APDTurret* ActiveTurret;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		TSubclassOf<class APDPowerGenerator> PowerGeneratorReference;
 
-	class APDTurretSlot* SelectedSlot;
+	class APDTurret* ActiveTurret;
+	class APDPowerGenerator* ActivePowerGenerator;
+
+	class AActor* ActiveObject;
+	class UStaticMeshComponent* ActiveMesh;
+
+	class APDTurretSlot* SelectedTurretSlot;
+	class APDPowerGenerator* SelectedPowerGeneratorSlot;
 
 	bool IsPaused;
 

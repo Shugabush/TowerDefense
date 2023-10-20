@@ -33,6 +33,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 		FOnPurchaseSignature OnPurchase;
 
+	int GetPrice() const;
+
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		UTexture2D* ButtonIcon;

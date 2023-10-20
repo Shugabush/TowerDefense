@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "MeshRenderData.h"
+
 #include "GameFramework/Actor.h"
 #include "PDPowerGenerator.generated.h"
 
@@ -15,6 +18,8 @@ public:
 	// Sets default values for this actor's properties
 	APDPowerGenerator();
 
+	class UStaticMeshComponent* GetMesh() const;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -22,8 +27,19 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 		class UStaticMeshComponent* Mesh;
 
+	MeshRenderData MeshData;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void BlendMeshColors(FLinearColor newColor);
+	void SetMeshColors(FLinearColor newColor);
+	void ResetMeshColors();
+
+	class APDPowerGeneratorSlot* ParentSlot;
+	
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+		int PowerPerSecond = 2;
 };

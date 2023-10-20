@@ -17,27 +17,20 @@ void UPDUserWidget::UpdatePower(int additionalPower)
 
 int UPDUserWidget::GetTurretCost() const
 {
-	return TurretCost;
+	return TurretPurchasable->GetPrice();
 }
 
-bool UPDUserWidget::CanAffordTurret() const
+int UPDUserWidget::GetPowerGeneratorCost() const
 {
-	return Power >= TurretCost;
+	return PowerGeneratorPurchasable->GetPrice();
 }
 
 void UPDUserWidget::NativeConstruct()
 {
 	OwningPlayer = GetOwningPlayerPawn<APDPlayer>();
 	TurretPurchasable->ParentWidget = this;
+	PowerGeneratorPurchasable->ParentWidget = this;
 
 	TurretPurchasable->OnPurchase.AddDynamic(OwningPlayer, &APDPlayer::OnTurretButtonClicked);
-
-	/*if (TurretButton != nullptr)
-	{
-		TurretButton->OnClicked.AddDynamic(OwningPlayer, &APDPlayer::OnTurretButtonClicked);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, TEXT("Turret button hasn't been assigned!"));
-	}*/
+	PowerGeneratorPurchasable->OnPurchase.AddDynamic(OwningPlayer, &APDPlayer::OnPowerGeneratorButtonClicked);
 }
