@@ -8,6 +8,7 @@
 #include "Components/TextBlock.h"
 
 #include "PDPlayer.h"
+#include "PDPurchaseWidget.h"
 
 #include "Blueprint/UserWidget.h"
 #include "PDUserWidget.generated.h"
@@ -38,11 +39,13 @@ protected:
 
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UButton* TurretButton;
+		UPDPurchaseWidget* TurretPurchasable;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		UPDPurchaseWidget* PowerGeneratorPurchasable;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		UTextBlock* PowerText;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UTextBlock* TurretCostText;
 
 	APDPlayer* OwningPlayer;
 	

@@ -28,16 +28,16 @@ bool UPDUserWidget::CanAffordTurret() const
 void UPDUserWidget::NativeConstruct()
 {
 	OwningPlayer = GetOwningPlayerPawn<APDPlayer>();
+	TurretPurchasable->ParentWidget = this;
 
-	if (TurretButton != nullptr)
+	TurretPurchasable->OnPurchase.AddDynamic(OwningPlayer, &APDPlayer::OnTurretButtonClicked);
+
+	/*if (TurretButton != nullptr)
 	{
 		TurretButton->OnClicked.AddDynamic(OwningPlayer, &APDPlayer::OnTurretButtonClicked);
 	}
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, TEXT("Turret button hasn't been assigned!"));
-	}
-
-	TurretCostText->SetText(FText::FromString(FString::FromInt(TurretCost) + " Power"));
-	PowerText->SetText(FText::FromString("Power: " + FString::FromInt(Power)));
+	}*/
 }
