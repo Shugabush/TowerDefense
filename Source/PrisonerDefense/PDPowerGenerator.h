@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 
+#include "CooldownTimer.h"
 #include "MeshRenderData.h"
 
 #include "GameFramework/Actor.h"
@@ -38,8 +39,12 @@ public:
 	void ResetMeshColors();
 
 	class APDPowerGeneratorSlot* ParentSlot;
+
+	class APDPlayer* Player;
 	
 private:
+	FCooldownTimer Timer;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 		int PowerPerSecond = 2;
 };

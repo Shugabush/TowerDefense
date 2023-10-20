@@ -3,6 +3,9 @@
 
 #include "PDPowerGenerator.h"
 
+#include "PDPlayer.h"
+#include "PDUserWidget.h"
+
 #include "Components/StaticMeshComponent.h"
 #include "CustomStaticMeshComponent.h"
 
@@ -30,6 +33,8 @@ void APDPowerGenerator::BeginPlay()
 	Super::BeginPlay();
 
 	MeshData = MeshRenderData(Mesh, "Color");
+
+	Timer = FCooldownTimer(1.0f / PowerPerSecond);
 }
 
 // Called every frame
@@ -37,10 +42,19 @@ void APDPowerGenerator::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// If parent slot is not nullptr, then we've actually placed this turret down
+	// If parent slot is not nullptr, then we've actually placed this power generator down
 	if (ParentSlot != nullptr)
 	{
-		
+		if (Timer.OutOfTime())
+		{
+			// Update power
+			Player->GetWidget()->UpdatePower(1);
+			Timer.Reset();
+		}
+		else
+		{
+			Timer.Tick(DeltaTime);
+		}
 	}
 }
 

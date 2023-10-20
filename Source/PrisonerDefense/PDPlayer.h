@@ -16,6 +16,8 @@ public:
 	// Sets default values for this character's properties
 	APDPlayer();
 
+	class UPDUserWidget* GetWidget() const;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

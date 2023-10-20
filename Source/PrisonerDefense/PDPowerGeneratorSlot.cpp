@@ -28,6 +28,5 @@ void APDPowerGeneratorSlot::BeginPlay()
 void APDPowerGeneratorSlot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

@@ -32,6 +32,11 @@ APDPlayer::APDPlayer()
 	Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 }
 
+UPDUserWidget* APDPlayer::GetWidget() const
+{
+	return Widget;
+}
+
 // Called when the game starts or when spawned
 void APDPlayer::BeginPlay()
 {
@@ -207,6 +212,7 @@ void APDPlayer::SpawnPowerGenerator()
 	if (ActiveObject == nullptr && !Controller->IsPaused())
 	{
 		ActivePowerGenerator = GetWorld()->SpawnActor<APDPowerGenerator>(PowerGeneratorReference);
+		ActivePowerGenerator->Player = this;
 		ActiveObject = ActivePowerGenerator;
 		ActiveMesh = ActivePowerGenerator->GetMesh();
 	}
