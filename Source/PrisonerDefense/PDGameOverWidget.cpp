@@ -2,6 +2,7 @@
 
 
 #include "PDGameOverWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 void UPDGameOverWidget::NativeConstruct()
 {
@@ -12,12 +13,12 @@ void UPDGameOverWidget::NativeConstruct()
 
 void UPDGameOverWidget::Replay()
 {
-
+	UGameplayStatics::OpenLevel(GetWorld(), ReplayLevel);
 }
 
 void UPDGameOverWidget::MainMenu()
 {
-
+	UGameplayStatics::OpenLevel(GetWorld(), MainMenuLevel);
 }
 
 void UPDGameOverWidget::Quit()
