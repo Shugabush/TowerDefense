@@ -25,8 +25,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-	void OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
+		void OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
 	float MovementSpeed = 25;
-	class APDPrisoner* TargetPrisoner;
+
+	UPROPERTY()
+		class APDPrisoner* TargetPrisoner;
 };

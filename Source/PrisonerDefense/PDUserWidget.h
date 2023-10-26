@@ -22,16 +22,16 @@ class PRISONERDEFENSE_API UPDUserWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetPower() const;
 
 	UFUNCTION(BlueprintCallable)
 		void UpdatePower(int additionalPower);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetTurretCost() const;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetPowerGeneratorCost() const;
 
 protected:
@@ -47,7 +47,8 @@ private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		UTextBlock* PowerText;
 
-	APDPlayer* OwningPlayer;
+	UPROPERTY()
+		APDPlayer* OwningPlayer;
 	
 	int Power = 250;
 

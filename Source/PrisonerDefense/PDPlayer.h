@@ -16,7 +16,8 @@ public:
 	// Sets default values for this character's properties
 	APDPlayer();
 
-	class UPDUserWidget* GetWidget() const;
+	UFUNCTION()
+		class UPDUserWidget* GetWidget() const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -52,8 +53,11 @@ private:
 	void PlacePowerGenerator();
 	void UpdatePowerGenerator();
 
-	class UCameraComponent* Camera;
-	class APlayerController* Controller;
+	UPROPERTY()
+		class UCameraComponent* Camera;
+
+	UPROPERTY()
+		class APlayerController* PlayerController;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		TSubclassOf<class APDTurret> TurretReference;
@@ -61,17 +65,29 @@ private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		TSubclassOf<class APDPowerGenerator> PowerGeneratorReference;
 
-	class APDTurret* ActiveTurret;
-	class APDPowerGenerator* ActivePowerGenerator;
+	UPROPERTY()
+		class APDTurret* ActiveTurret;
 
-	class AActor* ActiveObject;
-	class UStaticMeshComponent* ActiveMesh;
+	UPROPERTY()
+		class APDPowerGenerator* ActivePowerGenerator;
 
-	class APDTurretSlot* SelectedTurretSlot;
-	class APDPowerGeneratorSlot* SelectedPowerGeneratorSlot;
+	UPROPERTY()
+		class AActor* ActiveObject;
+
+	UPROPERTY()
+		class UStaticMeshComponent* ActiveMesh;
+
+	UPROPERTY()
+		class APDTurretSlot* SelectedTurretSlot;
+
+	UPROPERTY()
+		class APDPowerGeneratorSlot* SelectedPowerGeneratorSlot;
 
 	bool IsPaused;
 
-	class APDHUD* HUD;
-	class UPDUserWidget* Widget;
+	UPROPERTY()
+		class APDHUD* HUD;
+
+	UPROPERTY()
+		class UPDUserWidget* Widget;
 };

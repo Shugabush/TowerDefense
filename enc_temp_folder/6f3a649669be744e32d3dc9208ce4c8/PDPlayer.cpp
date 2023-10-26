@@ -118,7 +118,6 @@ void APDPlayer::ClearTurret()
 		ActiveObject->Destroy();
 		ActiveObject = nullptr;
 		ActiveTurret = nullptr;
-		SelectedTurretSlot = nullptr;
 	}
 }
 
@@ -192,7 +191,6 @@ void APDPlayer::ClearPowerGenerator()
 		ActiveObject->Destroy();
 		ActiveObject = nullptr;
 		ActivePowerGenerator = nullptr;
-		SelectedPowerGeneratorSlot = nullptr;
 	}
 }
 

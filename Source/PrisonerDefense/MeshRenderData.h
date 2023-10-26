@@ -12,7 +12,9 @@ class PRISONERDEFENSE_API MeshRenderData
 private:
 	class MaterialData
 	{
-		UMaterialInstanceDynamic* Material;
+		UPROPERTY()
+			UMaterialInstanceDynamic* Material;
+
 		FLinearColor OriginalColor;
 		FName ColorName;
 
@@ -26,9 +28,8 @@ private:
 	TArray<MaterialData> Materials;
 
 public:
-	MeshRenderData();
+	MeshRenderData() = default;
 	MeshRenderData(UMeshComponent* mesh, FName colorName);
-	~MeshRenderData();
 
 	void BlendColors(FLinearColor newColor);
 	void SetColors(FLinearColor newColor);

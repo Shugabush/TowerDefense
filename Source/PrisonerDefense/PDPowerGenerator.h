@@ -38,9 +38,11 @@ public:
 	void SetMeshColors(FLinearColor newColor);
 	void ResetMeshColors();
 
-	class APDPowerGeneratorSlot* ParentSlot;
+	UPROPERTY()
+		class APDPowerGeneratorSlot* ParentSlot;
 
-	class APDPlayer* Player;
+	UPROPERTY()
+		class APDPlayer* Player;
 	
 private:
 	FCooldownTimer Timer;

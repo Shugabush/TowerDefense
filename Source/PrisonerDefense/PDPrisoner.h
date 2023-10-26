@@ -30,7 +30,8 @@ public:
 		FVector GetGroundVelocity() const;
 
 	// The prisoner cage will assign this pointer
-	class APDPrisonerCage* Cage;
+	UPROPERTY()
+		class APDPrisonerCage* Cage;
 
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))

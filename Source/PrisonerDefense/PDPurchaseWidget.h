@@ -28,7 +28,8 @@ protected:
 	virtual void SynchronizeProperties() override;
 
 public:
-	UPDUserWidget* ParentWidget;
+	UPROPERTY()
+		UPDUserWidget* ParentWidget;
 
 	UPROPERTY(BlueprintAssignable)
 		FOnPurchaseSignature OnPurchase;

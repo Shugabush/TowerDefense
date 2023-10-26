@@ -3,10 +3,6 @@
 
 #include "MeshRenderData.h"
 
-MeshRenderData::MeshRenderData()
-{
-
-}
 
 MeshRenderData::MeshRenderData(UMeshComponent* mesh, FName colorName)
 {
@@ -17,11 +13,6 @@ MeshRenderData::MeshRenderData(UMeshComponent* mesh, FName colorName)
 
 		Materials.Add(MaterialData(mat, colorName));
 	}
-}
-
-MeshRenderData::~MeshRenderData()
-{
-
 }
 
 void MeshRenderData::BlendColors(FLinearColor newColor)

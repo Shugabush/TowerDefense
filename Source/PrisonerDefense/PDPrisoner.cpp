@@ -35,7 +35,10 @@ void APDPrisoner::Tick(float DeltaTime)
 	FVector targetPatrolPoint;
 	FVector previousPatrolPoint;
 
-	if (Cage != nullptr && TryGetTargetPoint(targetPatrolPoint) && TryGetPreviousPoint(previousPatrolPoint))
+	bool gotTargetPoint = TryGetTargetPoint(targetPatrolPoint);
+	bool gotPreviousPoint = TryGetPreviousPoint(previousPatrolPoint);
+
+	if (Cage != nullptr && gotTargetPoint && TryGetPreviousPoint(previousPatrolPoint))
 	{
 		FVector lerpedPosition;
 
@@ -51,7 +54,7 @@ void APDPrisoner::Tick(float DeltaTime)
 
 		if (dstToPosition > 0.1f)
 		{
-			lerpedPosition = GetActorLocation() + Velocity;
+			lerpedPosition = GetActorLocation() + (Velocity * DeltaTime * 60);
 		}
 		else
 		{
@@ -66,6 +69,22 @@ void APDPrisoner::Tick(float DeltaTime)
 		SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationSpeed));
 
 		SetActorLocation(lerpedPosition);
+	}
+	else
+	{
+		// Notify the user about any unexpected problems
+		if (Cage == nullptr)
+		{
+			GEngine->AddOnScreenDebugMessage(0, 0.25f, FColor::Red, GetName() + TEXT(" has no cage!"));
+		}
+		if (!gotTargetPoint)
+		{
+			GEngine->AddOnScreenDebugMessage(0, 0.25f, FColor::Red, GetName() + TEXT(" couldn't get their target patrol point!"));
+		}
+		if (!gotPreviousPoint)
+		{
+			GEngine->AddOnScreenDebugMessage(0, 0.25f, FColor::Red, GetName() + TEXT(" couldn't get their previous patrol point!"));
+		}
 	}
 }
 
