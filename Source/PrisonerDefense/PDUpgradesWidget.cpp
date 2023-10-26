@@ -5,5 +5,5 @@
 
 void UPDUpgradesWidget::NativeConstruct()
 {
-	
+	GEngine->AddOnScreenDebugMessage(0, 2, FColor::Blue, TEXT("Widget"));
 }
