@@ -33,6 +33,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetPatrolPointCount() const;
 
+	UFUNCTION(BlueprintCallable)
+		void SpawnPrisoner();
+
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		TSubclassOf<class APDPrisoner> PrisonerReference;

@@ -28,20 +28,18 @@ void APDPrisonerCage::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (GameMode->RoundIsRunning() && PrisonersSpawned < PrisonersToSpawn)
+	/*if (GameMode->RoundIsRunning() && PrisonersSpawned < PrisonersToSpawn)
 	{
 		SpawnTimer.Tick(DeltaTime);
 		if (SpawnTimer.OutOfTime())
 		{
-			APDPrisoner* prisoner = GetWorld()->SpawnActor<APDPrisoner>(PrisonerReference);
-			prisoner->SetActorLocation(GetActorLocation());
-			prisoner->Cage = this;
+			SpawnPrisoner();
 
 			PrisonersSpawned++;
 
 			SpawnTimer.Reset();
 		}
-	}
+	}*/
 }
 
 bool APDPrisonerCage::TryGetPatrolPoint(int index, FVector& patrolPoint) const
@@ -62,5 +60,12 @@ bool APDPrisonerCage::TryGetPatrolPoint(int index, FVector& patrolPoint) const
 int APDPrisonerCage::GetPatrolPointCount() const
 {
 	return PatrolPoints.Num();
+}
+
+void APDPrisonerCage::SpawnPrisoner()
+{
+	APDPrisoner* prisoner = GetWorld()->SpawnActor<APDPrisoner>(PrisonerReference);
+	prisoner->SetActorLocation(GetActorLocation());
+	prisoner->Cage = this;
 }
 
