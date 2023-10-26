@@ -13,6 +13,8 @@
  * 
  */
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRoundChangedSignature, int, NewRound);
+
 UCLASS()
 class PRISONERDEFENSE_API APrisonerDefenseGameModeBase : public AGameModeBase
 {
@@ -29,9 +31,12 @@ private:
 	TArray<class APDPrisonerCage*> PrisonerCages;
 
 	int RoundIndex = 0;
+
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		bool RoundIsRunning() const;
+
+	FOnRoundChangedSignature OnRoundChanged;
 
 	UFUNCTION()
 		void StartRound();

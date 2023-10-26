@@ -46,6 +46,8 @@ protected:
 	UFUNCTION()
 		void OnPlayButtonClicked();
 
+	UFUNCTION()
+		void OnRoundChanged(int NewRound);
 private:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
@@ -58,10 +60,19 @@ private:
 		UTextBlock* PowerText;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		UTextBlock* RoundText;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		UButton* PlayButton;
 
 	UPROPERTY()
 		APDPlayer* OwningPlayer;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
+		FString PowerTextPrefix = "Power: ";
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
+		FString RoundTextPrefix = "Round: ";
 	
 	int Power = 250;
 

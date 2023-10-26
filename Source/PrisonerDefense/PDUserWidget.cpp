@@ -4,6 +4,7 @@
 #include "PDUserWidget.h"
 #include "PDPlayer.h"
 #include "PrisonerDefenseGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 
 int UPDUserWidget::GetPower() const
 {
@@ -13,7 +14,7 @@ int UPDUserWidget::GetPower() const
 void UPDUserWidget::UpdatePower(const int additionalPower)
 {
 	Power += additionalPower;
-	PowerText->SetText(FText::FromString("Power: " + FString::FromInt(Power)));
+	PowerText->SetText(FText::FromString(PowerTextPrefix + FString::FromInt(Power)));
 }
 
 int UPDUserWidget::GetTurretCost() const
@@ -28,6 +29,8 @@ int UPDUserWidget::GetPowerGeneratorCost() const
 
 void UPDUserWidget::NativeConstruct()
 {
+	Super::NativeConstruct();
+
 	OwningPlayer = GetOwningPlayerPawn<APDPlayer>();
 	TurretPurchasable->ParentWidget = this;
 	PowerGeneratorPurchasable->ParentWidget = this;
@@ -36,6 +39,9 @@ void UPDUserWidget::NativeConstruct()
 	PowerGeneratorPurchasable->OnPurchase.AddDynamic(this, &UPDUserWidget::OnPowerGeneratorButtonClicked);
 
 	PlayButton->OnClicked.AddDynamic(this, &UPDUserWidget::OnPlayButtonClicked);
+
+	APrisonerDefenseGameModeBase* GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	GameMode->OnRoundChanged.AddDynamic(this, &UPDUserWidget::OnRoundChanged);
 }
 
 void UPDUserWidget::OnTurretButtonClicked()
@@ -51,4 +57,9 @@ void UPDUserWidget::OnPowerGeneratorButtonClicked()
 void UPDUserWidget::OnPlayButtonClicked()
 {
 	OwningPlayer->GetGameMode()->StartRound();
+}
+
+void UPDUserWidget::OnRoundChanged(int NewRound)
+{
+	RoundText->SetText(FText::FromString(RoundTextPrefix + FString::FromInt(NewRound)));
 }

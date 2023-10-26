@@ -154,7 +154,6 @@ void APDPlayer::PlaceTurret()
 
 	ActiveObject = nullptr;
 	ActiveTurret = nullptr;
-	SelectedTurretSlot = nullptr;
 
 	Widget->UpdatePower(-Widget->GetTurretCost());
 }
@@ -221,7 +220,10 @@ void APDPlayer::SpawnPowerGenerator()
 void APDPlayer::PlacePowerGenerator()
 {
 	// Can't place the power generator if it doesn't exist
-	if (!HasPowerGenerator()) { return; }
+	if (!HasPowerGenerator()) 
+	{ 
+		return; 
+	}
 
 	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);
 
