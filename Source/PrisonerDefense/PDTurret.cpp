@@ -7,7 +7,6 @@
 #include "PDBullet.h"
 
 #include "Components/StaticMeshComponent.h"
-#include "CustomStaticMeshComponent.h"
 
 #include "Kismet/KismetMathLibrary.h"
 
@@ -17,7 +16,7 @@ APDTurret::APDTurret()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Mesh = CreateDefaultSubobject<UCustomStaticMeshComponent>(TEXT("Mesh"));
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
