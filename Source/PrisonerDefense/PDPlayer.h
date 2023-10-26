@@ -39,6 +39,9 @@ public:
 	UFUNCTION()
 		void OnPowerGeneratorButtonClicked();
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		class APrisonerDefenseGameModeBase* GetGameMode() const;
+
 	bool HasTurret();
 	bool HasPowerGenerator();
 
@@ -82,6 +85,9 @@ private:
 
 	UPROPERTY()
 		class APDPowerGeneratorSlot* SelectedPowerGeneratorSlot;
+
+	UPROPERTY()
+		class APrisonerDefenseGameModeBase* GameMode;
 
 	bool IsPaused;
 

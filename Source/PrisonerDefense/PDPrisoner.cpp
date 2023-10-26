@@ -54,7 +54,7 @@ void APDPrisoner::Tick(float DeltaTime)
 
 		if (dstToPosition > 0.1f)
 		{
-			lerpedPosition = GetActorLocation() + (Velocity * DeltaTime * 60);
+			lerpedPosition = GetActorLocation() + (Velocity * DeltaTime);
 		}
 		else
 		{

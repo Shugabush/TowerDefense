@@ -15,5 +15,14 @@ class PRISONERDEFENSE_API APrisonerDefenseGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 		APrisonerDefenseGameModeBase();
-	
+
+private:
+	bool PrisonersShouldSpawn = false;
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		bool RoundIsRunning() const;
+
+	UFUNCTION()
+		void StartRound();
 };

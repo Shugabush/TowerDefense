@@ -3,13 +3,14 @@
 
 #include "PDUserWidget.h"
 #include "PDPlayer.h"
+#include "PrisonerDefenseGameModeBase.h"
 
 int UPDUserWidget::GetPower() const
 {
 	return Power;
 }
 
-void UPDUserWidget::UpdatePower(int additionalPower)
+void UPDUserWidget::UpdatePower(const int additionalPower)
 {
 	Power += additionalPower;
 	PowerText->SetText(FText::FromString("Power: " + FString::FromInt(Power)));
@@ -31,6 +32,23 @@ void UPDUserWidget::NativeConstruct()
 	TurretPurchasable->ParentWidget = this;
 	PowerGeneratorPurchasable->ParentWidget = this;
 
-	TurretPurchasable->OnPurchase.AddDynamic(OwningPlayer, &APDPlayer::OnTurretButtonClicked);
-	PowerGeneratorPurchasable->OnPurchase.AddDynamic(OwningPlayer, &APDPlayer::OnPowerGeneratorButtonClicked);
+	TurretPurchasable->OnPurchase.AddDynamic(this, &UPDUserWidget::OnTurretButtonClicked);
+	PowerGeneratorPurchasable->OnPurchase.AddDynamic(this, &UPDUserWidget::OnPowerGeneratorButtonClicked);
+
+	PlayButton->OnClicked.AddDynamic(this, &UPDUserWidget::OnPlayButtonClicked);
+}
+
+void UPDUserWidget::OnTurretButtonClicked()
+{
+	OwningPlayer->OnTurretButtonClicked();
+}
+
+void UPDUserWidget::OnPowerGeneratorButtonClicked()
+{
+	OwningPlayer->OnPowerGeneratorButtonClicked();
+}
+
+void UPDUserWidget::OnPlayButtonClicked()
+{
+	OwningPlayer->GetGameMode()->StartRound();
 }

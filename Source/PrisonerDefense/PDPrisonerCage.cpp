@@ -3,6 +3,8 @@
 
 #include "PDPrisonerCage.h"
 #include "PDPrisoner.h"
+#include "PrisonerDefenseGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APDPrisonerCage::APDPrisonerCage()
@@ -17,6 +19,8 @@ void APDPrisonerCage::BeginPlay()
 	Super::BeginPlay();
 	
 	SpawnTimer = FCooldownTimer(SpawnInterval);
+
+	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 // Called every frame
@@ -24,7 +28,7 @@ void APDPrisonerCage::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (PrisonersSpawned < PrisonersToSpawn)
+	if (GameMode->RoundIsRunning() && PrisonersSpawned < PrisonersToSpawn)
 	{
 		SpawnTimer.Tick(DeltaTime);
 		if (SpawnTimer.OutOfTime())

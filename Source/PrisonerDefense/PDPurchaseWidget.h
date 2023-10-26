@@ -6,6 +6,7 @@
 
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Components/PanelWidget.h"
 
 #include "Blueprint/UserWidget.h"
 #include "PDPurchaseWidget.generated.h"
@@ -34,7 +35,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 		FOnPurchaseSignature OnPurchase;
 
-	int GetPrice() const;
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		int GetPrice() const;
 
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))

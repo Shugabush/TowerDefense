@@ -5,6 +5,8 @@
 
 #include "PDPlayer.h"
 #include "PDUserWidget.h"
+#include "PrisonerDefenseGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "Components/StaticMeshComponent.h"
 
@@ -34,6 +36,8 @@ void APDPowerGenerator::BeginPlay()
 	MeshData = MeshRenderData(Mesh, "Color");
 
 	Timer = FCooldownTimer(1.0f / PowerPerSecond);
+
+	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 // Called every frame
@@ -42,7 +46,7 @@ void APDPowerGenerator::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	// If parent slot is not nullptr, then we've actually placed this power generator down
-	if (ParentSlot != nullptr)
+	if (Player->GetGameMode()->RoundIsRunning() && ParentSlot != nullptr)
 	{
 		if (Timer.OutOfTime())
 		{

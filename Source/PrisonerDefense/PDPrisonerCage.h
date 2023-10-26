@@ -27,9 +27,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Get a patrol point at the given index
-	bool TryGetPatrolPoint(int index, FVector& patrolPoint) const;
+	UFUNCTION(BlueprintCallable)
+		bool TryGetPatrolPoint(int index, FVector& patrolPoint) const;
 
-	int GetPatrolPointCount() const;
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		int GetPatrolPointCount() const;
 
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
@@ -41,12 +43,16 @@ private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		float SpawnInterval = 2;
 
+	UPROPERTY()
+		class APrisonerDefenseGameModeBase* GameMode;
+
 	FCooldownTimer SpawnTimer;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		// How many prisoners should spawn from this cage?
 		int PrisonersToSpawn = 5;
 
-	// How many prisoners have been spawned from this cage?
-	int PrisonersSpawned = 0;
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+		// How many prisoners have been spawned from this cage?
+		int PrisonersSpawned = 0;
 };

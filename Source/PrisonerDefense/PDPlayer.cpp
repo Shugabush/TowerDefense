@@ -11,6 +11,7 @@
 #include "PDHUD.h"
 #include "PDUserWidget.h"
 #include "PDPauseWidget.h"
+#include "PrisonerDefenseGameModeBase.h"
 #include "GameFramework/WorldSettings.h"
 
 #include "Camera/CameraComponent.h"
@@ -48,6 +49,8 @@ void APDPlayer::BeginPlay()
 	Widget = HUD->GetWidget<UPDUserWidget>(UPDUserWidget::StaticClass());
 
 	PlayerController->bShowMouseCursor = true;
+
+	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 void APDPlayer::OnMouseClicked()
@@ -281,6 +284,11 @@ void APDPlayer::OnPowerGeneratorButtonClicked()
 	{
 		SpawnPowerGenerator();
 	}
+}
+
+APrisonerDefenseGameModeBase* APDPlayer::GetGameMode() const
+{
+	return GameMode;
 }
 
 bool APDPlayer::HasTurret()

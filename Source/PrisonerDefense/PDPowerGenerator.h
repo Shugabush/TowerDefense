@@ -28,6 +28,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 		class UStaticMeshComponent* Mesh;
 
+	UPROPERTY()
+		class APrisonerDefenseGameModeBase* GameMode;
+
 	MeshRenderData MeshData;
 
 public:	

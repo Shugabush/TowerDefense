@@ -47,7 +47,7 @@ private:
 	bool TryGetPreviousPoint(FVector& PreviousPoint) const;
 	
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-		float MovementSpeed = 1;
+		float MovementSpeed = 100;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		float RotationSpeed = 10;
 };

@@ -26,7 +26,7 @@ public:
 		int GetPower() const;
 
 	UFUNCTION(BlueprintCallable)
-		void UpdatePower(int additionalPower);
+		void UpdatePower(const int additionalPower);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetTurretCost() const;
@@ -37,7 +37,17 @@ public:
 protected:
 	virtual void NativeConstruct() override;
 
+	UFUNCTION()
+		void OnTurretButtonClicked();
+
+	UFUNCTION()
+		void OnPowerGeneratorButtonClicked();
+
+	UFUNCTION()
+		void OnPlayButtonClicked();
+
 private:
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		UPDPurchaseWidget* TurretPurchasable;
 
@@ -46,6 +56,9 @@ private:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		UTextBlock* PowerText;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		UButton* PlayButton;
 
 	UPROPERTY()
 		APDPlayer* OwningPlayer;

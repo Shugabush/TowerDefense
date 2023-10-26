@@ -14,3 +14,13 @@ APrisonerDefenseGameModeBase::APrisonerDefenseGameModeBase()
 	HUDClass = APDHUD::StaticClass();
 }
 
+bool APrisonerDefenseGameModeBase::RoundIsRunning() const
+{
+	return PrisonersShouldSpawn;
+}
+
+void APrisonerDefenseGameModeBase::StartRound()
+{
+	PrisonersShouldSpawn = true;
+}
+
