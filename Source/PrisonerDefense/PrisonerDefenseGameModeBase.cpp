@@ -30,14 +30,14 @@ void APrisonerDefenseGameModeBase::StartRound()
 	PrisonersShouldSpawn = true;
 }
 
-FGameRound APrisonerDefenseGameModeBase::GetCurrentRound() const
+FGameRound& APrisonerDefenseGameModeBase::GetCurrentRound()
 {
 	return Rounds[RoundIndex];
 }
 
 APDPrisonerCage* APrisonerDefenseGameModeBase::GetRandomPrisonerCage() const
 {
-	int RandomIndex = FMath::RandRange(0, PrisonerCages.Num());
+	int RandomIndex = FMath::RandRange(0, PrisonerCages.Num() - 1);
 	return PrisonerCages[RandomIndex];
 }
 
@@ -56,9 +56,9 @@ void APrisonerDefenseGameModeBase::StartPlay()
 	}
 	
 	// Initialize rounds
-	for (auto Round : Rounds)
+	for (size_t i = 0; i < Rounds.Num(); i++)
 	{
-		Round.Initialize(this);
+		Rounds[i].Initialize(this);
 	}
 }
 
@@ -68,9 +68,9 @@ void APrisonerDefenseGameModeBase::Tick(float DeltaTime)
 
 	if (RoundIsRunning())
 	{
-		for (FGameRound Round : Rounds)
+		for (size_t i = 0; i < Rounds.Num(); i++)
 		{
-			Round.Tick(DeltaTime);
+			Rounds[i].Tick(DeltaTime);
 		}
 	}
 }

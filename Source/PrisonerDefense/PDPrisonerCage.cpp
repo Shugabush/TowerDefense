@@ -27,19 +27,6 @@ void APDPrisonerCage::BeginPlay()
 void APDPrisonerCage::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	/*if (GameMode->RoundIsRunning() && PrisonersSpawned < PrisonersToSpawn)
-	{
-		SpawnTimer.Tick(DeltaTime);
-		if (SpawnTimer.OutOfTime())
-		{
-			SpawnPrisoner();
-
-			PrisonersSpawned++;
-
-			SpawnTimer.Reset();
-		}
-	}*/
 }
 
 bool APDPrisonerCage::TryGetPatrolPoint(int index, FVector& patrolPoint) const

@@ -37,7 +37,7 @@ public:
 		void StartRound();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-		FGameRound GetCurrentRound() const;
+		FGameRound& GetCurrentRound();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		APDPrisonerCage* GetRandomPrisonerCage() const;

@@ -52,11 +52,7 @@ void APDPrisoner::Tick(float DeltaTime)
 		Velocity.Normalize();
 		Velocity *= MovementSpeed;
 
-		FVector dir;
-		float length;
-		Velocity.ToDirectionAndLength(dir, length);
-
-		if (dstToPosition > length * DeltaTime)
+		if (dstToPosition > 0.1f)
 		{
 			lerpedPosition = GetActorLocation() + (Velocity * DeltaTime);
 		}
