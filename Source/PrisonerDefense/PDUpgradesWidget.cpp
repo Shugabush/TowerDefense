@@ -16,3 +16,8 @@ int UPDUpgradesWidget::GetCurrentUpgradeCost() const
 	}
 	return UpgradeCosts[CurrentUpgradeIndex];
 }
+
+void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int> TargetCosts)
+{
+	UpgradeCosts = TArray<int>(TargetCosts);
+}

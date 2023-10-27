@@ -11,6 +11,11 @@
 
 #include "Kismet/KismetMathLibrary.h"
 
+int FTurretUpgrade::GetPowerCost() const
+{
+	return PowerCost;
+}
+
 // Sets default values
 APDTurret::APDTurret()
 {
@@ -43,6 +48,12 @@ void APDTurret::BeginPlay()
 	BulletSpawnTimer.Tick(BulletSpawnTimer.GetTimeLimit());
 
 	Widget->SetVisibility(false);
+
+	TArray<int> UpgradeCosts;
+	for (FTurretUpgrade Upgrade : Upgrades)
+	{
+		UpgradeCosts.Add(Upgrade.GetPowerCost());
+	}
 }
 
 // Called every frame

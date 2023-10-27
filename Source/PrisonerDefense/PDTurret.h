@@ -15,6 +15,9 @@ USTRUCT(BlueprintType)
 struct FTurretUpgrade
 {
 	GENERATED_BODY()
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		int GetPowerCost() const;
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		int PowerCost = 100;

@@ -22,6 +22,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetCurrentUpgradeCost() const;
 
+	void InitializeUpgradeCosts(const TArray<int> TargetCosts);
+
 protected:
 	virtual void NativeConstruct() override;
 	
