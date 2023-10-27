@@ -28,6 +28,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 		class UStaticMeshComponent* Mesh;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		class UWidgetComponent* Widget;
+
 	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;
 
@@ -40,6 +43,8 @@ public:
 	void BlendMeshColors(FLinearColor newColor);
 	void SetMeshColors(FLinearColor newColor);
 	void ResetMeshColors();
+
+	void OnPowerGeneratorPlaced();
 
 	UPROPERTY()
 		class APDPowerGeneratorSlot* ParentSlot;

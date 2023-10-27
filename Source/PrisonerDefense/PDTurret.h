@@ -10,6 +10,18 @@
 #include "GameFramework/Actor.h"
 #include "PDTurret.generated.h"
 
+USTRUCT(BlueprintType)
+// Turret upgrade blueprint
+struct FTurretUpgrade
+{
+	GENERATED_BODY()
+private:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		int PowerCost = 100;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		FCooldownTimer NewBulletSpawnTimer;
+};
+
 UCLASS()
 class PRISONERDEFENSE_API APDTurret : public AActor
 {
@@ -29,6 +41,9 @@ protected:
 		class UStaticMeshComponent* Mesh;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		class UWidgetComponent* Widget;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		float RotationLerpSpeed = 5;
 
 	MeshRenderData MeshData;
@@ -41,7 +56,10 @@ public:
 	void SetMeshColors(FLinearColor newColor);
 	void ResetMeshColors();
 
-	class APDTurretSlot* ParentSlot;
+	void OnTurretPlaced();
+
+	UPROPERTY()
+		class APDTurretSlot* ParentSlot;
 
 	FQuat TargetRotation;
 private:
@@ -50,4 +68,7 @@ private:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		FCooldownTimer BulletSpawnTimer;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		TArray<FTurretUpgrade> Upgrades;
 };

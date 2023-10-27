@@ -5,6 +5,8 @@
 
 void UPDUpgradesWidget::NativeConstruct()
 {
+	GEngine->AddOnScreenDebugMessage(0, 2, FColor::Blue, TEXT("Widget"));
+
 	UpgradeCostText->SetText(FText::FromString("Upgrade for " + FString::FromInt(GetCurrentUpgradeCost()) + " Power"));
 }
 

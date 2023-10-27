@@ -43,7 +43,7 @@ void APDPowerGenerator::BeginPlay()
 
 	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 
-	Widget->SetVisibility(false);
+	Widget->SetActive(false);
 }
 
 // Called every frame
@@ -84,6 +84,6 @@ void APDPowerGenerator::ResetMeshColors()
 
 void APDPowerGenerator::OnPowerGeneratorPlaced()
 {
-	Widget->SetVisibility(true);
+	Widget->SetActive(true);
 }
 

@@ -151,6 +151,7 @@ void APDPlayer::PlaceTurret()
 
 	SelectedTurretSlot->Turret = ActiveTurret;
 	ActiveTurret->ParentSlot = SelectedTurretSlot;
+	ActiveTurret->OnTurretPlaced();
 
 	ActiveObject = nullptr;
 	ActiveTurret = nullptr;
@@ -226,6 +227,7 @@ void APDPlayer::PlacePowerGenerator()
 	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);
 
 	ActivePowerGenerator->ParentSlot = SelectedPowerGeneratorSlot;
+	ActivePowerGenerator->OnPowerGeneratorPlaced();
 
 	ActiveObject = nullptr;
 	ActivePowerGenerator = nullptr;

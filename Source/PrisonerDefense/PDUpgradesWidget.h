@@ -18,6 +18,10 @@ class PRISONERDEFENSE_API UPDUpgradesWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		int GetCurrentUpgradeCost() const;
+
 protected:
 	virtual void NativeConstruct() override;
 	
@@ -28,4 +32,6 @@ private:
 		UTextBlock* UpgradeCostText;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		TArray<int> UpgradeCosts;
+
+	int CurrentUpgradeIndex = 0;
 };
