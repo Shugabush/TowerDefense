@@ -45,6 +45,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		class UWidgetComponent* Widget;
 
+	// Widget property as upgrades widget
+	UPROPERTY()
+		class UPDUpgradesWidget* UpgradesWidget;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		float RotationLerpSpeed = 5;
 

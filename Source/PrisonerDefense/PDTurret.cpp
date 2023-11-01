@@ -5,6 +5,7 @@
 #include "PDTurretSlot.h"
 #include "PDPrisoner.h"
 #include "PDBullet.h"
+#include "PDUpgradesWidget.h"
 
 #include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -41,6 +42,8 @@ UStaticMeshComponent* APDTurret::GetMesh()
 void APDTurret::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UpgradesWidget = Cast<UPDUpgradesWidget>(Widget);
 	
 	MeshData = MeshRenderData(Mesh, "Color");
 
