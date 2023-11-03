@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 
 #include "CooldownTimer.h"
-#include "MeshRenderData.h"
+#include "PDTower.h"
 
 #include "GameFramework/Actor.h"
 #include "PDPowerGenerator.generated.h"
 
 UCLASS()
-class PRISONERDEFENSE_API APDPowerGenerator : public AActor
+class PRISONERDEFENSE_API APDPowerGenerator : public APDTower
 {
 	GENERATED_BODY()
 	
@@ -25,18 +25,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
-		class UStaticMeshComponent* Mesh;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		class UWidgetComponent* Widget;
-
-	UPROPERTY()
-		class APrisonerDefenseGameModeBase* GameMode;
-
-	MeshRenderData MeshData;
-
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -46,8 +35,10 @@ public:
 
 	void OnPowerGeneratorPlaced();
 
+	virtual void Upgrade() override;
+
 	UPROPERTY()
-		class APDPowerGeneratorSlot* ParentSlot;
+		class APDTowerSlot* ParentSlot;
 
 	UPROPERTY()
 		class APDPlayer* Player;

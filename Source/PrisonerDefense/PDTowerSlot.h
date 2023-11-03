@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 
 #include "GameFramework/Actor.h"
-#include "PDPowerGeneratorSlot.generated.h"
+#include "PDTowerSlot.generated.h"
 
 UCLASS()
-class PRISONERDEFENSE_API APDPowerGeneratorSlot : public AActor
+class PRISONERDEFENSE_API APDTowerSlot : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	APDPowerGeneratorSlot();
+	APDTowerSlot();
 
 protected:
 	// Called when the game starts or when spawned
@@ -28,5 +28,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY()
-		class APDPowerGenerator* PowerGenerator;
+		class APDTower* Tower;
 };

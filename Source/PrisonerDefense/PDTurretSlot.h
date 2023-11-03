@@ -26,26 +26,11 @@ protected:
 		UBoxComponent* Box;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
-		UBoxComponent* VolumeTrigger;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 		UStaticMeshComponent* Mesh;
-
-	UFUNCTION()
-		virtual void OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-		virtual void OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	class APDTurret* Turret;
-
-	UFUNCTION()
-		class APDPrisoner* GetClosestTarget() const;
-
-private:
-	TArray<APDPrisoner*> LookAtTargets;
+	UPROPERTY()
+		class APDTurret* Turret;
 };

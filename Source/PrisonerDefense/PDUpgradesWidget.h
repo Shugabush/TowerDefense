@@ -35,5 +35,14 @@ private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		TArray<int> UpgradeCosts;
 
+	UPROPERTY()
+		class UPDUserWidget* PlayerWidget;
+
+	UFUNCTION()
+		void OnUpgradeButtonClicked();
+
 	int CurrentUpgradeIndex = 0;
+
+	UFUNCTION()
+		bool CanAffordNextUpgrade() const;
 };

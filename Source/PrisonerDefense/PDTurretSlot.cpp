@@ -14,15 +14,11 @@ APDTurretSlot::APDTurretSlot()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
-	VolumeTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("VolumeTrigger"));
-
-	VolumeTrigger->OnComponentBeginOverlap.AddDynamic(this, &APDTurretSlot::OnVolumeTriggerBeginOverlap);
-	VolumeTrigger->OnComponentEndOverlap.AddDynamic(this, &APDTurretSlot::OnVolumeTriggerEndOverlap);
+	
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 	Mesh->AttachTo(Box);
-	VolumeTrigger->AttachTo(Box);
 
 	FVector boxExtent = Box->GetUnscaledBoxExtent();
 
@@ -41,56 +37,10 @@ void APDTurretSlot::BeginPlay()
 	
 }
 
-void APDTurretSlot::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	APDPrisoner* prisoner = Cast<APDPrisoner>(OtherActor);
-	if (prisoner != nullptr)
-	{
-		LookAtTargets.Add(prisoner);
-	}
-}
-
-void APDTurretSlot::OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	APDPrisoner* prisoner = Cast<APDPrisoner>(OtherActor);
-	if (prisoner != nullptr)
-	{
-		LookAtTargets.Remove(prisoner);
-	}
-}
-
 // Called every frame
 void APDTurretSlot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-}
-
-APDPrisoner* APDTurretSlot::GetClosestTarget() const
-{
-	float closestDst = 10000;
-	int targetIndex = -1;
-
-	if (Turret == nullptr) { return nullptr; }
-
-	for (size_t i = 0; i < LookAtTargets.Num(); i++)
-	{
-		APDPrisoner* target = LookAtTargets[i];
-
-		float dstToTarget = FVector::Dist(Turret->GetActorLocation(), target->GetActorLocation());
-		if (dstToTarget < closestDst)
-		{
-			closestDst = dstToTarget;
-			targetIndex = i;
-		}
-	}
-	if (LookAtTargets.IsValidIndex(targetIndex))
-	{
-		return LookAtTargets[targetIndex];
-	}
-	else
-	{
-		return nullptr;
-	}
 }
 

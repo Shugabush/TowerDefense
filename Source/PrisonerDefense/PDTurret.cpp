@@ -7,27 +7,22 @@
 #include "PDBullet.h"
 #include "PDUpgradesWidget.h"
 
+#include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
 
 #include "Kismet/KismetMathLibrary.h"
 
-int FTurretUpgrade::GetPowerCost() const
-{
-	return PowerCost;
-}
 
 // Sets default values
-APDTurret::APDTurret()
+APDTurret::APDTurret() : APDTower()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-
-	Mesh->AttachTo(RootComponent);
+	RootComponent = Mesh;
 
 	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("UpgradesWidget"));
 	Widget->AttachTo(RootComponent);
@@ -43,20 +38,8 @@ void APDTurret::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UpgradesWidget = Cast<UPDUpgradesWidget>(Widget);
-	
-	MeshData = MeshRenderData(Mesh, "Color");
-
 	// Make the first bullet spawn immediately (once this turret has a prisoner to fire at)
 	BulletSpawnTimer.Tick(BulletSpawnTimer.GetTimeLimit());
-
-	Widget->SetVisibility(false);
-
-	TArray<int> UpgradeCosts;
-	for (FTurretUpgrade Upgrade : Upgrades)
-	{
-		UpgradeCosts.Add(Upgrade.GetPowerCost());
-	}
 }
 
 // Called every frame
@@ -68,7 +51,7 @@ void APDTurret::Tick(float DeltaTime)
 	if (ParentSlot != nullptr)
 	{
 		// Look at the closest object in the look at target list
-		APDPrisoner* LookAtTarget = ParentSlot->GetClosestTarget();
+		APDPrisoner* LookAtTarget = GetClosestTarget();
 
 		if (LookAtTarget != nullptr)
 		{
@@ -116,4 +99,53 @@ void APDTurret::ResetMeshColors()
 void APDTurret::OnTurretPlaced()
 {
 	Widget->SetVisibility(true);
+}
+
+void APDTurret::Upgrade()
+{
+
+}
+
+APDPrisoner* APDTurret::GetClosestTarget() const
+{
+	float closestDst = 10000;
+	int targetIndex = -1;
+
+	for (size_t i = 0; i < LookAtTargets.Num(); i++)
+	{
+		APDPrisoner* target = LookAtTargets[i];
+
+		float dstToTarget = FVector::Dist(GetActorLocation(), target->GetActorLocation());
+		if (dstToTarget < closestDst)
+		{
+			closestDst = dstToTarget;
+			targetIndex = i;
+		}
+	}
+	if (LookAtTargets.IsValidIndex(targetIndex))
+	{
+		return LookAtTargets[targetIndex];
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+void APDTurret::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	APDPrisoner* prisoner = Cast<APDPrisoner>(OtherActor);
+	if (prisoner != nullptr)
+	{
+		LookAtTargets.Add(prisoner);
+	}
+}
+
+void APDTurret::OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	APDPrisoner* prisoner = Cast<APDPrisoner>(OtherActor);
+	if (prisoner != nullptr)
+	{
+		LookAtTargets.Remove(prisoner);
+	}
 }

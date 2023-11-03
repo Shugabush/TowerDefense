@@ -4,10 +4,11 @@
 #include "PDPlayer.h"
 
 #include "PDTurret.h"
+#include "PDTower.h"
 #include "PDPowerGenerator.h"
 #include "PDPrisonerCage.h"
 #include "PDTurretSlot.h"
-#include "PDPowerGeneratorSlot.h"
+#include "PDTowerSlot.h"
 #include "PDHUD.h"
 #include "PDUserWidget.h"
 #include "PDPauseWidget.h"
@@ -116,10 +117,10 @@ void APDPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void APDPlayer::ClearTurret()
 {
-	if (ActiveObject != nullptr)
+	if (ActiveTower != nullptr)
 	{
-		ActiveObject->Destroy();
-		ActiveObject = nullptr;
+		ActiveTower->Destroy();
+		ActiveTower = nullptr;
 		ActiveTurret = nullptr;
 		SelectedTurretSlot = nullptr;
 	}
@@ -134,10 +135,10 @@ void APDPlayer::SpawnTurret()
 	}
 
 	// Only spawn a new turret if ActiveTurret doesn't exist and the game isn't paused
-	if (ActiveObject == nullptr && !PlayerController->IsPaused())
+	if (ActiveTower == nullptr && !PlayerController->IsPaused())
 	{
 		ActiveTurret = GetWorld()->SpawnActor<APDTurret>(TurretReference);
-		ActiveObject = ActiveTurret;
+		ActiveTower = ActiveTurret;
 		ActiveMesh = ActiveTurret->GetMesh();
 	}
 }
@@ -153,7 +154,7 @@ void APDPlayer::PlaceTurret()
 	ActiveTurret->ParentSlot = SelectedTurretSlot;
 	ActiveTurret->OnTurretPlaced();
 
-	ActiveObject = nullptr;
+	ActiveTower = nullptr;
 	ActiveTurret = nullptr;
 	SelectedTurretSlot = nullptr;
 
@@ -176,7 +177,7 @@ void APDPlayer::UpdateTurret()
 
 	if (resultActor != nullptr)
 	{
-		ActiveObject->SetActorLocation(result.ImpactPoint);
+		ActiveTower->SetActorLocation(result.ImpactPoint);
 
 		SelectedTurretSlot = Cast<APDTurretSlot>(resultActor);
 	}
@@ -194,8 +195,8 @@ void APDPlayer::ClearPowerGenerator()
 {
 	if (HasPowerGenerator())
 	{
-		ActiveObject->Destroy();
-		ActiveObject = nullptr;
+		ActiveTower->Destroy();
+		ActiveTower = nullptr;
 		ActivePowerGenerator = nullptr;
 		SelectedPowerGeneratorSlot = nullptr;
 	}
@@ -210,11 +211,11 @@ void APDPlayer::SpawnPowerGenerator()
 	}
 
 	// Only spawn a new power generator if ActivePowerGenerator doesn't exist and the game isn't paused
-	if (ActiveObject == nullptr && !PlayerController->IsPaused())
+	if (ActiveTower == nullptr && !PlayerController->IsPaused())
 	{
 		ActivePowerGenerator = GetWorld()->SpawnActor<APDPowerGenerator>(PowerGeneratorReference);
 		ActivePowerGenerator->Player = this;
-		ActiveObject = ActivePowerGenerator;
+		ActiveTower = ActivePowerGenerator;
 		ActiveMesh = ActivePowerGenerator->GetMesh();
 	}
 }
@@ -229,7 +230,7 @@ void APDPlayer::PlacePowerGenerator()
 	ActivePowerGenerator->ParentSlot = SelectedPowerGeneratorSlot;
 	ActivePowerGenerator->OnPowerGeneratorPlaced();
 
-	ActiveObject = nullptr;
+	ActiveTower = nullptr;
 	ActivePowerGenerator = nullptr;
 
 	Widget->UpdatePower(-Widget->GetPowerGeneratorCost());
@@ -251,9 +252,9 @@ void APDPlayer::UpdatePowerGenerator()
 
 	if (resultActor != nullptr)
 	{
-		ActiveObject->SetActorLocation(result.ImpactPoint);
+		ActiveTower->SetActorLocation(result.ImpactPoint);
 
-		SelectedPowerGeneratorSlot = Cast<APDPowerGeneratorSlot>(resultActor);
+		SelectedPowerGeneratorSlot = Cast<APDTowerSlot>(resultActor);
 	}
 	else
 	{
@@ -296,11 +297,11 @@ APrisonerDefenseGameModeBase* APDPlayer::GetGameMode() const
 
 bool APDPlayer::HasTurret()
 {
-	if (ActiveObject == nullptr) { return false; }
+	if (ActiveTower == nullptr) { return false; }
 
 	if (ActiveTurret == nullptr)
 	{
-		ActiveTurret = Cast<APDTurret>(ActiveObject);
+		ActiveTurret = Cast<APDTurret>(ActiveTower);
 	}
 
 	return ActiveTurret != nullptr;
@@ -308,11 +309,11 @@ bool APDPlayer::HasTurret()
 
 bool APDPlayer::HasPowerGenerator()
 {
-	if (ActiveObject == nullptr) { return false; }
+	if (ActiveTower == nullptr) { return false; }
 
 	if (ActivePowerGenerator == nullptr)
 	{
-		ActivePowerGenerator = Cast<APDPowerGenerator>(ActiveObject);
+		ActivePowerGenerator = Cast<APDPowerGenerator>(ActiveTower);
 	}
 
 	return ActivePowerGenerator != nullptr;

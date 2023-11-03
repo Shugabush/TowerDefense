@@ -12,7 +12,7 @@
 #include "Components/WidgetComponent.h"
 
 // Sets default values
-APDPowerGenerator::APDPowerGenerator()
+APDPowerGenerator::APDPowerGenerator() : APDTower()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -41,9 +41,6 @@ void APDPowerGenerator::BeginPlay()
 
 	Timer = FCooldownTimer(1.0f / PowerPerSecond);
 
-	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
-
-	Widget->SetVisibility(false);
 }
 
 // Called every frame
@@ -85,5 +82,10 @@ void APDPowerGenerator::ResetMeshColors()
 void APDPowerGenerator::OnPowerGeneratorPlaced()
 {
 	Widget->SetVisibility(true);
+}
+
+void APDPowerGenerator::Upgrade()
+{
+
 }
 

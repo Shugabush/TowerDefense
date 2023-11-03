@@ -4,28 +4,24 @@
 
 #include "CoreMinimal.h"
 
-#include "MeshRenderData.h"
 #include "CooldownTimer.h"
+#include "PDTower.h"
 
 #include "GameFramework/Actor.h"
 #include "PDTurret.generated.h"
 
 USTRUCT(BlueprintType)
 // Turret upgrade blueprint
-struct FTurretUpgrade
+struct FTurretUpgrade : public FTowerUpgrade
 {
 	GENERATED_BODY()
-public:
-		int GetPowerCost() const;
 private:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		int PowerCost = 100;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		FCooldownTimer NewBulletSpawnTimer;
 };
 
 UCLASS()
-class PRISONERDEFENSE_API APDTurret : public AActor
+class PRISONERDEFENSE_API APDTurret : public APDTower
 {
 	GENERATED_BODY()
 	
@@ -40,20 +36,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		class UStaticMeshComponent* Mesh;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		class UWidgetComponent* Widget;
-
-	// Widget property as upgrades widget
-	UPROPERTY()
-		class UPDUpgradesWidget* UpgradesWidget;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		float RotationLerpSpeed = 5;
-
-	MeshRenderData MeshData;
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -64,17 +47,28 @@ public:
 
 	void OnTurretPlaced();
 
+	virtual void Upgrade() override;
+
 	UPROPERTY()
 		class APDTurretSlot* ParentSlot;
 
 	FQuat TargetRotation;
+
+	virtual void OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
+
+	virtual void OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+
 private:
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		TSubclassOf<class APDBullet> BulletBlueprint;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		FCooldownTimer BulletSpawnTimer;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		TArray<FTurretUpgrade> Upgrades;
+	UPROPERTY()
+		TArray<APDPrisoner*> LookAtTargets;
+
+	UFUNCTION()
+		class APDPrisoner* GetClosestTarget() const;
 };

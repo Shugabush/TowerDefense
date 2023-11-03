@@ -28,13 +28,20 @@ private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		TArray<FGameRound> Rounds;
 
-	TArray<class APDPrisonerCage*> PrisonerCages;
+	UPROPERTY()
+		TArray<class APDPrisonerCage*> PrisonerCages;
 
 	int RoundIndex = 0;
+
+	UPROPERTY()
+		class APDPlayer* Player;
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		bool RoundIsRunning() const;
+
+	UFUNCTION()
+		class APDPlayer* GetPlayer() const;
 
 	FOnRoundChangedSignature OnRoundChanged;
 

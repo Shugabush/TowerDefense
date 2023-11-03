@@ -7,6 +7,7 @@
 #include "PDHUD.h"
 #include "Round.h"
 #include "PDPrisonerCage.h"
+#include "PDPlayer.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "UObject/ConstructorHelpers.h"
@@ -23,6 +24,11 @@ APrisonerDefenseGameModeBase::APrisonerDefenseGameModeBase()
 bool APrisonerDefenseGameModeBase::RoundIsRunning() const
 {
 	return PrisonersShouldSpawn;
+}
+
+APDPlayer* APrisonerDefenseGameModeBase::GetPlayer() const
+{
+	return Player;
 }
 
 void APrisonerDefenseGameModeBase::StartRound()
@@ -60,6 +66,8 @@ void APrisonerDefenseGameModeBase::StartPlay()
 	{
 		Rounds[i].Initialize(this);
 	}
+
+	Player = Cast<APDPlayer>(DefaultPawnClass);
 }
 
 void APrisonerDefenseGameModeBase::Tick(float DeltaTime)

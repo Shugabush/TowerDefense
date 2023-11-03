@@ -75,7 +75,7 @@ private:
 		class APDPowerGenerator* ActivePowerGenerator;
 
 	UPROPERTY()
-		class AActor* ActiveObject;
+		class APDTower* ActiveTower;
 
 	UPROPERTY()
 		class UStaticMeshComponent* ActiveMesh;
@@ -84,7 +84,7 @@ private:
 		class APDTurretSlot* SelectedTurretSlot;
 
 	UPROPERTY()
-		class APDPowerGeneratorSlot* SelectedPowerGeneratorSlot;
+		class APDTowerSlot* SelectedPowerGeneratorSlot;
 
 	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;

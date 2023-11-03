@@ -2,10 +2,16 @@
 
 
 #include "PDUpgradesWidget.h"
+#include "PDUserWidget.h"
+#include "PDPlayer.h"
+#include "CustomUtils.h"
 
 void UPDUpgradesWidget::NativeConstruct()
 {
 	UpgradeCostText->SetText(FText::FromString("Upgrade for " + FString::FromInt(GetCurrentUpgradeCost()) + " Power"));
+	UpgradeButton->OnClicked.AddDynamic(this, &UPDUpgradesWidget::OnUpgradeButtonClicked);
+
+	PlayerWidget = UCustomUtils::GetWorldPlayer(GetWorld(), 0)->GetWidget();
 }
 
 int UPDUpgradesWidget::GetCurrentUpgradeCost() const
@@ -20,4 +26,18 @@ int UPDUpgradesWidget::GetCurrentUpgradeCost() const
 void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int> TargetCosts)
 {
 	UpgradeCosts = TArray<int>(TargetCosts);
+}
+
+void UPDUpgradesWidget::OnUpgradeButtonClicked()
+{
+
+}
+
+bool UPDUpgradesWidget::CanAffordNextUpgrade() const
+{
+	if (!UpgradeCosts.IsValidIndex(CurrentUpgradeIndex))
+	{
+		return false;
+	}
+	return PlayerWidget->GetPower() > GetCurrentUpgradeCost();
 }
