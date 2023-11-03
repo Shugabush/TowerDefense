@@ -49,10 +49,11 @@ int APDPrisonerCage::GetPatrolPointCount() const
 	return PatrolPoints.Num();
 }
 
-void APDPrisonerCage::SpawnPrisoner()
+APDPrisoner* APDPrisonerCage::SpawnPrisoner()
 {
-	APDPrisoner* prisoner = GetWorld()->SpawnActor<APDPrisoner>(PrisonerReference);
-	prisoner->SetActorLocation(GetActorLocation());
-	prisoner->Cage = this;
+	APDPrisoner* Prisoner = GetWorld()->SpawnActor<APDPrisoner>(PrisonerReference);
+	Prisoner->SetActorLocation(GetActorLocation());
+	Prisoner->Cage = this;
+	return Prisoner;
 }
 

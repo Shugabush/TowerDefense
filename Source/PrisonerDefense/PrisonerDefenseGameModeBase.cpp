@@ -43,7 +43,11 @@ void APrisonerDefenseGameModeBase::StartRound()
 void APrisonerDefenseGameModeBase::EndRound()
 {
 	PrisonersShouldSpawn = false;
-	Widget->UpdatePower(GetCurrentRound().GetPowerReward());
+	FGameRound Round;
+	if (GetCurrentRound(Round))
+	{
+		Widget->UpdatePower(Round.GetPowerReward());
+	}
 	RoundIndex++;
 }
 
@@ -52,9 +56,11 @@ int APrisonerDefenseGameModeBase::GetCurrentRoundNumber() const
 	return RoundIndex + 1;
 }
 
-FGameRound& APrisonerDefenseGameModeBase::GetCurrentRound()
+bool APrisonerDefenseGameModeBase::GetCurrentRound(FGameRound& Round)
 {
-	return Rounds[RoundIndex];
+	if (!Rounds.IsValidIndex(RoundIndex)) { return false; }
+	Round = Rounds[RoundIndex];
+	return true;
 }
 
 APDPrisonerCage* APrisonerDefenseGameModeBase::GetRandomPrisonerCage() const
@@ -90,16 +96,16 @@ void APrisonerDefenseGameModeBase::StartPlay()
 void APrisonerDefenseGameModeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	/*if (Widget == nullptr)
+	if (Widget == nullptr && Player != nullptr)
 	{
 		Widget = Player->GetWidget();
-	}*/
+	}
 
 	if (RoundIsRunning())
 	{
-		for (size_t i = 0; i < Rounds.Num(); i++)
+		if (Rounds.IsValidIndex(RoundIndex))
 		{
-			Rounds[i].Tick(DeltaTime);
+			Rounds[RoundIndex].Tick(DeltaTime);
 		}
 	}
 }

@@ -132,8 +132,8 @@ void APDPlayer::SpawnTurret()
 
 void APDPlayer::PlaceTower()
 {
-	// Can't place the tower if it doesn't exist
-	if (ActiveTower == nullptr) { return; }
+	// Can't place the tower if it doesn't exist or the mouse isn't hovering over a tower slot
+	if (ActiveTower == nullptr || SelectedTowerSlot == nullptr) { return; }
 
 	if (HasTurret())
 	{

@@ -33,6 +33,8 @@ public:
 	UPROPERTY()
 		class APDPrisonerCage* Cage;
 
+	bool Defeated = false;
+
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		class UCapsuleComponent* Capsule;

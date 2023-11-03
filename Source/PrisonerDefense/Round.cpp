@@ -4,6 +4,7 @@
 #include "Round.h"
 #include "PrisonerDefenseGameModeBase.h"
 #include "PDPrisonerCage.h"
+#include "PDPrisoner.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -27,18 +28,31 @@ void FGameRound::Tick(float DeltaTime)
 		if (SpawnTimer.OutOfTime())
 		{
 			// Spawn a new prisoner
-			GameMode->GetRandomPrisonerCage()->SpawnPrisoner();
+			APDPrisoner* Prisoner = GameMode->GetRandomPrisonerCage()->SpawnPrisoner();
 			PrisonersSpawned++;
 			SpawnTimer.Reset();
+			Prisoners.Add(Prisoner);
 		}
 		else
 		{
 			SpawnTimer.Tick(DeltaTime);
 		}
 	}
-	else
+	else if (AllPrisonersDefeated())
 	{
 		// The round is complete
 		GameMode->EndRound();
 	}
+}
+
+bool FGameRound::AllPrisonersDefeated() const
+{
+	for (auto Prisoner : Prisoners)
+	{
+		if (Prisoner != nullptr && !Prisoner->Defeated)
+		{
+			return false;
+		}
+	}
+	return true;
 }

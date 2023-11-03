@@ -34,7 +34,7 @@ public:
 		int GetPatrolPointCount() const;
 
 	UFUNCTION(BlueprintCallable)
-		void SpawnPrisoner();
+		class APDPrisoner* SpawnPrisoner();
 
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))

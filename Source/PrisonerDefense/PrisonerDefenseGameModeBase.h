@@ -58,7 +58,7 @@ public:
 		int GetCurrentRoundNumber() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-		FGameRound& GetCurrentRound();
+		bool GetCurrentRound(FGameRound& Round);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		APDPrisonerCage* GetRandomPrisonerCage() const;

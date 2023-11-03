@@ -42,6 +42,7 @@ void APDBullet::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	APDPrisoner* prisoner = Cast<APDPrisoner>(OtherActor);
 	if (prisoner != nullptr)
 	{
+		prisoner->Defeated = true;
 		prisoner->Destroy();
 		Destroy();
 	}

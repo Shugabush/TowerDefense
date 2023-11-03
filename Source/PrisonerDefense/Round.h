@@ -20,12 +20,11 @@ struct PRISONERDEFENSE_API FGameRound
 public:
 	FGameRound() = default;
 
-	void Tick(float DeltaTime);
-
 	void Initialize(class APrisonerDefenseGameModeBase* GameMode);
 
 	int GetPowerReward() const;
 
+	void Tick(float DeltaTime);
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		int PrisonersToSpawn = 5;
@@ -38,8 +37,13 @@ private:
 	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;
 
+	UPROPERTY()
+		TArray<class APDPrisoner*> Prisoners;
+
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		int PowerReward = 100;
+
+	bool AllPrisonersDefeated() const;
 
 	FCooldownTimer SpawnTimer;
 };
