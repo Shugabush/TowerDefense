@@ -55,33 +55,33 @@ void APDTurret::Tick(float DeltaTime)
 	if (ParentSlot != nullptr)
 	{
 		// Look at the closest object in the look at target list
-APDPrisoner* LookAtTarget = GetClosestTarget();
+		APDPrisoner* LookAtTarget = GetClosestTarget();
 
-if (LookAtTarget != nullptr)
-{
-	if (BulletSpawnTimer.OutOfTime())
-	{
-		// Spawn a new bullet
-		APDBullet* newBullet = GetWorld()->SpawnActor<APDBullet>(BulletBlueprint, FTransform(GetActorLocation()));
-		if (newBullet != nullptr)
+		if (LookAtTarget != nullptr)
 		{
-			newBullet->TargetPrisoner = LookAtTarget;
+			if (BulletSpawnTimer.OutOfTime())
+			{
+				// Spawn a new bullet
+				APDBullet* newBullet = GetWorld()->SpawnActor<APDBullet>(BulletBlueprint, FTransform(GetActorLocation()));
+				if (newBullet != nullptr)
+				{
+					newBullet->TargetPrisoner = LookAtTarget;
+				}
+
+				BulletSpawnTimer.Reset();
+			}
+			else
+			{
+				BulletSpawnTimer.Tick(DeltaTime);
+			}
+
+			TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LookAtTarget->GetActorLocation()).Quaternion();
+
+			TargetRotation.X = 0;
+			TargetRotation.Y = 0;
+
+			SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
 		}
-
-		BulletSpawnTimer.Reset();
-	}
-	else
-	{
-		BulletSpawnTimer.Tick(DeltaTime);
-	}
-
-	TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LookAtTarget->GetActorLocation()).Quaternion();
-
-	TargetRotation.X = 0;
-	TargetRotation.Y = 0;
-
-	SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
-}
 	}
 }
 

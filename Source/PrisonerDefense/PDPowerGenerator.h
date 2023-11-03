@@ -51,6 +51,11 @@ public:
 private:
 	FCooldownTimer Timer;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		TArray<FPowerGeneratorUpgrade> Upgrades;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 		int PowerPerSecond = 2;
+
+	bool TryGetCurrentUpgrade(FPowerGeneratorUpgrade& Upgrade) const;
 };

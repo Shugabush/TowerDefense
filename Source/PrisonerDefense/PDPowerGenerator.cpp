@@ -5,6 +5,7 @@
 
 #include "PDPlayer.h"
 #include "PDUserWidget.h"
+#include "PDUpgradesWidget.h"
 #include "PrisonerDefenseGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -41,6 +42,12 @@ void APDPowerGenerator::BeginPlay()
 
 	Timer = FCooldownTimer(1.0f / PowerPerSecond);
 
+	TArray<int> UpgradeCosts;
+	for (FPowerGeneratorUpgrade Upgrade : Upgrades)
+	{
+		UpgradeCosts.Add(Upgrade.GetPowerCost());
+	}
+	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
 }
 
 // Called every frame
@@ -72,5 +79,13 @@ void APDPowerGenerator::OnTowerPlaced()
 void APDPowerGenerator::Upgrade()
 {
 
+}
+
+bool APDPowerGenerator::TryGetCurrentUpgrade(FPowerGeneratorUpgrade& Upgrade) const
+{
+	if (!Upgrades.IsValidIndex(CurrentUpgradeIndex)) { return false; }
+	
+	Upgrade = Upgrades[CurrentUpgradeIndex];
+	return true;
 }
 
