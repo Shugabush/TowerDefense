@@ -83,7 +83,7 @@ void APrisonerDefenseGameModeBase::StartPlay()
 		Rounds[i].Initialize(this);
 	}
 
-	Player = UCustomUtils::GetWorldPlayer();
+	Player = UCustomUtils::GetWorldPlayer(GetWorld(), 0);
 	HUD = Cast<APDHUD>(HUDClass->GetDefaultObject());
 }
 
