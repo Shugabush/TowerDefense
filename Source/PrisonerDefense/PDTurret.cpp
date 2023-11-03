@@ -99,6 +99,7 @@ void APDTurret::ResetMeshColors()
 
 void APDTurret::OnTowerPlaced()
 {
+	Super::OnTowerPlaced();
 	Widget->SetVisibility(true);
 }
 

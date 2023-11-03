@@ -34,6 +34,7 @@ APDTower::APDTower()
 	VolumeTrigger->OnComponentEndOverlap.AddDynamic(this, &APDTower::OnVolumeTriggerEndOverlap);
 
 	VolumeTrigger->AttachTo(RootComponent);
+
 }
 
 // Called when the game starts or when spawned

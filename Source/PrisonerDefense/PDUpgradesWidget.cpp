@@ -15,6 +15,13 @@ void UPDUpgradesWidget::NativeConstruct()
 	PlayerWidget = UCustomUtils::GetWorldPlayer(GetWorld(), 0)->GetWidget();
 }
 
+void UPDUpgradesWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	
+	UpgradeButton->SetIsEnabled(CanAffordNextUpgrade());
+}
+
 int UPDUpgradesWidget::GetCurrentUpgradeCost() const
 {
 	if (!UpgradeCosts.IsValidIndex(CurrentUpgradeIndex))
