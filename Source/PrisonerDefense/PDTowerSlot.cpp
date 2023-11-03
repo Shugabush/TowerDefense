@@ -17,6 +17,11 @@ APDTowerSlot::APDTowerSlot()
 	RootComponent = Mesh;
 }
 
+UStaticMeshComponent* APDTowerSlot::GetMesh() const
+{
+	return Mesh;
+}
+
 // Called when the game starts or when spawned
 void APDTowerSlot::BeginPlay()
 {

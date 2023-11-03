@@ -10,6 +10,21 @@
 #include "GameFramework/Actor.h"
 #include "PDPowerGenerator.generated.h"
 
+USTRUCT(BlueprintType)
+// Power Generator upgrade blueprint
+struct FPowerGeneratorUpgrade
+{
+	GENERATED_BODY()
+public:
+	int GetPowerCost() const;
+	int GetNewPowerPerSecond() const;
+private:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		int PowerCost = 100;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		int NewPowerPerSecond;
+};
+
 UCLASS()
 class PRISONERDEFENSE_API APDPowerGenerator : public APDTower
 {
@@ -29,19 +44,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void BlendMeshColors(FLinearColor newColor);
-	void SetMeshColors(FLinearColor newColor);
-	void ResetMeshColors();
-
-	void OnPowerGeneratorPlaced();
+	virtual void OnTowerPlaced() override;
 
 	virtual void Upgrade() override;
-
-	UPROPERTY()
-		class APDTowerSlot* ParentSlot;
-
-	UPROPERTY()
-		class APDPlayer* Player;
 	
 private:
 	FCooldownTimer Timer;

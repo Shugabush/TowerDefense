@@ -42,19 +42,16 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		class APrisonerDefenseGameModeBase* GetGameMode() const;
 
-	bool HasTurret();
-	bool HasPowerGenerator();
+	bool HasTurret() const;
+	bool HasPowerGenerator() const;
 
 private:
-	void ClearTurret();
-	void SpawnTurret();
-	void PlaceTurret();
-	void UpdateTurret();
+	void ClearTower();
+	void PlaceTower();
+	void UpdateTower();
 
-	void ClearPowerGenerator();
+	void SpawnTurret();
 	void SpawnPowerGenerator();
-	void PlacePowerGenerator();
-	void UpdatePowerGenerator();
 
 	UPROPERTY()
 		class UCameraComponent* Camera;
@@ -69,22 +66,13 @@ private:
 		TSubclassOf<class APDPowerGenerator> PowerGeneratorReference;
 
 	UPROPERTY()
-		class APDTurret* ActiveTurret;
-
-	UPROPERTY()
-		class APDPowerGenerator* ActivePowerGenerator;
-
-	UPROPERTY()
 		class APDTower* ActiveTower;
 
 	UPROPERTY()
 		class UStaticMeshComponent* ActiveMesh;
 
 	UPROPERTY()
-		class APDTurretSlot* SelectedTurretSlot;
-
-	UPROPERTY()
-		class APDTowerSlot* SelectedPowerGeneratorSlot;
+		class APDTowerSlot* SelectedTowerSlot;
 
 	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;

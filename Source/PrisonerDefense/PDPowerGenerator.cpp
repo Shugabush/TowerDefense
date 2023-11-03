@@ -11,20 +11,22 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
 
+int  FPowerGeneratorUpgrade::GetPowerCost() const
+{
+	return PowerCost;
+}
+
+int  FPowerGeneratorUpgrade::GetNewPowerPerSecond() const
+{
+	return NewPowerPerSecond;
+}
+
+
 // Sets default values
 APDPowerGenerator::APDPowerGenerator() : APDTower()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-
-	Mesh->AttachTo(RootComponent);
-
-	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("UpgradesWidget"));
-	Widget->AttachTo(RootComponent);
 }
 
 UStaticMeshComponent* APDPowerGenerator::GetMesh() const
@@ -36,8 +38,6 @@ UStaticMeshComponent* APDPowerGenerator::GetMesh() const
 void APDPowerGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-
-	MeshData = MeshRenderData(Mesh, "Color");
 
 	Timer = FCooldownTimer(1.0f / PowerPerSecond);
 
@@ -64,22 +64,7 @@ void APDPowerGenerator::Tick(float DeltaTime)
 	}
 }
 
-void APDPowerGenerator::BlendMeshColors(FLinearColor newColor)
-{
-	MeshData.BlendColors(newColor);
-}
-
-void APDPowerGenerator::SetMeshColors(FLinearColor newColor)
-{
-	MeshData.SetColors(newColor);
-}
-
-void APDPowerGenerator::ResetMeshColors()
-{
-	MeshData.ResetColors();
-}
-
-void APDPowerGenerator::OnPowerGeneratorPlaced()
+void APDPowerGenerator::OnTowerPlaced()
 {
 	Widget->SetVisibility(true);
 }

@@ -56,14 +56,7 @@ void APDPlayer::BeginPlay()
 
 void APDPlayer::OnMouseClicked()
 {
-	if (SelectedTurretSlot != nullptr)
-	{
-		PlaceTurret();
-	}
-	else if (SelectedPowerGeneratorSlot != nullptr)
-	{
-		PlacePowerGenerator();
-	}
+	PlaceTower();
 }
 
 void APDPlayer::OnPauseButtonPressed()
@@ -96,13 +89,9 @@ void APDPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (HasTurret())
+	if (ActiveTower != nullptr)
 	{
-		UpdateTurret();
-	}
-	if (HasPowerGenerator())
-	{
-		UpdatePowerGenerator();
+		UpdateTower();
 	}
 }
 
@@ -115,14 +104,13 @@ void APDPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	InputComponent->BindAction("PauseButton", IE_Pressed, this, &APDPlayer::OnPauseButtonPressed).bExecuteWhenPaused = true;
 }
 
-void APDPlayer::ClearTurret()
+void APDPlayer::ClearTower()
 {
 	if (ActiveTower != nullptr)
 	{
 		ActiveTower->Destroy();
 		ActiveTower = nullptr;
-		ActiveTurret = nullptr;
-		SelectedTurretSlot = nullptr;
+		SelectedTowerSlot = nullptr;
 	}
 }
 
@@ -131,37 +119,35 @@ void APDPlayer::SpawnTurret()
 	if (HasPowerGenerator())
 	{
 		// Clear power generator
-		ClearPowerGenerator();
+		ClearTower();
 	}
 
 	// Only spawn a new turret if ActiveTurret doesn't exist and the game isn't paused
 	if (ActiveTower == nullptr && !PlayerController->IsPaused())
 	{
-		ActiveTurret = GetWorld()->SpawnActor<APDTurret>(TurretReference);
-		ActiveTower = ActiveTurret;
-		ActiveMesh = ActiveTurret->GetMesh();
+		ActiveTower = GetWorld()->SpawnActor<APDTurret>(TurretReference);
+		ActiveMesh = ActiveTower->GetMesh();
 	}
 }
 
-void APDPlayer::PlaceTurret()
+void APDPlayer::PlaceTower()
 {
-	// Can't place the turret if it doesn't exist
-	if (!HasTurret()) { return; }
+	// Can't place the tower if it doesn't exist
+	if (ActiveTower == nullptr) { return; }
 
 	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);
 
-	SelectedTurretSlot->Turret = ActiveTurret;
-	ActiveTurret->ParentSlot = SelectedTurretSlot;
-	ActiveTurret->OnTurretPlaced();
+	SelectedTowerSlot->Tower = ActiveTower;
+	ActiveTower->ParentSlot = SelectedTowerSlot;
+	ActiveTower->OnTowerPlaced();
 
 	ActiveTower = nullptr;
-	ActiveTurret = nullptr;
-	SelectedTurretSlot = nullptr;
+	SelectedTowerSlot = nullptr;
 
 	Widget->UpdatePower(-Widget->GetTurretCost());
 }
 
-void APDPlayer::UpdateTurret()
+void APDPlayer::UpdateTower()
 {
 	// Make sure ActiveObject doesn't block camera raycasts
 	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Ignore);
@@ -179,27 +165,16 @@ void APDPlayer::UpdateTurret()
 	{
 		ActiveTower->SetActorLocation(result.ImpactPoint);
 
-		SelectedTurretSlot = Cast<APDTurretSlot>(resultActor);
+		SelectedTowerSlot = Cast<APDTowerSlot>(resultActor);
 	}
 	else
 	{
-		SelectedTurretSlot = nullptr;
+		SelectedTowerSlot = nullptr;
 	}
 
-	FLinearColor targetColor = SelectedTurretSlot != nullptr ? FLinearColor::White : FLinearColor::Red;
+	FLinearColor targetColor = SelectedTowerSlot != nullptr ? FLinearColor::White : FLinearColor::Red;
 
-	ActiveTurret->BlendMeshColors(targetColor);
-}
-
-void APDPlayer::ClearPowerGenerator()
-{
-	if (HasPowerGenerator())
-	{
-		ActiveTower->Destroy();
-		ActiveTower = nullptr;
-		ActivePowerGenerator = nullptr;
-		SelectedPowerGeneratorSlot = nullptr;
-	}
+	ActiveTower->BlendMeshColors(targetColor);
 }
 
 void APDPlayer::SpawnPowerGenerator()
@@ -207,70 +182,23 @@ void APDPlayer::SpawnPowerGenerator()
 	if (HasTurret())
 	{
 		// Clear existing turret
-		ClearTurret();
+		ClearTower();
 	}
 
 	// Only spawn a new power generator if ActivePowerGenerator doesn't exist and the game isn't paused
 	if (ActiveTower == nullptr && !PlayerController->IsPaused())
 	{
-		ActivePowerGenerator = GetWorld()->SpawnActor<APDPowerGenerator>(PowerGeneratorReference);
-		ActivePowerGenerator->Player = this;
-		ActiveTower = ActivePowerGenerator;
-		ActiveMesh = ActivePowerGenerator->GetMesh();
+		ActiveTower = GetWorld()->SpawnActor<APDPowerGenerator>(PowerGeneratorReference);
+		ActiveTower->Player = this;
+		ActiveMesh = ActiveTower->GetMesh();
 	}
-}
-
-void APDPlayer::PlacePowerGenerator()
-{
-	// Can't place the power generator if it doesn't exist
-	if (!HasPowerGenerator()) { return; }
-
-	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);
-
-	ActivePowerGenerator->ParentSlot = SelectedPowerGeneratorSlot;
-	ActivePowerGenerator->OnPowerGeneratorPlaced();
-
-	ActiveTower = nullptr;
-	ActivePowerGenerator = nullptr;
-
-	Widget->UpdatePower(-Widget->GetPowerGeneratorCost());
-}
-
-void APDPlayer::UpdatePowerGenerator()
-{
-	// Make sure ActiveObject doesn't block camera raycasts
-	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Ignore);
-
-	FHitResult result;
-	FVector2D mousePos;
-
-	PlayerController->GetMousePosition(mousePos.X, mousePos.Y);
-
-	PlayerController->GetHitResultAtScreenPosition(mousePos, ECollisionChannel::ECC_Camera, false, result);
-
-	AActor* resultActor = result.GetActor();
-
-	if (resultActor != nullptr)
-	{
-		ActiveTower->SetActorLocation(result.ImpactPoint);
-
-		SelectedPowerGeneratorSlot = Cast<APDTowerSlot>(resultActor);
-	}
-	else
-	{
-		SelectedPowerGeneratorSlot = nullptr;
-	}
-
-	FLinearColor targetColor = SelectedPowerGeneratorSlot != nullptr ? FLinearColor::White : FLinearColor::Red;
-
-	ActivePowerGenerator->BlendMeshColors(targetColor);
 }
 
 void APDPlayer::OnTurretButtonClicked()
 {
 	if (HasTurret())
 	{
-		ClearTurret();
+		ClearTower();
 	}
 	else
 	{
@@ -282,7 +210,7 @@ void APDPlayer::OnPowerGeneratorButtonClicked()
 {
 	if (HasPowerGenerator())
 	{
-		ClearPowerGenerator();
+		ClearTower();
 	}
 	else
 	{
@@ -295,27 +223,19 @@ APrisonerDefenseGameModeBase* APDPlayer::GetGameMode() const
 	return GameMode;
 }
 
-bool APDPlayer::HasTurret()
+bool APDPlayer::HasTurret() const
 {
 	if (ActiveTower == nullptr) { return false; }
 
-	if (ActiveTurret == nullptr)
-	{
-		ActiveTurret = Cast<APDTurret>(ActiveTower);
-	}
-
+	APDTurret* ActiveTurret = Cast<APDTurret>(ActiveTower);
 	return ActiveTurret != nullptr;
 }
 
-bool APDPlayer::HasPowerGenerator()
+bool APDPlayer::HasPowerGenerator() const
 {
 	if (ActiveTower == nullptr) { return false; }
 
-	if (ActivePowerGenerator == nullptr)
-	{
-		ActivePowerGenerator = Cast<APDPowerGenerator>(ActiveTower);
-	}
-
+	APDPowerGenerator* ActivePowerGenerator = Cast<APDPowerGenerator>(ActiveTower);
 	return ActivePowerGenerator != nullptr;
 }
 

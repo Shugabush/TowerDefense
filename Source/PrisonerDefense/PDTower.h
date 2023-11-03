@@ -8,18 +8,6 @@
 #include "MeshRenderData.h"
 #include "PDTower.generated.h"
 
-USTRUCT(BlueprintType)
-// Tower upgrade blueprint
-struct FTowerUpgrade
-{
-	GENERATED_BODY()
-public:
-	int GetPowerCost() const;
-private:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		int PowerCost = 100;
-};
-
 UCLASS()
 class PRISONERDEFENSE_API APDTower : public AActor
 {
@@ -29,15 +17,21 @@ public:
 	// Sets default values for this actor's properties
 	APDTower();
 
+	UPROPERTY()
+		class APDTowerSlot* ParentSlot;
+
+	UFUNCTION()
+		class UStaticMeshComponent* GetMesh();
+
+	UPROPERTY()
+		class APDPlayer* Player;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		TArray<FTowerUpgrade> Upgrades;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		class UStaticMeshComponent* Mesh;
@@ -58,6 +52,8 @@ protected:
 	UFUNCTION()
 		virtual void OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	int CurrentUpgradeIndex;
+
 	MeshRenderData MeshData;
 
 public:	
@@ -67,4 +63,10 @@ public:
 	UFUNCTION()
 		virtual void Upgrade();
 
+	UFUNCTION()
+		virtual void OnTowerPlaced();
+
+	void BlendMeshColors(FLinearColor newColor);
+	void SetMeshColors(FLinearColor newColor);
+	void ResetMeshColors();
 };

@@ -16,6 +16,9 @@ public:
 	// Sets default values for this actor's properties
 	APDTowerSlot();
 
+	UFUNCTION()
+		UStaticMeshComponent* GetMesh() const;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

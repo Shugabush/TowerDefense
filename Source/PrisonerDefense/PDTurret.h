@@ -12,10 +12,15 @@
 
 USTRUCT(BlueprintType)
 // Turret upgrade blueprint
-struct FTurretUpgrade : public FTowerUpgrade
+struct FTurretUpgrade
 {
 	GENERATED_BODY()
+public:
+	int GetPowerCost() const;
+	FCooldownTimer GetNewBulletSpawnTimer() const;
 private:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		int PowerCost = 100;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		FCooldownTimer NewBulletSpawnTimer;
 };
@@ -28,8 +33,6 @@ class PRISONERDEFENSE_API APDTurret : public APDTower
 public:	
 	// Sets default values for this actor's properties
 	APDTurret();
-
-	class UStaticMeshComponent* GetMesh();
 
 protected:
 	// Called when the game starts or when spawned
@@ -45,12 +48,9 @@ public:
 	void SetMeshColors(FLinearColor newColor);
 	void ResetMeshColors();
 
-	void OnTurretPlaced();
+	virtual void OnTowerPlaced() override;
 
 	virtual void Upgrade() override;
-
-	UPROPERTY()
-		class APDTurretSlot* ParentSlot;
 
 	FQuat TargetRotation;
 
@@ -66,9 +66,14 @@ private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		FCooldownTimer BulletSpawnTimer;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		TArray<FTurretUpgrade> Upgrades;
+
 	UPROPERTY()
 		TArray<APDPrisoner*> LookAtTargets;
 
 	UFUNCTION()
 		class APDPrisoner* GetClosestTarget() const;
+
+	bool TryGetCurrentUpgrade(FTurretUpgrade& Upgrade) const;
 };

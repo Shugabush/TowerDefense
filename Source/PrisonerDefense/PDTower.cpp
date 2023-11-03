@@ -5,6 +5,7 @@
 
 #include "Components/WidgetComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 #include "PrisonerDefenseGameModeBase.h"
 #include "PDUpgradesWidget.h"
@@ -17,6 +18,15 @@ APDTower::APDTower()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+
+	Mesh->AttachTo(RootComponent);
+
+	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("UpgradesWidget"));
+	Widget->AttachTo(RootComponent);
 
 	VolumeTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("VolumeTrigger"));
 
@@ -34,17 +44,11 @@ void APDTower::BeginPlay()
 	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	UpgradesWidget = Cast<UPDUpgradesWidget>(Widget->GetWidget());
+	UpgradesWidget->ParentTower = this;
 
 	MeshData = MeshRenderData(Mesh, "Color");
 
 	Widget->SetVisibility(false);
-
-	TArray<int> UpgradeCosts;
-	for (FTowerUpgrade Upgrade : Upgrades)
-	{
-		UpgradeCosts.Add(Upgrade.GetPowerCost());
-	}
-	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
 }
 
 void APDTower::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -69,7 +73,27 @@ void APDTower::Upgrade()
 
 }
 
-int FTowerUpgrade::GetPowerCost() const
+void APDTower::OnTowerPlaced()
 {
-	return 0;
+
+}
+
+void APDTower::BlendMeshColors(FLinearColor newColor)
+{
+	MeshData.BlendColors(newColor);
+}
+
+void APDTower::SetMeshColors(FLinearColor newColor)
+{
+	MeshData.SetColors(newColor);
+}
+
+void APDTower::ResetMeshColors()
+{
+	MeshData.ResetColors();
+}
+
+UStaticMeshComponent* APDTower::GetMesh()
+{
+	return Mesh;
 }

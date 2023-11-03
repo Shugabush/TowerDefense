@@ -17,12 +17,13 @@ struct PRISONERDEFENSE_API FCooldownTimer
 private:
 	float TimeElapsed;
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-	float TimeLimit;
 public:
 	FCooldownTimer();
 	FCooldownTimer(float timeLimit);
 	~FCooldownTimer();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float TimeLimit;
 
 	void Tick(float time);
 	bool OutOfTime() const;

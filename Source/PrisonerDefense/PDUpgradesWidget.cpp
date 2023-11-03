@@ -4,6 +4,7 @@
 #include "PDUpgradesWidget.h"
 #include "PDUserWidget.h"
 #include "PDPlayer.h"
+#include "PDTower.h"
 #include "CustomUtils.h"
 
 void UPDUpgradesWidget::NativeConstruct()
@@ -30,7 +31,14 @@ void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int> TargetCosts)
 
 void UPDUpgradesWidget::OnUpgradeButtonClicked()
 {
+	if (CanAffordNextUpgrade())
+	{
+		PlayerWidget->UpdatePower(-GetCurrentUpgradeCost());
+		CurrentUpgradeIndex++;
+		UpgradeCostText->SetText(FText::FromString("Upgrade for " + FString::FromInt(GetCurrentUpgradeCost()) + " Power"));
 
+		ParentTower->Upgrade();
+	}
 }
 
 bool UPDUpgradesWidget::CanAffordNextUpgrade() const
