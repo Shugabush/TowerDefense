@@ -41,6 +41,9 @@ void APDTurret::BeginPlay()
 		UpgradeCosts.Add(Upgrade.GetPowerCost());
 	}
 	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
+
+	// Make the first bullet spawn immediately (once this turret has a prisoner to fire at)
+	BulletSpawnTimer.Tick(BulletSpawnTimer.GetTimeLimit());
 }
 
 // Called every frame
