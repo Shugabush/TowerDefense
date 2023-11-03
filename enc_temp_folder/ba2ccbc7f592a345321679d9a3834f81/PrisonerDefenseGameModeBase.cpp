@@ -42,6 +42,8 @@ void APrisonerDefenseGameModeBase::StartRound()
 void APrisonerDefenseGameModeBase::EndRound()
 {
 	PrisonersShouldSpawn = false;
+	Widget->UpdatePower(GetCurrentRound().GetPowerReward());
+	RoundIndex++;
 }
 
 int APrisonerDefenseGameModeBase::GetCurrentRoundNumber() const
@@ -82,12 +84,15 @@ void APrisonerDefenseGameModeBase::StartPlay()
 
 	Player = Cast<APDPlayer>(DefaultPawnClass);
 	HUD = Cast<APDHUD>(HUDClass->GetDefaultObject());
-	Widget = HUD->GetWidget<UPDUserWidget>(UPDUserWidget::StaticClass());
 }
 
 void APrisonerDefenseGameModeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	/*if (Widget == nullptr)
+	{
+		Widget = Player->GetWidget();
+	}*/
 
 	if (RoundIsRunning())
 	{

@@ -10,6 +10,7 @@
 #include "PDPrisonerCage.h"
 #include "PDPlayer.h"
 #include "Kismet/GameplayStatics.h"
+#include "CustomUtils.h"
 
 #include "UObject/ConstructorHelpers.h"
 
@@ -42,6 +43,8 @@ void APrisonerDefenseGameModeBase::StartRound()
 void APrisonerDefenseGameModeBase::EndRound()
 {
 	PrisonersShouldSpawn = false;
+	Widget->UpdatePower(GetCurrentRound().GetPowerReward());
+	RoundIndex++;
 }
 
 int APrisonerDefenseGameModeBase::GetCurrentRoundNumber() const
@@ -80,17 +83,17 @@ void APrisonerDefenseGameModeBase::StartPlay()
 		Rounds[i].Initialize(this);
 	}
 
-	Player = Cast<APDPlayer>(DefaultPawnClass);
+	Player = UCustomUtils::GetWorldPlayer();
 	HUD = Cast<APDHUD>(HUDClass->GetDefaultObject());
 }
 
 void APrisonerDefenseGameModeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (Widget == nullptr)
+	/*if (Widget == nullptr)
 	{
-		Widget = HUD->GetWidget<UPDUserWidget>(UPDUserWidget::StaticClass());
-	}
+		Widget = Player->GetWidget();
+	}*/
 
 	if (RoundIsRunning())
 	{

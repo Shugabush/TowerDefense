@@ -24,6 +24,8 @@ public:
 
 	void Initialize(class APrisonerDefenseGameModeBase* GameMode);
 
+	int GetPowerReward() const;
+
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		int PrisonersToSpawn = 5;
@@ -35,6 +37,9 @@ private:
 
 	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		int PowerReward = 100;
 
 	FCooldownTimer SpawnTimer;
 };

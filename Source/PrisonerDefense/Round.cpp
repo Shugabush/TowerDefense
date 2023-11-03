@@ -15,6 +15,11 @@ void FGameRound::Initialize(APrisonerDefenseGameModeBase* gameMode)
 	GameMode = gameMode;
 }
 
+int FGameRound::GetPowerReward() const
+{
+	return PowerReward;
+}
+
 void FGameRound::Tick(float DeltaTime)
 {
 	if (PrisonersSpawned < PrisonersToSpawn)
