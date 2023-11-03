@@ -55,7 +55,7 @@ void UPDUpgradesWidget::OnUpgradeButtonClicked()
 		else
 		{
 			UpgradeCostText->SetText(FText::GetEmpty());
-			UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
+			UpgradeButton->SetIsEnabled(false);
 		}
 
 		ParentTower->Upgrade();
