@@ -50,7 +50,7 @@ void UPDUpgradesWidget::OnUpgradeButtonClicked()
 
 		if (TryGetCurrentUpgradeCost(NewUpgradeCost))
 		{
-			UpgradeCostText->SetText(FText::FromString(FString::FromInt(NewUpgradeCost) + " Power"));
+			UpgradeCostText->SetText(FText::FromString(FString::FromInt(UpgradeCost) + " Power"));
 		}
 		else
 		{

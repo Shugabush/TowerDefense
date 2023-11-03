@@ -22,6 +22,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetCurrentUpgradeCost() const;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		bool TryGetCurrentUpgradeCost(int& UpgradeCost) const;
+
 	class APDTower* ParentTower;
 
 	void InitializeUpgradeCosts(const TArray<int> TargetCosts);
