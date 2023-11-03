@@ -82,15 +82,12 @@ void APrisonerDefenseGameModeBase::StartPlay()
 
 	Player = Cast<APDPlayer>(DefaultPawnClass);
 	HUD = Cast<APDHUD>(HUDClass->GetDefaultObject());
+	Widget = HUD->GetWidget<UPDUserWidget>(UPDUserWidget::StaticClass());
 }
 
 void APrisonerDefenseGameModeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (Widget == nullptr)
-	{
-		Widget = HUD->GetWidget<UPDUserWidget>(UPDUserWidget::StaticClass());
-	}
 
 	if (RoundIsRunning())
 	{

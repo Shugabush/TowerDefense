@@ -31,4 +31,9 @@ void FGameRound::Tick(float DeltaTime)
 			SpawnTimer.Tick(DeltaTime);
 		}
 	}
+	else
+	{
+		// The round is complete
+		GameMode->EndRound();
+	}
 }

@@ -36,6 +36,9 @@ private:
 	UPROPERTY()
 		class APDPlayer* Player;
 
+	class APDHUD* HUD;
+	class UPDUserWidget* Widget;
+
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		bool RoundIsRunning() const;
@@ -47,6 +50,9 @@ public:
 
 	UFUNCTION()
 		void StartRound();
+
+	UFUNCTION()
+		void EndRound();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetCurrentRoundNumber() const;
