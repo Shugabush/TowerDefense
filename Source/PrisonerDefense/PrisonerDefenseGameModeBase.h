@@ -14,6 +14,8 @@
  */
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRoundChangedSignature, int, NewRound);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundStartedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundEndedSignature);
 
 UCLASS()
 class PRISONERDEFENSE_API APrisonerDefenseGameModeBase : public AGameModeBase
@@ -47,6 +49,8 @@ public:
 		class APDPlayer* GetPlayer() const;
 
 	FOnRoundChangedSignature OnRoundChanged;
+	FOnRoundStartedSignature OnRoundStarted;
+	FOnRoundStartedSignature OnRoundEnded;
 
 	UFUNCTION()
 		void StartRound();

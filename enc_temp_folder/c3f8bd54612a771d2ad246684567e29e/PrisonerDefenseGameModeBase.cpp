@@ -35,13 +35,9 @@ APDPlayer* APrisonerDefenseGameModeBase::GetPlayer() const
 
 void APrisonerDefenseGameModeBase::StartRound()
 {
-	FGameRound Round;
-	if (GetCurrentRound(Round))
-	{
-		OnRoundStarted.Broadcast();
+	OnRoundStarted.Broadcast();
 
-		PrisonersShouldSpawn = true;
-	}
+	PrisonersShouldSpawn = true;
 }
 
 void APrisonerDefenseGameModeBase::EndRound()
@@ -55,7 +51,6 @@ void APrisonerDefenseGameModeBase::EndRound()
 		Widget->UpdatePower(Round.GetPowerReward());
 	}
 	RoundIndex++;
-	OnRoundChanged.Broadcast(GetCurrentRoundNumber());
 }
 
 int APrisonerDefenseGameModeBase::GetCurrentRoundNumber() const

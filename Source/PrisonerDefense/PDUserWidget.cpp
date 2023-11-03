@@ -27,6 +27,11 @@ int UPDUserWidget::GetPowerGeneratorCost() const
 	return PowerGeneratorPurchasable->GetPrice();
 }
 
+void UPDUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+}
+
 void UPDUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -46,6 +51,8 @@ void UPDUserWidget::NativeConstruct()
 	PlayButton->OnClicked.AddDynamic(this, &UPDUserWidget::OnPlayButtonClicked);
 
 	GameMode->OnRoundChanged.AddDynamic(this, &UPDUserWidget::OnRoundChanged);
+	GameMode->OnRoundStarted.AddDynamic(this, &UPDUserWidget::OnRoundStarted);
+	GameMode->OnRoundEnded.AddDynamic(this, &UPDUserWidget::OnRoundEnded);
 }
 
 void UPDUserWidget::OnTurretButtonClicked()
@@ -66,4 +73,14 @@ void UPDUserWidget::OnPlayButtonClicked()
 void UPDUserWidget::OnRoundChanged(int NewRound)
 {
 	RoundText->SetText(FText::FromString(RoundTextPrefix + FString::FromInt(NewRound)));
+}
+
+void UPDUserWidget::OnRoundStarted()
+{
+	PlayButton->SetIsEnabled(false);
+}
+
+void UPDUserWidget::OnRoundEnded()
+{
+	PlayButton->SetIsEnabled(true);
 }

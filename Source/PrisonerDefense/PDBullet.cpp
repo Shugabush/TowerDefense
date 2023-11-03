@@ -25,13 +25,11 @@ void APDBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (TargetPrisoner != nullptr)
+	AddActorWorldOffset(TargetVelocity * MovementSpeed);
+
+	if (GetActorLocation().Size() > 100)
 	{
-		SetActorLocation(FMath::Lerp<FVector>(GetActorLocation(), TargetPrisoner->GetActorLocation(), DeltaTime * MovementSpeed));
-	}
-	else
-	{
-		// Destroy this object if there is no prisoner to target
+		// This object has gone too far away from the origin, so destroy it
 		Destroy();
 	}
 }
@@ -42,6 +40,7 @@ void APDBullet::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	APDPrisoner* prisoner = Cast<APDPrisoner>(OtherActor);
 	if (prisoner != nullptr)
 	{
+		// Can't rely on checking for nullptr on the list of spawned prisoners inside of the round struct
 		prisoner->Defeated = true;
 		prisoner->Destroy();
 		Destroy();

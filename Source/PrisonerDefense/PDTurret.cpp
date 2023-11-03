@@ -62,7 +62,7 @@ void APDTurret::Tick(float DeltaTime)
 				APDBullet* newBullet = GetWorld()->SpawnActor<APDBullet>(BulletBlueprint, FTransform(GetActorLocation()));
 				if (newBullet != nullptr)
 				{
-					newBullet->TargetPrisoner = LookAtTarget;
+					newBullet->TargetVelocity = (LookAtTarget->GetActorLocation() - newBullet->GetActorLocation()).GetSafeNormal();
 				}
 
 				BulletSpawnTimer.Reset();

@@ -34,6 +34,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetPowerGeneratorCost() const;
 
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 protected:
 	virtual void NativeConstruct() override;
 
@@ -48,6 +49,13 @@ protected:
 
 	UFUNCTION()
 		void OnRoundChanged(int NewRound);
+
+	UFUNCTION()
+		void OnRoundStarted();
+
+	UFUNCTION()
+		void OnRoundEnded();
+
 private:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))

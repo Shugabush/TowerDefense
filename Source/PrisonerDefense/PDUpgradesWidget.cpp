@@ -47,5 +47,5 @@ bool UPDUpgradesWidget::CanAffordNextUpgrade() const
 	{
 		return false;
 	}
-	return PlayerWidget->GetPower() > GetCurrentUpgradeCost();
+	return PlayerWidget->GetPower() >= GetCurrentUpgradeCost();
 }

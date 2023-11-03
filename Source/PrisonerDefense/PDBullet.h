@@ -29,6 +29,5 @@ public:
 
 	float MovementSpeed = 25;
 
-	UPROPERTY()
-		class APDPrisoner* TargetPrisoner;
+	FVector TargetVelocity;
 };
