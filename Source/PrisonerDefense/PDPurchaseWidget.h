@@ -38,6 +38,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetPrice() const;
 
+	void SetButtonEnabled(bool Enabled);
+
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		UTexture2D* ButtonIcon;

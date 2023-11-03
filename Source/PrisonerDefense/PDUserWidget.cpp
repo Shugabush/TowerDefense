@@ -15,6 +15,9 @@ void UPDUserWidget::UpdatePower(const int additionalPower)
 {
 	Power += additionalPower;
 	PowerText->SetText(FText::FromString(PowerTextPrefix + FString::FromInt(Power)));
+	
+	TurretPurchasable->SetButtonEnabled(Power >= TurretPurchasable->GetPrice());
+	PowerGeneratorPurchasable->SetButtonEnabled(Power >= PowerGeneratorPurchasable->GetPrice());
 }
 
 int UPDUserWidget::GetTurretCost() const
