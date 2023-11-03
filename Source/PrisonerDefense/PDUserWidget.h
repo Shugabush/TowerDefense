@@ -74,7 +74,8 @@ private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		FString RoundTextPrefix = "Round: ";
 	
-	int Power = 250;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
+		int Power = 500;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		int TurretCost = 100;

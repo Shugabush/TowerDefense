@@ -135,15 +135,6 @@ void APDPlayer::PlaceTower()
 	// Can't place the tower if it doesn't exist
 	if (ActiveTower == nullptr) { return; }
 
-	if (HasTurret())
-	{
-		Widget->UpdatePower(-Widget->GetTurretCost());
-	}
-	else if (HasPowerGenerator())
-	{
-		Widget->UpdatePower(-Widget->GetPowerGeneratorCost());
-	}
-
 	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);
 
 	SelectedTowerSlot->Tower = ActiveTower;
@@ -152,6 +143,16 @@ void APDPlayer::PlaceTower()
 
 	ActiveTower = nullptr;
 	SelectedTowerSlot = nullptr;
+
+	if (HasTurret())
+	{
+		Widget->UpdatePower(-Widget->GetTurretCost());
+	}
+	else if (HasPowerGenerator())
+	{
+		Widget->UpdatePower(-Widget->GetPowerGeneratorCost());
+	}
+	
 }
 
 void APDPlayer::UpdateTower()

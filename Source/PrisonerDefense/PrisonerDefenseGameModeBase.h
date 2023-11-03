@@ -49,6 +49,9 @@ public:
 		void StartRound();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
+		int GetCurrentRoundNumber() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 		FGameRound& GetCurrentRound();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)

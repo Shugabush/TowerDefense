@@ -36,6 +36,11 @@ void APrisonerDefenseGameModeBase::StartRound()
 	PrisonersShouldSpawn = true;
 }
 
+int APrisonerDefenseGameModeBase::GetCurrentRoundNumber() const
+{
+	return RoundIndex + 1;
+}
+
 FGameRound& APrisonerDefenseGameModeBase::GetCurrentRound()
 {
 	return Rounds[RoundIndex];

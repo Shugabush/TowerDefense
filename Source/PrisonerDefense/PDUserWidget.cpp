@@ -31,16 +31,20 @@ void UPDUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	APrisonerDefenseGameModeBase* GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+
 	OwningPlayer = GetOwningPlayerPawn<APDPlayer>();
 	TurretPurchasable->ParentWidget = this;
 	PowerGeneratorPurchasable->ParentWidget = this;
+
+	PowerText->SetText(FText::FromString(PowerTextPrefix + FString::FromInt(Power)));
+	RoundText->SetText(FText::FromString(RoundTextPrefix + FString::FromInt(GameMode->GetCurrentRoundNumber())));
 
 	TurretPurchasable->OnPurchase.AddDynamic(this, &UPDUserWidget::OnTurretButtonClicked);
 	PowerGeneratorPurchasable->OnPurchase.AddDynamic(this, &UPDUserWidget::OnPowerGeneratorButtonClicked);
 
 	PlayButton->OnClicked.AddDynamic(this, &UPDUserWidget::OnPlayButtonClicked);
 
-	APrisonerDefenseGameModeBase* GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 	GameMode->OnRoundChanged.AddDynamic(this, &UPDUserWidget::OnRoundChanged);
 }
 

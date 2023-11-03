@@ -9,7 +9,7 @@
 
 void UPDUpgradesWidget::NativeConstruct()
 {
-	UpgradeCostText->SetText(FText::FromString("Upgrade for " + FString::FromInt(GetCurrentUpgradeCost()) + " Power"));
+	UpgradeCostText->SetText(FText::FromString(FString::FromInt(GetCurrentUpgradeCost()) + " Power"));
 	UpgradeButton->OnClicked.AddDynamic(this, &UPDUpgradesWidget::OnUpgradeButtonClicked);
 
 	PlayerWidget = UCustomUtils::GetWorldPlayer(GetWorld(), 0)->GetWidget();
@@ -35,7 +35,7 @@ void UPDUpgradesWidget::OnUpgradeButtonClicked()
 	{
 		PlayerWidget->UpdatePower(-GetCurrentUpgradeCost());
 		CurrentUpgradeIndex++;
-		UpgradeCostText->SetText(FText::FromString("Upgrade for " + FString::FromInt(GetCurrentUpgradeCost()) + " Power"));
+		UpgradeCostText->SetText(FText::FromString(FString::FromInt(GetCurrentUpgradeCost()) + " Power"));
 
 		ParentTower->Upgrade();
 	}
