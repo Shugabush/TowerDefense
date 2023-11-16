@@ -16,9 +16,14 @@ public:
 	// Sets default values for this actor's properties
 	APDBullet();
 
+	// The object that the bullet is trying to damage or destroy
+	class APDPrisoner* TargetVictim;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	FVector TargetVelocity;
 
 public:	
 	// Called every frame
@@ -28,6 +33,4 @@ public:
 		void OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
 	float MovementSpeed = 25;
-
-	FVector TargetVelocity;
 };

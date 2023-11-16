@@ -4,7 +4,7 @@
 #include "PDTower.h"
 
 #include "Components/WidgetComponent.h"
-#include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 
 #include "PrisonerDefenseGameModeBase.h"
@@ -12,6 +12,7 @@
 #include "MeshRenderData.h"
 
 #include "Kismet/GameplayStatics.h"
+#include <cassert>
 
 // Sets default values
 APDTower::APDTower()
@@ -28,7 +29,7 @@ APDTower::APDTower()
 	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("UpgradesWidget"));
 	Widget->AttachTo(RootComponent);
 
-	VolumeTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("VolumeTrigger"));
+	VolumeTrigger = CreateDefaultSubobject<USphereComponent>(TEXT("VolumeTrigger"));
 
 	VolumeTrigger->OnComponentBeginOverlap.AddDynamic(this, &APDTower::OnVolumeTriggerBeginOverlap);
 	VolumeTrigger->OnComponentEndOverlap.AddDynamic(this, &APDTower::OnVolumeTriggerEndOverlap);
@@ -45,6 +46,9 @@ void APDTower::BeginPlay()
 	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	UpgradesWidget = Cast<UPDUpgradesWidget>(Widget->GetWidget());
+
+	assert(UpgradesWidget != nullptr && "Failed to get upgrades widget. Maybe you need to respecify the type of widget to spawn");
+
 	UpgradesWidget->ParentTower = this;
 
 	MeshData = MeshRenderData(Mesh, "Color");

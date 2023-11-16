@@ -25,12 +25,16 @@ void APDBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AddActorWorldOffset(TargetVelocity * MovementSpeed);
-
-	if (GetActorLocation().Size() > 100)
+	if (TargetVictim != nullptr)
 	{
-		// This object has gone too far away from the origin, so destroy it
-		Destroy();
+		TargetVelocity = (TargetVictim->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+		AddActorWorldOffset(TargetVelocity * MovementSpeed);
+
+		if (GetActorLocation().Size() > 100)
+		{
+			// This object has gone too far away from the origin, so destroy it
+			Destroy();
+		}
 	}
 }
 

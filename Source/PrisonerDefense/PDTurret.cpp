@@ -53,19 +53,24 @@ void APDTurret::Tick(float DeltaTime)
 	{
 		// Look at the closest object in the look at target list
 		APDPrisoner* LookAtTarget = GetClosestTarget();
-
+		
 		if (LookAtTarget != nullptr)
 		{
 			if (BulletSpawnTimer.OutOfTime())
 			{
-				// Spawn a new bullet
-				APDBullet* newBullet = GetWorld()->SpawnActor<APDBullet>(BulletBlueprint, FTransform(GetActorLocation()));
-				if (newBullet != nullptr)
-				{
-					newBullet->TargetVelocity = (LookAtTarget->GetActorLocation() - newBullet->GetActorLocation()).GetSafeNormal();
-				}
+				float forwardDirectionDotProduct = FVector::DotProduct(GetActorForwardVector(), LookAtTarget->GetActorForwardVector());
+				float lengthProduct = GetActorForwardVector().Size() * LookAtTarget->GetActorForwardVector().Size();
 
-				BulletSpawnTimer.Reset();
+				float angle = FMath::Acos(forwardDirectionDotProduct / lengthProduct);
+
+				if (angle < 5.f)
+				{
+					// Don't spawn any bullet, just destroy the prisoner
+					LookAtTarget->Defeated = true;
+					LookAtTarget->Destroy();
+
+					BulletSpawnTimer.Reset();
+				}
 			}
 			else
 			{
@@ -79,6 +84,7 @@ void APDTurret::Tick(float DeltaTime)
 
 			SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
 		}
+		
 	}
 }
 
