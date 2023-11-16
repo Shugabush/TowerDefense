@@ -45,7 +45,6 @@ void APDTurret::BeginPlay()
 		UpgradeCosts.Add(Upgrade.GetPowerCost());
 	}
 	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
-	FireParticles->Deactivate();
 }
 
 // Called every frame
@@ -72,7 +71,7 @@ void APDTurret::Tick(float DeltaTime)
 				{
 					// Don't spawn any bullet, just damage the prisoner
 					LookAtTarget->Damage(1);
-					FireParticles->Activate(true);
+					FireParticles->Activate();
 
 					BulletSpawnTimer.Reset();
 				}

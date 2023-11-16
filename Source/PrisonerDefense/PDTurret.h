@@ -72,6 +72,10 @@ private:
 	UPROPERTY()
 		TArray<APDPrisoner*> LookAtTargets;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		// Particles to play when this turret fires
+		UParticleSystemComponent* FireParticles;
+
 	UFUNCTION()
 		class APDPrisoner* GetClosestTarget() const;
 
