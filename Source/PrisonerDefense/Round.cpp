@@ -21,6 +21,11 @@ int FGameRound::GetPowerReward() const
 	return PowerReward;
 }
 
+int FGameRound::GetMaxHealth() const
+{
+	return MaxHealth;
+}
+
 void FGameRound::Tick(float DeltaTime)
 {
 	if (PrisonersSpawned < PrisonersToSpawn)

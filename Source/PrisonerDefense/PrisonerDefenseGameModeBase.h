@@ -45,12 +45,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		bool RoundIsRunning() const;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 		class APDPlayer* GetPlayer() const;
 
 	FOnRoundChangedSignature OnRoundChanged;
 	FOnRoundStartedSignature OnRoundStarted;
 	FOnRoundStartedSignature OnRoundEnded;
+
+	int GetNewMaxHealth() const;
 
 	UFUNCTION()
 		void StartRound();
@@ -62,7 +64,7 @@ public:
 		int GetCurrentRoundNumber() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-		bool GetCurrentRound(FGameRound& Round);
+		bool GetCurrentRound(FGameRound& Round) const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		APDPrisonerCage* GetRandomPrisonerCage() const;

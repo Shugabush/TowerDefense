@@ -33,6 +33,16 @@ APDPlayer* APrisonerDefenseGameModeBase::GetPlayer() const
 	return Player;
 }
 
+int APrisonerDefenseGameModeBase::GetNewMaxHealth() const
+{
+	FGameRound Round;
+	if (GetCurrentRound(Round))
+	{
+		return Round.GetMaxHealth();
+	}
+	return 2;
+}
+
 void APrisonerDefenseGameModeBase::StartRound()
 {
 	FGameRound Round;
@@ -63,7 +73,7 @@ int APrisonerDefenseGameModeBase::GetCurrentRoundNumber() const
 	return RoundIndex + 1;
 }
 
-bool APrisonerDefenseGameModeBase::GetCurrentRound(FGameRound& Round)
+bool APrisonerDefenseGameModeBase::GetCurrentRound(FGameRound& Round) const
 {
 	if (!Rounds.IsValidIndex(RoundIndex)) { return false; }
 	Round = Rounds[RoundIndex];

@@ -55,7 +55,7 @@ private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		class USkeletalMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-		// Power that the player earns by defeating this prisoner
+		// Power that the player earns by damaging this prisoner
 		int PowerReward = 10;
 
 	UPROPERTY()

@@ -34,6 +34,10 @@ void APDPrisoner::Damage(int Damage)
 {
 	Health -= Damage;
 	HealthWidget->SetMeterFill((float)Health / MaxHealth);
+	if (Player != nullptr)
+	{
+		Player->GetWidget()->UpdatePower(PowerReward);
+	}
 	if (Health <= 0)
 	{
 		OnDefeat();
@@ -43,10 +47,6 @@ void APDPrisoner::Damage(int Damage)
 void APDPrisoner::OnDefeat()
 {
 	Defeated = true;
-	if (Player != nullptr)
-	{
-		Player->GetWidget()->UpdatePower(PowerReward);
-	}
 	Destroy();
 }
 
@@ -57,6 +57,8 @@ void APDPrisoner::BeginPlay()
 
 	APrisonerDefenseGameModeBase* GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 	Player = GameMode->GetPlayer();
+
+	MaxHealth = GameMode->GetNewMaxHealth();
 
 	Health = MaxHealth;
 	HealthWidget = Cast<UPDHealthWidget>(Widget->GetWidget());

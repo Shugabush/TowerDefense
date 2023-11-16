@@ -23,10 +23,16 @@ public:
 	void Initialize(class APrisonerDefenseGameModeBase* GameMode);
 
 	int GetPowerReward() const;
+	int GetMaxHealth() const;
 
 	void Tick(float DeltaTime);
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		// Max health for prisoners this round
+		int MaxHealth = 2;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		// How many prisoners to spawn this round
 		int PrisonersToSpawn = 5;
 
 	int PrisonersSpawned = 0;
