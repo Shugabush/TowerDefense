@@ -5,7 +5,11 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "PDPrisonerCage.h"
+#include "PDPlayer.h"
+#include "PDUserWidget.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "PrisonerDefenseGameModeBase.h"
 
 // Sets default values
 APDPrisoner::APDPrisoner()
@@ -25,6 +29,9 @@ APDPrisoner::APDPrisoner()
 void APDPrisoner::BeginPlay()
 {
 	Super::BeginPlay();
+
+	APrisonerDefenseGameModeBase* GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	Player = GameMode->GetPlayer();
 }
 
 // Called every frame
@@ -92,9 +99,20 @@ void APDPrisoner::Tick(float DeltaTime)
 	}
 }
 
+void APDPrisoner::Destroyed()
+{
+	Defeated = true;
+	Player->GetWidget()->UpdatePower(PowerReward);
+}
+
 FVector APDPrisoner::GetGroundVelocity() const
 {
 	return Velocity;
+}
+
+bool APDPrisoner::IsDefeated() const
+{
+	return Defeated;
 }
 
 bool APDPrisoner::TryGetTargetPoint(FVector& TargetPoint) const

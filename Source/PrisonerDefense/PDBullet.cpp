@@ -45,7 +45,6 @@ void APDBullet::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	if (prisoner != nullptr)
 	{
 		// Can't rely on checking for nullptr on the list of spawned prisoners inside of the round struct
-		prisoner->Defeated = true;
 		prisoner->Destroy();
 		Destroy();
 	}

@@ -12,12 +12,12 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
 
-int  FPowerGeneratorUpgrade::GetPowerCost() const
+int FPowerGeneratorUpgrade::GetPowerCost() const
 {
 	return PowerCost;
 }
 
-int  FPowerGeneratorUpgrade::GetNewPowerPerSecond() const
+int FPowerGeneratorUpgrade::GetNewPowerPerSecond() const
 {
 	return NewPowerPerSecond;
 }
@@ -78,7 +78,11 @@ void APDPowerGenerator::OnTowerPlaced()
 
 void APDPowerGenerator::Upgrade()
 {
+	FPowerGeneratorUpgrade Upgrade;
+	if (!TryGetCurrentUpgrade(Upgrade)) return;
 
+	PowerPerSecond = Upgrade.GetNewPowerPerSecond();
+	CurrentUpgradeIndex++;
 }
 
 bool APDPowerGenerator::TryGetCurrentUpgrade(FPowerGeneratorUpgrade& Upgrade) const

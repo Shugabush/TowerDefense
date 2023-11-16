@@ -49,7 +49,7 @@ bool FGameRound::AllPrisonersDefeated() const
 {
 	for (auto Prisoner : Prisoners)
 	{
-		if (Prisoner != nullptr && !Prisoner->Defeated)
+		if (Prisoner != nullptr && !Prisoner->IsDefeated())
 		{
 			return false;
 		}

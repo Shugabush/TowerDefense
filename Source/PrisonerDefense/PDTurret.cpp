@@ -66,7 +66,6 @@ void APDTurret::Tick(float DeltaTime)
 				if (angle < 5.f)
 				{
 					// Don't spawn any bullet, just destroy the prisoner
-					LookAtTarget->Defeated = true;
 					LookAtTarget->Destroy();
 
 					BulletSpawnTimer.Reset();
@@ -112,7 +111,7 @@ void APDTurret::OnTowerPlaced()
 void APDTurret::Upgrade()
 {
 	FTurretUpgrade Upgrade;
-	if (!TryGetCurrentUpgrade(Upgrade)) { return; }
+	if (!TryGetCurrentUpgrade(Upgrade)) return;
 
 	BulletSpawnTimer.TimeLimit = Upgrade.GetNewBulletSpawnTimer().TimeLimit;
 

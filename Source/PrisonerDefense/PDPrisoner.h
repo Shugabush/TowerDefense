@@ -26,6 +26,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void Destroyed() override;
+
 	UFUNCTION(BlueprintCallable)
 		FVector GetGroundVelocity() const;
 
@@ -33,16 +35,23 @@ public:
 	UPROPERTY()
 		class APDPrisonerCage* Cage;
 
-	bool Defeated = false;
-
+	bool IsDefeated() const;
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		class UCapsuleComponent* Capsule;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		class USkeletalMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		// Power that the player earns by defeating this prisoner
+		int PowerReward = 10;
+
+	UPROPERTY()
+		class APDPlayer* Player;
 
 	FVector Velocity;
 	FQuat TargetRotation;
+	
+	bool Defeated = false;
 
 	int TargetIndex;
 	bool TryGetTargetPoint(FVector& TargetPoint) const;
