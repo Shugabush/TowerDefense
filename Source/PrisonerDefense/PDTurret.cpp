@@ -65,8 +65,8 @@ void APDTurret::Tick(float DeltaTime)
 
 				if (angle < 5.f)
 				{
-					// Don't spawn any bullet, just destroy the prisoner
-					LookAtTarget->Destroy();
+					// Don't spawn any bullet, just damage the prisoner
+					LookAtTarget->Damage(1);
 
 					BulletSpawnTimer.Reset();
 				}

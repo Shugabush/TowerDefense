@@ -47,7 +47,7 @@ void APDTower::BeginPlay()
 
 	UpgradesWidget = Cast<UPDUpgradesWidget>(Widget->GetWidget());
 
-	assert(UpgradesWidget != nullptr && "Failed to get upgrades widget. Maybe you need to respecify the type of widget to spawn");
+	assert(UpgradesWidget != nullptr && UpgradesWidget != NULL && "Failed to get upgrades widget. Maybe you need to respecify the type of widget to spawn");
 
 	UpgradesWidget->ParentTower = this;
 

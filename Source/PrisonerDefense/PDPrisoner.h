@@ -7,10 +7,11 @@
 #include "CooldownTimer.h"
 
 #include "GameFramework/Pawn.h"
+#include "Damageable.h"
 #include "PDPrisoner.generated.h"
 
 UCLASS()
-class PRISONERDEFENSE_API APDPrisoner : public AActor
+class PRISONERDEFENSE_API APDPrisoner : public AActor, public IDamageable
 {
 	GENERATED_BODY()
 
@@ -18,22 +19,34 @@ public:
 	// Sets default values for this pawn's properties
 	APDPrisoner();
 
+	virtual void Damage(int Damage) override;
+	virtual void OnDefeat() override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	int Health;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		int MaxHealth = 1;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void Destroyed() override;
-
 	UFUNCTION(BlueprintCallable)
 		FVector GetGroundVelocity() const;
 
-	// The prisoner cage will assign this pointer
 	UPROPERTY()
+		// The prisoner cage will assign this pointer
 		class APDPrisonerCage* Cage;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+		class UWidgetComponent* Widget;
+
+	UPROPERTY()
+		// Widget property as health widget
+		class UPDHealthWidget* HealthWidget;
 
 	bool IsDefeated() const;
 private:

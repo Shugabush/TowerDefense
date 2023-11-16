@@ -39,8 +39,8 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		class UWidgetComponent* Widget;
 
-	// Widget property as upgrades widget
 	UPROPERTY()
+		// Widget property as upgrades widget
 		class UPDUpgradesWidget* UpgradesWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
