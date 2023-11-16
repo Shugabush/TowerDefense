@@ -83,6 +83,7 @@ void APDPowerGenerator::Upgrade()
 
 	PowerPerSecond = Upgrade.GetNewPowerPerSecond();
 	Timer.TimeLimit = 1.f / PowerPerSecond;
+	GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, FString::FromInt(Upgrade.GetNewPowerPerSecond()));
 	CurrentUpgradeIndex++;
 }
 
