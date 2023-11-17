@@ -13,7 +13,7 @@ void APDHUD::EnableWidget(TSubclassOf<UUserWidget> WidgetClass, bool disableOthe
 		{
 			if (Widget->IsA(WidgetClass))
 			{
-				Widget->SetVisibility(ESlateVisibility::Visible);
+				Widget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 			}
 			else if (disableOthers)
 			{
@@ -33,7 +33,7 @@ void APDHUD::EnableWidgets(TArray<TSubclassOf<UUserWidget>> WidgetClasses, bool 
 			{
 				if (Widget->IsA(WidgetClass))
 				{
-					Widget->SetVisibility(ESlateVisibility::Visible);
+					Widget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 				}
 				else if (disableOthers)
 				{

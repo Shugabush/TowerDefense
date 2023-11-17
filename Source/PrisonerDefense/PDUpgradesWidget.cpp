@@ -6,6 +6,7 @@
 #include "PDPlayer.h"
 #include "PDTower.h"
 #include "CustomUtils.h"
+#include "CustomUtils.h"
 
 void UPDUpgradesWidget::NativeConstruct()
 {
@@ -18,12 +19,33 @@ void UPDUpgradesWidget::NativeConstruct()
 void UPDUpgradesWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	if (Player == nullptr)
+	{
+		Player = UCustomUtils::GetWorldPlayer(GetWorld(), 0);
+	}
+
 	if (PlayerWidget == nullptr)
 	{
-		PlayerWidget = UCustomUtils::GetWorldPlayer(GetWorld(), 0)->GetWidget();
+		PlayerWidget = Player->GetWidget();
+	}
+
+	if (ParentTower != nullptr)
+	{
+		CurrentUpgradeIndex = ParentTower->GetCurrentUpgradeIndex();
 	}
 
 	UpgradeButton->SetIsEnabled(CanAffordNextUpgrade());
+}
+
+FReply UPDUpgradesWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	return FReply::Handled();
+}
+
+FReply UPDUpgradesWidget::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	return FReply::Handled();
 }
 
 int UPDUpgradesWidget::GetCurrentUpgradeCost() const
@@ -73,6 +95,8 @@ void UPDUpgradesWidget::OnUpgradeButtonClicked()
 		PlayerWidget->UpdatePower(-UpgradeCost);
 		CurrentUpgradeIndex++;
 
+		ParentTower->Upgrade();
+
 		if (TryGetCurrentUpgradeCost(NewUpgradeCost))
 		{
 			UpgradeCostText->SetText(FText::FromString(FString::FromInt(NewUpgradeCost) + " Power"));
@@ -82,8 +106,6 @@ void UPDUpgradesWidget::OnUpgradeButtonClicked()
 			UpgradeCostText->SetText(FText::GetEmpty());
 			UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
 		}
-
-		ParentTower->Upgrade();
 	}
 }
 

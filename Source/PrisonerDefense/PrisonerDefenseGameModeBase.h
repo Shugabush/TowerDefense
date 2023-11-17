@@ -41,9 +41,14 @@ private:
 	class APDHUD* HUD;
 	class UPDUserWidget* Widget;
 
+	bool GameRunning = false;
+
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		bool RoundIsRunning() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		bool GameIsRunning() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		class APDPlayer* GetPlayer() const;

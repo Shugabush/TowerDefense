@@ -13,8 +13,8 @@
 #include "PDUpgradesWidget.h"
 #include "MeshRenderData.h"
 #include "CustomUtils.h"
-
 #include "Kismet/GameplayStatics.h"
+
 #include <cassert>
 
 // Sets default values
@@ -92,12 +92,17 @@ void APDTower::Tick(float DeltaTime)
 
 void APDTower::Upgrade()
 {
-
+	CurrentUpgradeIndex++;
 }
 
 void APDTower::OnTowerPlaced()
 {
 	OnTowerSelected();
+}
+
+int APDTower::GetCurrentUpgradeIndex() const
+{
+	return CurrentUpgradeIndex;
 }
 
 TArray<int> APDTower::GetUpgradeCosts() const

@@ -30,7 +30,7 @@ public:
 			{
 				if (ActiveWidget->IsA(WidgetClass))
 				{
-					ActiveWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+					ActiveWidget->SetVisibility(ESlateVisibility::Visible);
 					Widget = Cast<T>(ActiveWidget);
 				}
 				else if (disableOthers)

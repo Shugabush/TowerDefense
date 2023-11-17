@@ -20,6 +20,7 @@
 #include "Materials/MaterialInterface.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 // Sets default values
 APDPlayer::APDPlayer()
@@ -82,10 +83,6 @@ void APDPlayer::BeginPlay()
 
 void APDPlayer::OnMouseClicked()
 {
-	if (ResultActor != nullptr)
-	{
-		GEngine->AddOnScreenDebugMessage(0, 1, FColor::Blue, ResultActor->GetName());
-	}
 	ChangeSelectedTower(PendingSelectedTower);
 	PlaceTower();
 }
@@ -121,15 +118,18 @@ void APDPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	PlayerController->GetMousePosition(MousePosition.X, MousePosition.Y);
-	PlayerController->GetHitResultAtScreenPosition(MousePosition, ECollisionChannel::ECC_Camera, false, Result);
-	ResultActor = Result.GetActor();
-
-	if (ActiveTower != nullptr)
+	if (GameMode->GameIsRunning())
 	{
-		UpdateTower();
+		PlayerController->GetMousePosition(MousePosition.X, MousePosition.Y);
+		PlayerController->GetHitResultAtScreenPosition(MousePosition, ECollisionChannel::ECC_Camera, false, Result);
+		ResultActor = Result.GetActor();
+
+		if (ActiveTower != nullptr)
+		{
+			UpdateTower();
+		}
+		CheckForTowerSelection();
 	}
-	CheckForTowerSelection();
 }
 
 // Called to bind functionality to input

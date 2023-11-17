@@ -33,6 +33,9 @@ protected:
 	virtual void NativeConstruct() override;
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
@@ -44,6 +47,9 @@ private:
 
 	UPROPERTY()
 		class APDTower* ParentTower;
+
+	UPROPERTY()
+		class APDPlayer* Player;
 
 	UPROPERTY()
 		class UPDUserWidget* PlayerWidget;

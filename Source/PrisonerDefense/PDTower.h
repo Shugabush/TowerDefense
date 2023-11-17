@@ -88,6 +88,8 @@ public:
 	UFUNCTION()
 		virtual void OnTowerPlaced();
 
+	int GetCurrentUpgradeIndex() const;
+
 	// Get a copy array of upgrade costs
 	TArray<int> GetUpgradeCosts() const;
 

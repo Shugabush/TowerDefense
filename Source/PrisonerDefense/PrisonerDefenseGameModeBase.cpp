@@ -30,6 +30,11 @@ bool APrisonerDefenseGameModeBase::RoundIsRunning() const
 	return PrisonersShouldSpawn;
 }
 
+bool APrisonerDefenseGameModeBase::GameIsRunning() const
+{
+	return GameRunning;
+}
+
 APDPlayer* APrisonerDefenseGameModeBase::GetPlayer() const
 {
 	return Player;
@@ -102,6 +107,8 @@ APDPrisonerCage* APrisonerDefenseGameModeBase::GetRandomPrisonerCage() const
 void APrisonerDefenseGameModeBase::StartPlay()
 {
 	Super::StartPlay();
+
+	GameRunning = true;
 
 	// Find prisoner cages
 	TArray<AActor*> FoundActors;
