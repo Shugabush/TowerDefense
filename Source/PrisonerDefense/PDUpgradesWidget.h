@@ -25,7 +25,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		bool TryGetCurrentUpgradeCost(int& UpgradeCost) const;
 
-	class APDTower* ParentTower;
+	void SetParentTower(class APDTower* NewParentTower);
 
 	void InitializeUpgradeCosts(const TArray<int>& TargetCosts);
 
@@ -41,6 +41,9 @@ private:
 		UTextBlock* UpgradeCostText;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		TArray<int> UpgradeCosts;
+
+	UPROPERTY()
+		class APDTower* ParentTower;
 
 	UPROPERTY()
 		class UPDUserWidget* PlayerWidget;

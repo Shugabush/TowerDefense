@@ -48,9 +48,18 @@ void APDTower::OnMouseExit()
 	RecieveOnMouseExit();
 }
 
-void APDTower::OnMouseDown()
+void APDTower::OnTowerSelected()
 {
-	RecieveOnMouseDown();
+	Player->GetHUD()->EnableWidget<UPDUpgradesWidget>(UPDUpgradesWidget::StaticClass(), UpgradesWidget);
+	UpgradesWidget->SetParentTower(this);
+	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
+	RecieveOnTowerSelected();
+}
+
+void APDTower::OnTowerDeselected()
+{
+	UCustomUtils::GetWorldPlayer(GetWorld(), 0)->GetHUD()->DisableWidget(UPDUpgradesWidget::StaticClass());
+	RecieveOnTowerDeselected();
 }
 
 // Called when the game starts or when spawned
@@ -59,7 +68,7 @@ void APDTower::BeginPlay()
 	Super::BeginPlay();
 
 	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
-
+	Player = GameMode->GetPlayer();
 
 	MeshData = MeshRenderData(Mesh, "Color");
 }
@@ -88,10 +97,12 @@ void APDTower::Upgrade()
 
 void APDTower::OnTowerPlaced()
 {
-	UPDUpgradesWidget* UpgradesWidget;
-	UCustomUtils::GetWorldPlayer(GetWorld(), 0)->GetHUD()->EnableWidget<UPDUpgradesWidget>(UPDUpgradesWidget::StaticClass(), UpgradesWidget);
-	UpgradesWidget->ParentTower = this;
-	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
+	OnTowerSelected();
+}
+
+TArray<int> APDTower::GetUpgradeCosts() const
+{
+	return TArray<int>(UpgradeCosts);
 }
 
 void APDTower::BlendMeshColors(FLinearColor newColor)

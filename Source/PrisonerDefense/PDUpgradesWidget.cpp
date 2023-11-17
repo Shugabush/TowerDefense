@@ -9,23 +9,18 @@
 
 void UPDUpgradesWidget::NativeConstruct()
 {
+	Super::NativeConstruct();
+
 	UpgradeCostText->SetText(FText::FromString(FString::FromInt(GetCurrentUpgradeCost()) + " Power"));
 	UpgradeButton->OnClicked.AddDynamic(this, &UPDUpgradesWidget::OnUpgradeButtonClicked);
-
-	PlayerWidget = UCustomUtils::GetWorldPlayer(GetWorld(), 0)->GetWidget();
 }
 
 void UPDUpgradesWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
-	
-	if (ParentTower == nullptr)
+	if (PlayerWidget == nullptr)
 	{
-		SetVisibility(ESlateVisibility::Hidden);
-	}
-	else
-	{
-		SetVisibility(ESlateVisibility::Visible);
+		PlayerWidget = UCustomUtils::GetWorldPlayer(GetWorld(), 0)->GetWidget();
 	}
 
 	UpgradeButton->SetIsEnabled(CanAffordNextUpgrade());
@@ -50,9 +45,23 @@ bool UPDUpgradesWidget::TryGetCurrentUpgradeCost(int& UpgradeCost) const
 	return true;
 }
 
+void UPDUpgradesWidget::SetParentTower(APDTower* NewParentTower)
+{
+	ParentTower = NewParentTower;
+	if (ParentTower != nullptr)
+	{
+		InitializeUpgradeCosts(ParentTower->GetUpgradeCosts());
+	}
+}
+
 void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int>& TargetCosts)
 {
 	UpgradeCosts = TArray<int>(TargetCosts);
+	int UpgradeCost;
+	if (TryGetCurrentUpgradeCost(UpgradeCost))
+	{
+		UpgradeCostText->SetText(FText::FromString(FString::FromInt(UpgradeCost) + " Power"));
+	}
 }
 
 void UPDUpgradesWidget::OnUpgradeButtonClicked()
@@ -80,7 +89,7 @@ void UPDUpgradesWidget::OnUpgradeButtonClicked()
 
 bool UPDUpgradesWidget::CanAffordNextUpgrade() const
 {
-	if (!UpgradeCosts.IsValidIndex(CurrentUpgradeIndex))
+	if (!UpgradeCosts.IsValidIndex(CurrentUpgradeIndex) || PlayerWidget == nullptr)
 	{
 		return false;
 	}

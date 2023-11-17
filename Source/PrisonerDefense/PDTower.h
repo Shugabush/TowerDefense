@@ -23,9 +23,6 @@ public:
 	UFUNCTION()
 		class UStaticMeshComponent* GetMesh();
 
-	UPROPERTY()
-		class APDPlayer* Player;
-
 	UFUNCTION()
 		virtual void OnMouseEnter();
 
@@ -33,8 +30,10 @@ public:
 		virtual void OnMouseExit();
 
 	UFUNCTION()
-		virtual void OnMouseDown();
+		virtual void OnTowerSelected();
 
+	UFUNCTION()
+		virtual void OnTowerDeselected();
 	
 protected:
 	// Called when the game starts or when spawned
@@ -65,10 +64,19 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnMouseExit"))
 		void RecieveOnMouseExit();
 
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnMouseDown"))
-		void RecieveOnMouseDown();
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnTowerSelected"))
+		void RecieveOnTowerSelected();
+
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnTowerDeselected"))
+		void RecieveOnTowerDeselected();
 
 	TArray<int> UpgradeCosts;
+
+	UPROPERTY()
+		class APDPlayer* Player;
+
+	UPROPERTY()
+		class UPDUpgradesWidget* UpgradesWidget;
 
 public:	
 	// Called every frame
@@ -79,6 +87,9 @@ public:
 
 	UFUNCTION()
 		virtual void OnTowerPlaced();
+
+	// Get a copy array of upgrade costs
+	TArray<int> GetUpgradeCosts() const;
 
 	void BlendMeshColors(FLinearColor newColor);
 	void SetMeshColors(FLinearColor newColor);

@@ -91,6 +91,8 @@ private:
 	UPROPERTY()
 		APDTower* SelectedTower;
 
+	void ChangeSelectedTower(APDTower* NewSelectedTower);
+
 	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;
 

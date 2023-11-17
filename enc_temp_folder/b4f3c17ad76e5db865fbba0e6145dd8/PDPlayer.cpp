@@ -82,10 +82,6 @@ void APDPlayer::BeginPlay()
 
 void APDPlayer::OnMouseClicked()
 {
-	if (ResultActor != nullptr)
-	{
-		GEngine->AddOnScreenDebugMessage(0, 1, FColor::Blue, ResultActor->GetName());
-	}
 	ChangeSelectedTower(PendingSelectedTower);
 	PlaceTower();
 }
