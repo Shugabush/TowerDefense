@@ -13,8 +13,9 @@ UCLASS()
 class PRISONERDEFENSE_API UCustomUtils : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-	
+private:
+	static TMap<UObject*, TArray<class APDPlayer*>> Players;
 public:
 	UFUNCTION()
-		static class APDPlayer* GetWorldPlayer(const UObject* WorldContextObject, const int32 PlayerIndex);
+		static APDPlayer* GetWorldPlayer(UObject* const WorldContextObject, const int32 PlayerIndex);
 };

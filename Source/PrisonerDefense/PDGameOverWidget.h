@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 
-#include "Components/Button.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 #include "Blueprint/UserWidget.h"
 #include "PDGameOverWidget.generated.h"
@@ -17,7 +15,8 @@ UCLASS()
 class PRISONERDEFENSE_API UPDGameOverWidget : public UUserWidget
 {
 	GENERATED_BODY()
-		
+public:
+	void SetResultsText(const bool victory);
 protected:
 	virtual void NativeConstruct() override;
 	
@@ -29,7 +28,10 @@ private:
 		FName MainMenuLevel;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UButton* ReplayButton;
+		class UTextBlock* ResultsText;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		class UButton* ReplayButton;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		UButton* MainMenuButton;

@@ -3,6 +3,19 @@
 
 #include "PDGameOverWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/Button.h"
+#include "Components/TextBlock.h"
+#include "Kismet/KismetSystemLibrary.h"
+
+void UPDGameOverWidget::SetResultsText(const bool victory)
+{
+	FText TargetText = FText::FromString("GAME OVER");
+	if (victory)
+	{
+		TargetText = FText::FromString("VICTORY");
+	}
+	ResultsText->SetText(TargetText);
+}
 
 void UPDGameOverWidget::NativeConstruct()
 {
