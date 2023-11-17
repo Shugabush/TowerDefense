@@ -9,6 +9,8 @@
 #include "Round.h"
 #include "PDPrisonerCage.h"
 #include "PDPlayer.h"
+#include "PDGameOverWidget.h"
+
 #include "Kismet/GameplayStatics.h"
 #include "CustomUtils.h"
 
@@ -65,7 +67,18 @@ void APrisonerDefenseGameModeBase::EndRound()
 		Widget->UpdatePower(Round.GetPowerReward());
 	}
 	RoundIndex++;
-	OnRoundChanged.Broadcast(GetCurrentRoundNumber());
+	if (GetCurrentRound(Round))
+	{
+		OnRoundChanged.Broadcast(GetCurrentRoundNumber());
+	}
+	else
+	{
+		// No more rounds to complete, so we win.
+		UPDGameOverWidget* GameOverWidget;
+		Player->GetHUD()->EnableWidget<UPDGameOverWidget>(UPDGameOverWidget::StaticClass(), GameOverWidget, true);
+		GameOverWidget->SetResultsText(true);
+		GetWorld()->GetWorldSettings()->SetTimeDilation(0);
+	}
 }
 
 int APrisonerDefenseGameModeBase::GetCurrentRoundNumber() const

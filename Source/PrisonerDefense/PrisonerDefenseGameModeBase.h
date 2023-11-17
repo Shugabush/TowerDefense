@@ -23,7 +23,6 @@ class PRISONERDEFENSE_API APrisonerDefenseGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 		APrisonerDefenseGameModeBase();
-
 private:
 	bool PrisonersShouldSpawn = false;
 
@@ -33,7 +32,8 @@ private:
 	UPROPERTY()
 		TArray<class APDPrisonerCage*> PrisonerCages;
 
-	int RoundIndex = 0;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true, ToolTip = "Starting round. Modify for testing purposes."))
+		int RoundIndex = 0;
 
 	UPROPERTY()
 		class APDPlayer* Player;

@@ -42,6 +42,7 @@ void APDExit::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		APDPlayer* Player = UCustomUtils::GetWorldPlayer(GetWorld(), 0);
 		UPDGameOverWidget* GameOverWidget = nullptr;
 		Player->GetHUD()->EnableWidget<UPDGameOverWidget>(UPDGameOverWidget::StaticClass(), GameOverWidget, true);
+		GameOverWidget->SetResultsText(false);
 		GetWorld()->GetWorldSettings()->SetTimeDilation(0);
 	}
 }
