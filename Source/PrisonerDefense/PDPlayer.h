@@ -55,6 +55,11 @@ private:
 	void ClearTower();
 	void PlaceTower();
 	void UpdateTower();
+	void CheckForTowerSelection();
+
+	FHitResult Result;
+	FVector2D MousePosition;
+	AActor* ResultActor;
 
 	void SpawnTurret();
 	void SpawnPowerGenerator();
@@ -81,6 +86,12 @@ private:
 		class APDTowerSlot* SelectedTowerSlot;
 
 	UPROPERTY()
+		APDTower* PendingSelectedTower;
+
+	UPROPERTY()
+		APDTower* SelectedTower;
+
+	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;
 
 	bool IsPaused;
@@ -90,4 +101,7 @@ private:
 
 	UPROPERTY()
 		class UPDUserWidget* Widget;
+
+	UPROPERTY()
+		class UPDUpgradesWidget* UpgradesWidget;
 };

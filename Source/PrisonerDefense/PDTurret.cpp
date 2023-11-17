@@ -39,12 +39,10 @@ void APDTurret::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TArray<int> UpgradeCosts;
 	for (FTurretUpgrade Upgrade : Upgrades)
 	{
 		UpgradeCosts.Add(Upgrade.GetPowerCost());
 	}
-	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
 	FireParticles->Deactivate();
 }
 
@@ -111,7 +109,6 @@ void APDTurret::ResetMeshColors()
 void APDTurret::OnTowerPlaced()
 {
 	Super::OnTowerPlaced();
-	Widget->SetVisibility(true);
 }
 
 void APDTurret::Upgrade()

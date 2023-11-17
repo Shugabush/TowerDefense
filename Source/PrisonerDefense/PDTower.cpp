@@ -8,8 +8,11 @@
 #include "Components/StaticMeshComponent.h"
 
 #include "PrisonerDefenseGameModeBase.h"
+#include "PDPlayer.h"
+#include "PDHUD.h"
 #include "PDUpgradesWidget.h"
 #include "MeshRenderData.h"
+#include "CustomUtils.h"
 
 #include "Kismet/GameplayStatics.h"
 #include <cassert>
@@ -26,9 +29,6 @@ APDTower::APDTower()
 
 	Mesh->AttachTo(RootComponent);
 
-	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("UpgradesWidget"));
-	Widget->AttachTo(RootComponent);
-
 	VolumeTrigger = CreateDefaultSubobject<USphereComponent>(TEXT("VolumeTrigger"));
 
 	VolumeTrigger->OnComponentBeginOverlap.AddDynamic(this, &APDTower::OnVolumeTriggerBeginOverlap);
@@ -38,6 +38,21 @@ APDTower::APDTower()
 
 }
 
+void APDTower::OnMouseEnter()
+{
+	RecieveOnMouseEnter();
+}
+
+void APDTower::OnMouseExit()
+{
+	RecieveOnMouseExit();
+}
+
+void APDTower::OnMouseDown()
+{
+	RecieveOnMouseDown();
+}
+
 // Called when the game starts or when spawned
 void APDTower::BeginPlay()
 {
@@ -45,15 +60,8 @@ void APDTower::BeginPlay()
 
 	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 
-	UpgradesWidget = Cast<UPDUpgradesWidget>(Widget->GetWidget());
-
-	assert(UpgradesWidget != nullptr && UpgradesWidget != NULL && "Failed to get upgrades widget. Maybe you need to respecify the type of widget to spawn");
-
-	UpgradesWidget->ParentTower = this;
 
 	MeshData = MeshRenderData(Mesh, "Color");
-
-	Widget->SetVisibility(false);
 }
 
 void APDTower::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -80,7 +88,10 @@ void APDTower::Upgrade()
 
 void APDTower::OnTowerPlaced()
 {
-
+	UPDUpgradesWidget* UpgradesWidget;
+	UCustomUtils::GetWorldPlayer(GetWorld(), 0)->GetHUD()->EnableWidget<UPDUpgradesWidget>(UPDUpgradesWidget::StaticClass(), UpgradesWidget);
+	UpgradesWidget->ParentTower = this;
+	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
 }
 
 void APDTower::BlendMeshColors(FLinearColor newColor)

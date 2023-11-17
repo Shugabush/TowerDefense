@@ -27,7 +27,7 @@ public:
 
 	class APDTower* ParentTower;
 
-	void InitializeUpgradeCosts(const TArray<int> TargetCosts);
+	void InitializeUpgradeCosts(const TArray<int>& TargetCosts);
 
 protected:
 	virtual void NativeConstruct() override;

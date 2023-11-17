@@ -26,6 +26,16 @@ public:
 	UPROPERTY()
 		class APDPlayer* Player;
 
+	UFUNCTION()
+		virtual void OnMouseEnter();
+
+	UFUNCTION()
+		virtual void OnMouseExit();
+
+	UFUNCTION()
+		virtual void OnMouseDown();
+
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -35,13 +45,6 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		class UStaticMeshComponent* Mesh;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		class UWidgetComponent* Widget;
-
-	UPROPERTY()
-		// Widget property as upgrades widget
-		class UPDUpgradesWidget* UpgradesWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 		class USphereComponent* VolumeTrigger;
@@ -55,6 +58,17 @@ protected:
 	int CurrentUpgradeIndex;
 
 	MeshRenderData MeshData;
+
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnMouseEnter"))
+		void RecieveOnMouseEnter();
+
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnMouseExit"))
+		void RecieveOnMouseExit();
+
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnMouseDown"))
+		void RecieveOnMouseDown();
+
+	TArray<int> UpgradeCosts;
 
 public:	
 	// Called every frame

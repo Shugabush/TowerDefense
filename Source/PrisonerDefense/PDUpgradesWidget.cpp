@@ -19,6 +19,15 @@ void UPDUpgradesWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 	
+	if (ParentTower == nullptr)
+	{
+		SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		SetVisibility(ESlateVisibility::Visible);
+	}
+
 	UpgradeButton->SetIsEnabled(CanAffordNextUpgrade());
 }
 
@@ -41,7 +50,7 @@ bool UPDUpgradesWidget::TryGetCurrentUpgradeCost(int& UpgradeCost) const
 	return true;
 }
 
-void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int> TargetCosts)
+void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int>& TargetCosts)
 {
 	UpgradeCosts = TArray<int>(TargetCosts);
 }

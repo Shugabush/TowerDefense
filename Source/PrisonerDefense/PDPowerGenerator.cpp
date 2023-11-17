@@ -42,12 +42,10 @@ void APDPowerGenerator::BeginPlay()
 
 	Timer = FCooldownTimer(1.0f / PowerPerSecond);
 
-	TArray<int> UpgradeCosts;
 	for (FPowerGeneratorUpgrade Upgrade : Upgrades)
 	{
 		UpgradeCosts.Add(Upgrade.GetPowerCost());
 	}
-	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
 }
 
 // Called every frame
@@ -73,7 +71,7 @@ void APDPowerGenerator::Tick(float DeltaTime)
 
 void APDPowerGenerator::OnTowerPlaced()
 {
-	Widget->SetVisibility(true);
+	Super::OnTowerPlaced();
 }
 
 void APDPowerGenerator::Upgrade()

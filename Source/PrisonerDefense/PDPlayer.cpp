@@ -11,6 +11,7 @@
 #include "PDTowerSlot.h"
 #include "PDHUD.h"
 #include "PDUserWidget.h"
+#include "PDUpgradesWidget.h"
 #include "PDPauseWidget.h"
 #include "PrisonerDefenseGameModeBase.h"
 #include "GameFramework/WorldSettings.h"
@@ -70,7 +71,9 @@ void APDPlayer::BeginPlay()
 	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 
 	HUD = PlayerController->GetHUD<APDHUD>();
+
 	Widget = HUD->GetWidget<UPDUserWidget>(UPDUserWidget::StaticClass());
+	UpgradesWidget = HUD->GetWidget<UPDUpgradesWidget>(UPDUpgradesWidget::StaticClass());
 
 	PlayerController->bShowMouseCursor = true;
 
@@ -80,6 +83,7 @@ void APDPlayer::BeginPlay()
 void APDPlayer::OnMouseClicked()
 {
 	PlaceTower();
+	SelectedTower = PendingSelectedTower;
 }
 
 void APDPlayer::OnPauseButtonPressed()
@@ -113,10 +117,15 @@ void APDPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	PlayerController->GetMousePosition(MousePosition.X, MousePosition.Y);
+	PlayerController->GetHitResultAtScreenPosition(MousePosition, ECollisionChannel::ECC_Camera, false, Result);
+	ResultActor = Result.GetActor();
+
 	if (ActiveTower != nullptr)
 	{
 		UpdateTower();
 	}
+	CheckForTowerSelection();
 }
 
 // Called to bind functionality to input
@@ -183,20 +192,11 @@ void APDPlayer::UpdateTower()
 	// Make sure ActiveObject doesn't block camera raycasts
 	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Ignore);
 
-	FHitResult result;
-	FVector2D mousePos;
-
-	PlayerController->GetMousePosition(mousePos.X, mousePos.Y);
-
-	PlayerController->GetHitResultAtScreenPosition(mousePos, ECollisionChannel::ECC_Camera, false, result);
-
-	AActor* resultActor = result.GetActor();
-
-	if (resultActor != nullptr)
+	if (ResultActor != nullptr)
 	{
-		ActiveTower->SetActorLocation(result.ImpactPoint);
+		ActiveTower->SetActorLocation(Result.ImpactPoint);
 
-		SelectedTowerSlot = Cast<APDTowerSlot>(resultActor);
+		SelectedTowerSlot = Cast<APDTowerSlot>(ResultActor);
 	}
 	else
 	{
@@ -206,6 +206,27 @@ void APDPlayer::UpdateTower()
 	FLinearColor targetColor = SelectedTowerSlot != nullptr ? FLinearColor::White : FLinearColor::Red;
 
 	ActiveTower->BlendMeshColors(targetColor);
+}
+
+void APDPlayer::CheckForTowerSelection()
+{
+	APDTower* LastPendingSelectedTower = PendingSelectedTower;
+	if (ResultActor != nullptr)
+	{
+		PendingSelectedTower = Cast<APDTower>(ResultActor);
+
+		if (PendingSelectedTower != LastPendingSelectedTower)
+		{
+			if (PendingSelectedTower != nullptr)
+			{
+				PendingSelectedTower->OnMouseEnter();	
+			}
+			if (LastPendingSelectedTower != nullptr)
+			{
+				LastPendingSelectedTower->OnMouseExit();
+			}
+		}
+	}
 }
 
 void APDPlayer::SpawnPowerGenerator()
