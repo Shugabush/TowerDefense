@@ -39,6 +39,29 @@ UPDUserWidget* APDPlayer::GetWidget() const
 	return Widget;
 }
 
+APDHUD* APDPlayer::GetHUD() const
+{
+	return HUD;
+}
+
+APrisonerDefenseGameModeBase* APDPlayer::GetGameMode()
+{
+	if (GameMode == nullptr)
+	{
+		GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	}
+	return GameMode;
+}
+
+APlayerController* APDPlayer::GetPlayerController()
+{
+	if (PlayerController == nullptr)
+	{
+		PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	}
+	return PlayerController;
+}
+
 // Called when the game starts or when spawned
 void APDPlayer::BeginPlay()
 {
@@ -63,23 +86,24 @@ void APDPlayer::OnPauseButtonPressed()
 {
 	if (HUD != nullptr)
 	{
-		TSubclassOf<UUserWidget> PauseWidget = UPDPauseWidget::StaticClass();
+		TSubclassOf<UPDPauseWidget> PauseWidgetClass = UPDPauseWidget::StaticClass();
+		UPDPauseWidget* PauseWidget = nullptr;
 
 		if (PlayerController->IsPaused())
 		{
 			// Resume
-			HUD->DisableWidget(PauseWidget);
+			HUD->DisableWidget(PauseWidgetClass);
 			GetWorld()->GetWorldSettings()->SetTimeDilation(1);
 			PlayerController->SetPause(false);
-			PauseWidget->GetDefaultObject<UPDPauseWidget>()->Resume();
+			PauseWidgetClass->GetDefaultObject<UPDPauseWidget>()->Resume();
 		}
 		else
 		{
 			// Pause
-			HUD->EnableWidget(PauseWidget);
+			HUD->EnableWidget<UPDPauseWidget>(UPDPauseWidget::StaticClass(), PauseWidget, false);
 			GetWorld()->GetWorldSettings()->SetTimeDilation(0);
 			PlayerController->SetPause(true);
-			PauseWidget->GetDefaultObject<UPDPauseWidget>()->Pause();
+			PauseWidgetClass->GetDefaultObject<UPDPauseWidget>()->Pause();
 		}
 	}
 }
@@ -223,11 +247,6 @@ void APDPlayer::OnPowerGeneratorButtonClicked()
 	{
 		SpawnPowerGenerator();
 	}
-}
-
-APrisonerDefenseGameModeBase* APDPlayer::GetGameMode() const
-{
-	return GameMode;
 }
 
 bool APDPlayer::HasTurret() const

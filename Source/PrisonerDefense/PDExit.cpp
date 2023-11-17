@@ -4,6 +4,10 @@
 #include "PDExit.h"
 
 #include "PDPrisoner.h"
+#include "PDPlayer.h"
+#include "PDHUD.h"
+#include "PDGameOverWidget.h"
+#include "CustomUtils.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -35,7 +39,10 @@ void APDExit::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	if (prisoner != nullptr)
 	{
 		// A prisoner made it to the exit, so we lose the game
-		UGameplayStatics::OpenLevel(this, TEXT("GameOverScreen"));
+		APDPlayer* Player = UCustomUtils::GetWorldPlayer(GetWorld(), 0);
+		UPDGameOverWidget* GameOverWidget = nullptr;
+		Player->GetHUD()->EnableWidget<UPDGameOverWidget>(UPDGameOverWidget::StaticClass(), GameOverWidget, true);
+		GetWorld()->GetWorldSettings()->SetTimeDilation(0);
 	}
 }
 

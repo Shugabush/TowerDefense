@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 
-#include "PDUserWidget.h"
 
 #include "Blueprint/UserWidget.h"
 #include "GameFramework/HUD.h"
@@ -21,6 +20,27 @@ class PRISONERDEFENSE_API APDHUD : public AHUD
 
 public:
 	void EnableWidget(TSubclassOf<UUserWidget> WidgetClass, bool disableOthers = false);
+
+	template<typename T>
+	void EnableWidget(TSubclassOf<T> WidgetClass, T*& Widget, bool disableOthers = false)
+	{
+		for (auto ActiveWidget : ActiveWidgets)
+		{
+			if (ActiveWidget != nullptr)
+			{
+				if (ActiveWidget->IsA(WidgetClass))
+				{
+					ActiveWidget->SetVisibility(ESlateVisibility::Visible);
+					Widget = Cast<T>(ActiveWidget);
+				}
+				else if (disableOthers)
+				{
+					ActiveWidget->SetVisibility(ESlateVisibility::Hidden);
+				}
+			}
+		}
+	}
+
 	void EnableWidgets(TArray<TSubclassOf<UUserWidget>> WidgetClasses, bool disableOthers = false);
 
 	void DisableWidget(TSubclassOf<UUserWidget> WidgetClass);

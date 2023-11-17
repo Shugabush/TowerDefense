@@ -19,6 +19,15 @@ public:
 	UFUNCTION()
 		class UPDUserWidget* GetWidget() const;
 
+	UFUNCTION()
+		class APDHUD* GetHUD() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		class APrisonerDefenseGameModeBase* GetGameMode();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		class APlayerController* GetPlayerController();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,9 +47,6 @@ public:
 
 	UFUNCTION()
 		void OnPowerGeneratorButtonClicked();
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-		class APrisonerDefenseGameModeBase* GetGameMode() const;
 
 	bool HasTurret() const;
 	bool HasPowerGenerator() const;
