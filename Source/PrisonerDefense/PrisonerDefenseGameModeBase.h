@@ -16,6 +16,8 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRoundChangedSignature, int, NewRound);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundStartedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundEndedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnVictorySignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLossSignature);
 
 UCLASS()
 class PRISONERDEFENSE_API APrisonerDefenseGameModeBase : public AGameModeBase
@@ -56,6 +58,8 @@ public:
 	FOnRoundChangedSignature OnRoundChanged;
 	FOnRoundStartedSignature OnRoundStarted;
 	FOnRoundStartedSignature OnRoundEnded;
+	FOnVictorySignature OnVictory;
+	FOnLossSignature OnLoss;
 
 	int GetNewMaxHealth() const;
 
@@ -77,4 +81,7 @@ public:
 	virtual void StartPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
+
+	void Victory();
+	void Loss();
 };

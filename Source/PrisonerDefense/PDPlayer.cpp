@@ -79,6 +79,9 @@ void APDPlayer::BeginPlay()
 	PlayerController->bShowMouseCursor = true;
 
 	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	GameMode->OnVictory.AddDynamic(this, &APDPlayer::ClearTower);
+	GameMode->OnLoss.AddDynamic(this, &APDPlayer::ClearTower);
 }
 
 void APDPlayer::OnMouseClicked()

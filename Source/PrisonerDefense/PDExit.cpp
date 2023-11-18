@@ -7,6 +7,7 @@
 #include "PDPlayer.h"
 #include "PDHUD.h"
 #include "PDGameOverWidget.h"
+#include "PrisonerDefenseGameModeBase.h"
 #include "CustomUtils.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -44,6 +45,7 @@ void APDExit::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		Player->GetHUD()->EnableWidget<UPDGameOverWidget>(UPDGameOverWidget::StaticClass(), GameOverWidget, true);
 		GameOverWidget->SetResultsText(false);
 		GetWorld()->GetWorldSettings()->SetTimeDilation(0);
+		Player->GetGameMode()->Loss();
 	}
 }
 

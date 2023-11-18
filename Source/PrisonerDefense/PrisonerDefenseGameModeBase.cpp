@@ -83,6 +83,7 @@ void APrisonerDefenseGameModeBase::EndRound()
 		Player->GetHUD()->EnableWidget<UPDGameOverWidget>(UPDGameOverWidget::StaticClass(), GameOverWidget, true);
 		GameOverWidget->SetResultsText(true);
 		GetWorld()->GetWorldSettings()->SetTimeDilation(0);
+		Player->GetGameMode()->Victory();
 	}
 }
 
@@ -145,5 +146,15 @@ void APrisonerDefenseGameModeBase::Tick(float DeltaTime)
 			Rounds[RoundIndex].Tick(DeltaTime);
 		}
 	}
+}
+
+void APrisonerDefenseGameModeBase::Victory()
+{
+	OnVictory.Broadcast();
+}
+
+void APrisonerDefenseGameModeBase::Loss()
+{
+	OnLoss.Broadcast();
 }
 

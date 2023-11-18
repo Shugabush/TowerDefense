@@ -52,7 +52,8 @@ public:
 	bool HasPowerGenerator() const;
 
 private:
-	void ClearTower();
+	UFUNCTION()
+		void ClearTower();
 	void PlaceTower();
 	void UpdateTower();
 	void CheckForTowerSelection();

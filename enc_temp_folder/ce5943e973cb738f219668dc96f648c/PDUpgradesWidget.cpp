@@ -83,7 +83,6 @@ void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int>& TargetCosts)
 	if (TryGetCurrentUpgradeCost(UpgradeCost))
 	{
 		UpgradeCostText->SetText(FText::FromString(FString::FromInt(UpgradeCost) + " Power"));
-		UpgradeButton->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
