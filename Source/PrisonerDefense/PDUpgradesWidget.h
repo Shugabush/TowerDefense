@@ -29,6 +29,8 @@ public:
 
 	void InitializeUpgradeCosts(const TArray<int>& TargetCosts);
 
+	void SetDescription(FText Description);
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -42,6 +44,10 @@ private:
 		UButton* UpgradeButton;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		UTextBlock* UpgradeCostText;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		UTextBlock* UpgradeDescription;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		TArray<int> UpgradeCosts;
 

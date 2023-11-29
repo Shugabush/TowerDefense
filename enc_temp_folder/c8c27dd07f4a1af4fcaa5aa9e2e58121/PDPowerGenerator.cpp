@@ -53,9 +53,9 @@ FText APDPowerGenerator::GetUpgradeDescription() const
 	FPowerGeneratorUpgrade Upgrade;
 	if (!TryGetCurrentUpgrade(Upgrade))
 	{
-		return FText::FromString("Max Level");
+		return FText();
 	}
-	return FText::FromString(FString::FromInt(PowerPerSecond) + "->" + FString::FromInt(Upgrade.GetNewPowerPerSecond()) + " per second");
+	return FText::FromString(FString::FromInt(PowerPerSecond) + " per second" + "->" + FString::FromInt(Upgrade.GetNewPowerPerSecond()));
 }
 
 // Called every frame

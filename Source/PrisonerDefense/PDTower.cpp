@@ -53,6 +53,7 @@ void APDTower::OnTowerSelected()
 	Player->GetHUD()->EnableWidget<UPDUpgradesWidget>(UPDUpgradesWidget::StaticClass(), UpgradesWidget);
 	UpgradesWidget->SetParentTower(this);
 	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
+	UpgradesWidget->SetDescription(GetUpgradeDescription());
 	RecieveOnTowerSelected();
 }
 
@@ -83,6 +84,11 @@ void APDTower::OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponen
 
 }
 
+FText APDTower::GetUpgradeDescription() const
+{
+	return FText();
+}
+
 // Called every frame
 void APDTower::Tick(float DeltaTime)
 {
@@ -93,6 +99,8 @@ void APDTower::Tick(float DeltaTime)
 void APDTower::Upgrade()
 {
 	CurrentUpgradeIndex++;
+	UpgradesWidget->SetDescription(GetUpgradeDescription());
+	RecieveUpgrade();
 }
 
 void APDTower::OnTowerPlaced()

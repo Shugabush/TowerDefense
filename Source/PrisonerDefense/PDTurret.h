@@ -40,6 +40,9 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		float RotationLerpSpeed = 5;
+
+	virtual FText GetUpgradeDescription() const override;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

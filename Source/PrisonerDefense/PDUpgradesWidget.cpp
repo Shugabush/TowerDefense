@@ -87,6 +87,11 @@ void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int>& TargetCosts)
 	}
 }
 
+void UPDUpgradesWidget::SetDescription(FText Description)
+{
+	UpgradeDescription->SetText(Description);
+}
+
 void UPDUpgradesWidget::OnUpgradeButtonClicked()
 {
 	int UpgradeCost;

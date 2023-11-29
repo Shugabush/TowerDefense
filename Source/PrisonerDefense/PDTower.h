@@ -54,6 +54,9 @@ protected:
 	UFUNCTION()
 		virtual void OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	UFUNCTION()
+		virtual FText GetUpgradeDescription() const;
+
 	int CurrentUpgradeIndex;
 
 	MeshRenderData MeshData;
@@ -66,6 +69,9 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnTowerSelected"))
 		void RecieveOnTowerSelected();
+
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Upgrade"))
+		void RecieveUpgrade();
 
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnTowerDeselected"))
 		void RecieveOnTowerDeselected();

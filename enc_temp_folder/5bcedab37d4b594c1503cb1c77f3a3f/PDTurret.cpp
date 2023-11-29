@@ -51,9 +51,9 @@ FText APDTurret::GetUpgradeDescription() const
 	FTurretUpgrade Upgrade;
 	if (!TryGetCurrentUpgrade(Upgrade))
 	{
-		return FText::FromString("Max Level");
+		return FText();
 	}
-	return FText::FromString("Shoots every " + FString::SanitizeFloat(BulletSpawnTimer.TimeLimit) + "->" +
+	return FText::FromString("Shoots every " + FString::SanitizeFloat(BulletSpawnTimer.TimeLimit) + " seconds" + "->" +
 											FString::SanitizeFloat(Upgrade.GetNewBulletSpawnTimer().TimeLimit) + " seconds");
 }
 
