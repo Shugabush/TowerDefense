@@ -51,8 +51,6 @@ public:
 	void SetMeshColors(FLinearColor newColor);
 	void ResetMeshColors();
 
-	virtual void OnTowerPlaced() override;
-
 	virtual void Upgrade() override;
 
 	FQuat TargetRotation;

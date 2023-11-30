@@ -117,11 +117,6 @@ void APDTurret::ResetMeshColors()
 	MeshData.ResetColors();
 }
 
-void APDTurret::OnTowerPlaced()
-{
-	Super::OnTowerPlaced();
-}
-
 void APDTurret::Upgrade()
 {
 	FTurretUpgrade Upgrade;
@@ -140,6 +135,12 @@ APDPrisoner* APDTurret::GetClosestTarget() const
 	for (size_t i = 0; i < LookAtTargets.Num(); i++)
 	{
 		APDPrisoner* target = LookAtTargets[i];
+		
+		// Don't use any defeated prisoners as look targets
+		if (target->IsDefeated())
+		{
+			continue;
+		}
 
 		float dstToTarget = FVector::Dist(GetActorLocation(), target->GetActorLocation());
 		if (dstToTarget < closestDst)
