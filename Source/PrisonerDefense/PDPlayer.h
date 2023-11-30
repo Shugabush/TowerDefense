@@ -28,12 +28,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		class APlayerController* GetPlayerController();
 
+	virtual void TogglePause();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	virtual void OnMouseClicked();
-	virtual void OnPauseButtonPressed();
 
 public:	
 	// Called every frame

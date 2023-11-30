@@ -64,6 +64,32 @@ APlayerController* APDPlayer::GetPlayerController()
 	return PlayerController;
 }
 
+void APDPlayer::TogglePause()
+{
+	if (HUD != nullptr)
+	{
+		TSubclassOf<UPDPauseWidget> PauseWidgetClass = UPDPauseWidget::StaticClass();
+		UPDPauseWidget* PauseWidget = nullptr;
+
+		if (PlayerController->IsPaused())
+		{
+			// Resume
+			HUD->DisableWidget(PauseWidgetClass);
+			GetWorld()->GetWorldSettings()->SetTimeDilation(1);
+			PlayerController->SetPause(false);
+			PauseWidgetClass->GetDefaultObject<UPDPauseWidget>()->Resume();
+		}
+		else
+		{
+			// Pause
+			HUD->EnableWidget<UPDPauseWidget>(UPDPauseWidget::StaticClass(), PauseWidget, false);
+			GetWorld()->GetWorldSettings()->SetTimeDilation(0);
+			PlayerController->SetPause(true);
+			PauseWidgetClass->GetDefaultObject<UPDPauseWidget>()->Pause();
+		}
+	}
+}
+
 // Called when the game starts or when spawned
 void APDPlayer::BeginPlay()
 {
@@ -88,32 +114,6 @@ void APDPlayer::OnMouseClicked()
 {
 	ChangeSelectedTower(PendingSelectedTower);
 	PlaceTower();
-}
-
-void APDPlayer::OnPauseButtonPressed()
-{
-	if (HUD != nullptr)
-	{
-		TSubclassOf<UPDPauseWidget> PauseWidgetClass = UPDPauseWidget::StaticClass();
-		UPDPauseWidget* PauseWidget = nullptr;
-
-		if (PlayerController->IsPaused())
-		{
-			// Resume
-			HUD->DisableWidget(PauseWidgetClass);
-			GetWorld()->GetWorldSettings()->SetTimeDilation(1);
-			PlayerController->SetPause(false);
-			PauseWidgetClass->GetDefaultObject<UPDPauseWidget>()->Resume();
-		}
-		else
-		{
-			// Pause
-			HUD->EnableWidget<UPDPauseWidget>(UPDPauseWidget::StaticClass(), PauseWidget, false);
-			GetWorld()->GetWorldSettings()->SetTimeDilation(0);
-			PlayerController->SetPause(true);
-			PauseWidgetClass->GetDefaultObject<UPDPauseWidget>()->Pause();
-		}
-	}
 }
 
 // Called every frame
@@ -141,7 +141,7 @@ void APDPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	InputComponent->BindAction("MouseLeftClick", IE_Pressed, this, &APDPlayer::OnMouseClicked);
-	InputComponent->BindAction("PauseButton", IE_Pressed, this, &APDPlayer::OnPauseButtonPressed).bExecuteWhenPaused = true;
+	InputComponent->BindAction("PauseButton", IE_Pressed, this, &APDPlayer::TogglePause).bExecuteWhenPaused = true;
 }
 
 void APDPlayer::ClearTower()

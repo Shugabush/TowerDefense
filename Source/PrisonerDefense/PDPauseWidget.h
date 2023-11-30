@@ -36,4 +36,7 @@ private:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		UButton* QuitButton;
+
+	UPROPERTY()
+		class APDPlayer* Player;
 };
