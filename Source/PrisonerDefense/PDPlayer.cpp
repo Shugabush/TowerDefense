@@ -112,6 +112,7 @@ void APDPlayer::BeginPlay()
 
 void APDPlayer::OnMouseClicked()
 {
+	ChangeSelectedTower(PendingSelectedTower);
 	PlaceTower();
 }
 
@@ -129,7 +130,7 @@ void APDPlayer::Tick(float DeltaTime)
 		if (ActiveTower != nullptr)
 		{
 			UpdateTower();
-			ResultActor = ActiveTower;
+			PendingSelectedTower = ActiveTower;
 		}
 		else
 		{
@@ -192,7 +193,6 @@ void APDPlayer::PlaceTower()
 	SelectedTowerSlot->Tower = ActiveTower;
 	ActiveTower->ParentSlot = SelectedTowerSlot;
 	ActiveTower->OnTowerPlaced();
-	ChangeSelectedTower(ActiveTower);
 
 	ActiveTower = nullptr;
 	SelectedTowerSlot = nullptr;
