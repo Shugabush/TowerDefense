@@ -46,7 +46,13 @@ FText APDTurret::GetUpgradeDescription() const
 		float NewCooldown = Upgrade.GetNewAttackCooldown().TimeLimit;
 
 		Description = "Shoots every " + FString::SanitizeFloat(CurrentCooldown) + "->" +
-			FString::SanitizeFloat(NewCooldown) + " seconds" + "\n (" + FString::SanitizeFloat(1.f / NewCooldown) + " times per second)";
+			FString::SanitizeFloat(NewCooldown) + " seconds";
+
+		float DeltaTime = FApp::GetDeltaTime();
+		if (NewCooldown <= DeltaTime)
+		{
+			Description += " (" + FString::FromInt(NewCooldown / DeltaTime) + " bullets per second)";
+		}
 	}
 	return FText::FromString(Description);
 }

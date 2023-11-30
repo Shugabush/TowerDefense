@@ -34,6 +34,9 @@ public:
 
 	UFUNCTION()
 		virtual void OnTowerDeselected(APDTower* NewSelectedTower);
+
+	UFUNCTION()
+		virtual FText GetUpgradeDescription() const;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -59,9 +62,6 @@ protected:
 
 	UFUNCTION()
 		virtual void OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-	UFUNCTION()
-		virtual FText GetUpgradeDescription() const;
 
 	int CurrentUpgradeIndex;
 

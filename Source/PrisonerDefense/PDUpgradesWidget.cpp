@@ -140,6 +140,23 @@ void UPDUpgradesWidget::SwipeOut()
 	}
 }
 
+void UPDUpgradesWidget::UpdateDisplay()
+{
+	SetDescription(ParentTower->GetUpgradeDescription());
+
+	int NewUpgradeCost;
+
+	if (TryGetCurrentUpgradeCost(NewUpgradeCost))
+	{
+		UpgradeCostText->SetText(FText::FromString(FString::FromInt(NewUpgradeCost) + " Power"));
+	}
+	else
+	{
+		UpgradeCostText->SetText(FText::GetEmpty());
+		UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
 void UPDUpgradesWidget::OnUpgradeButtonClicked()
 {
 	int UpgradeCost;

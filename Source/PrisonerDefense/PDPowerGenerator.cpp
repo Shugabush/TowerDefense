@@ -35,6 +35,16 @@ UStaticMeshComponent* APDPowerGenerator::GetMesh() const
 	return Mesh;
 }
 
+FText APDPowerGenerator::GetUpgradeDescription() const
+{
+	FPowerGeneratorUpgrade Upgrade;
+	if (!TryGetCurrentUpgrade(Upgrade))
+	{
+		return FText::FromString("Max Level");
+	}
+	return FText::FromString(FString::FromInt(PowerPerSecond) + "->" + FString::FromInt(Upgrade.GetNewPowerPerSecond()) + " per second");
+}
+
 // Called when the game starts or when spawned
 void APDPowerGenerator::BeginPlay()
 {
@@ -48,16 +58,6 @@ void APDPowerGenerator::BeginPlay()
 	}
 }
 
-FText APDPowerGenerator::GetUpgradeDescription() const
-{
-	FPowerGeneratorUpgrade Upgrade;
-	if (!TryGetCurrentUpgrade(Upgrade))
-	{
-		return FText::FromString("Max Level");
-	}
-	return FText::FromString(FString::FromInt(PowerPerSecond) + "->" + FString::FromInt(Upgrade.GetNewPowerPerSecond()) + " per second");
-}
-
 // Called every frame
 void APDPowerGenerator::Tick(float DeltaTime)
 {
@@ -66,15 +66,25 @@ void APDPowerGenerator::Tick(float DeltaTime)
 	// If parent slot is not nullptr, then we've actually placed this power generator down
 	if (Player->GetGameMode()->RoundIsRunning() && ParentSlot != nullptr)
 	{
-		if (Timer.OutOfTime())
+		float Fps = 1.f / DeltaTime;
+
+		if (PowerPerSecond > Fps)
 		{
-			// Update power
-			Player->GetWidget()->UpdatePower(1);
-			Timer.Reset();
+			// If power per second is more than fps, than we need to add more than one power on at least some frames
+			Player->GetWidget()->UpdatePower(PowerPerSecond / Fps);
 		}
 		else
 		{
-			Timer.Tick(DeltaTime);
+			if (Timer.OutOfTime())
+			{
+				// Update power
+				Player->GetWidget()->UpdatePower(1);
+				Timer.Reset();
+			}
+			else
+			{
+				Timer.Tick(DeltaTime);
+			}
 		}
 	}
 }

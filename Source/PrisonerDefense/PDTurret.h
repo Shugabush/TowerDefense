@@ -17,12 +17,12 @@ struct FTurretUpgrade
 	GENERATED_BODY()
 public:
 	int GetPowerCost() const;
-	FCooldownTimer GetNewBulletSpawnTimer() const;
+	FCooldownTimer GetNewAttackCooldown() const;
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		int PowerCost = 100;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		FCooldownTimer NewBulletSpawnTimer;
+		FCooldownTimer NewAttackCooldown;
 };
 
 UCLASS()
@@ -34,14 +34,14 @@ public:
 	// Sets default values for this actor's properties
 	APDTurret();
 
+	virtual FText GetUpgradeDescription() const override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		float RotationLerpSpeed = 5;
-
-	virtual FText GetUpgradeDescription() const override;
 
 public:	
 	// Called every frame
@@ -65,7 +65,7 @@ private:
 		TSubclassOf<class APDBullet> BulletBlueprint;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		FCooldownTimer BulletSpawnTimer;
+		FCooldownTimer AttackCooldown;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		TArray<FTurretUpgrade> Upgrades;

@@ -63,7 +63,7 @@ void APDTower::OnTowerSelected(APDTower* PreviouslySelectedTower)
 	Player->GetHUD()->EnableWidget<UPDUpgradesWidget>(UPDUpgradesWidget::StaticClass(), UpgradesWidget);
 	UpgradesWidget->SetParentTower(this);
 	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
-	UpgradesWidget->SetDescription(GetUpgradeDescription());
+	UpgradesWidget->UpdateDisplay();
 	if (PreviouslySelectedTower == nullptr)
 	{
 		UpgradesWidget->SwipeIn();
@@ -79,6 +79,11 @@ void APDTower::OnTowerDeselected(APDTower* NewSelectedTower)
 		UpgradesWidget->SwipeOut();
 	}
 	RecieveOnTowerDeselected(NewSelectedTower);
+}
+
+FText APDTower::GetUpgradeDescription() const
+{
+	return FText();
 }
 
 // Called when the game starts or when spawned
@@ -100,11 +105,6 @@ void APDTower::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedCompon
 void APDTower::OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 
-}
-
-FText APDTower::GetUpgradeDescription() const
-{
-	return FText();
 }
 
 // Called every frame

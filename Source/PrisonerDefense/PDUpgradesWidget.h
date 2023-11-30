@@ -34,6 +34,8 @@ public:
 	void SwipeIn();
 	void SwipeOut();
 
+	void UpdateDisplay();
+
 protected:
 	virtual void NativeConstruct() override;
 
