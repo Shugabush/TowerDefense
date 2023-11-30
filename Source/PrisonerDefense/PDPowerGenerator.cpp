@@ -79,11 +79,6 @@ void APDPowerGenerator::Tick(float DeltaTime)
 	}
 }
 
-void APDPowerGenerator::OnTowerPlaced()
-{
-	Super::OnTowerPlaced();
-}
-
 void APDPowerGenerator::Upgrade()
 {
 	FPowerGeneratorUpgrade Upgrade;

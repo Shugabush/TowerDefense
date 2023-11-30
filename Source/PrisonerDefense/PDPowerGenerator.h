@@ -46,17 +46,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void OnTowerPlaced() override;
-
 	virtual void Upgrade() override;
 	
 private:
 	FCooldownTimer Timer;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		TArray<FPowerGeneratorUpgrade> Upgrades;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		int PowerPerSecond = 2;
 
 	bool TryGetCurrentUpgrade(FPowerGeneratorUpgrade& Upgrade) const;

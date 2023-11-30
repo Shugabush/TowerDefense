@@ -131,7 +131,7 @@ void APDPlayer::Tick(float DeltaTime)
 	{
 		PlayerController->GetMousePosition(MousePosition.X, MousePosition.Y);
 		PlayerController->GetHitResultAtScreenPosition(MousePosition, ECollisionChannel::ECC_Camera, false, Result);
-		ResultActor = Result.GetActor();
+		ResultActor = Result.GetComponent()->GetAttachmentRootActor();
 
 		if (ActiveTower != nullptr)
 		{

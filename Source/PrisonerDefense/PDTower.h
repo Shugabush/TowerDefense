@@ -42,11 +42,17 @@ protected:
 	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		class UStaticMeshComponent* Mesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		class USphereComponent* VolumeTrigger;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		class USphereComponent* SelectionRadius;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		UStaticMeshComponent* RangeIndicator;
 
 	UFUNCTION()
 		virtual void OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

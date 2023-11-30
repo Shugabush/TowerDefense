@@ -61,7 +61,9 @@ private:
 
 	FHitResult Result;
 	FVector2D MousePosition;
-	AActor* ResultActor;
+
+	UPROPERTY()
+		AActor* ResultActor;
 
 	void SpawnTurret();
 	void SpawnPowerGenerator();

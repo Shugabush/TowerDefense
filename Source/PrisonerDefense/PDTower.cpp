@@ -23,9 +23,9 @@ APDTower::APDTower()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 	Mesh->AttachTo(RootComponent);
 
@@ -36,20 +36,30 @@ APDTower::APDTower()
 
 	VolumeTrigger->AttachTo(RootComponent);
 
+	SelectionRadius = CreateDefaultSubobject<USphereComponent>("SelectionRadius");
+	SelectionRadius->AttachTo(RootComponent);
+	SelectionRadius->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+
+	RangeIndicator = CreateDefaultSubobject<UStaticMeshComponent>("RangeIndicator");
+	RangeIndicator->AttachTo(RootComponent);
+	RangeIndicator->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 }
 
 void APDTower::OnMouseEnter()
 {
+	RangeIndicator->SetVisibility(true);
 	RecieveOnMouseEnter();
 }
 
 void APDTower::OnMouseExit()
 {
+	RangeIndicator->SetVisibility(false);
 	RecieveOnMouseExit();
 }
 
 void APDTower::OnTowerSelected(APDTower* PreviouslySelectedTower)
 {
+	RangeIndicator->SetVisibility(true);
 	Player->GetHUD()->EnableWidget<UPDUpgradesWidget>(UPDUpgradesWidget::StaticClass(), UpgradesWidget);
 	UpgradesWidget->SetParentTower(this);
 	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
@@ -63,6 +73,7 @@ void APDTower::OnTowerSelected(APDTower* PreviouslySelectedTower)
 
 void APDTower::OnTowerDeselected(APDTower* NewSelectedTower)
 {
+	RangeIndicator->SetVisibility(false);
 	if (NewSelectedTower == nullptr)
 	{
 		UpgradesWidget->SwipeOut();
@@ -112,7 +123,8 @@ void APDTower::Upgrade()
 
 void APDTower::OnTowerPlaced()
 {
-
+	// Make the selection radius detectable from the camera
+	SelectionRadius->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Block);
 }
 
 int APDTower::GetCurrentUpgradeIndex() const
