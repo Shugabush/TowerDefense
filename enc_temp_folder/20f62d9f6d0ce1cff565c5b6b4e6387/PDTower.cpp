@@ -50,7 +50,6 @@ void APDTower::OnMouseExit()
 
 void APDTower::OnTowerSelected()
 {
-	Player->GetHUD()->EnableWidget<UPDUpgradesWidget>(UPDUpgradesWidget::StaticClass(), UpgradesWidget);
 	UpgradesWidget->SetParentTower(this);
 	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
 	UpgradesWidget->SetDescription(GetUpgradeDescription());

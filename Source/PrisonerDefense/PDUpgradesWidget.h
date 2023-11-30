@@ -31,8 +31,15 @@ public:
 
 	void SetDescription(FText Description);
 
+	void SwipeIn();
+	void SwipeOut();
+
 protected:
 	virtual void NativeConstruct() override;
+
+	void AssignAnimations();
+
+	TMap<FString, UWidgetAnimation*> Animations;
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 

@@ -14,6 +14,38 @@ void UPDUpgradesWidget::NativeConstruct()
 
 	UpgradeCostText->SetText(FText::FromString(FString::FromInt(GetCurrentUpgradeCost()) + " Power"));
 	UpgradeButton->OnClicked.AddDynamic(this, &UPDUpgradesWidget::OnUpgradeButtonClicked);
+	AssignAnimations();
+}
+
+void UPDUpgradesWidget::AssignAnimations()
+{
+	UProperty* prop = GetClass()->PropertyLink;
+
+	// Run through all properties of this class to find any widget animations
+	while (prop != nullptr)
+	{
+		if (prop->GetClass() == UObjectProperty::StaticClass())
+		{
+			UObjectProperty* objectProp = Cast<UObjectProperty>(prop);
+
+			// Only want the properties that are widget animations
+			if (objectProp->PropertyClass == UWidgetAnimation::StaticClass())
+			{
+				UObject* object = objectProp->GetObjectPropertyValue_InContainer(this);
+
+				UWidgetAnimation* widgetAnim = Cast<UWidgetAnimation>(object);
+
+				if (widgetAnim != nullptr)
+				{
+					FString animName;
+					widgetAnim->GetName(animName);
+					Animations.Add(animName, widgetAnim);
+				}
+			}
+		}
+
+		prop = prop->PropertyLinkNext;
+	}
 }
 
 void UPDUpgradesWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -90,6 +122,22 @@ void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int>& TargetCosts)
 void UPDUpgradesWidget::SetDescription(FText Description)
 {
 	UpgradeDescription->SetText(Description);
+}
+
+void UPDUpgradesWidget::SwipeIn()
+{
+	if (Animations.Contains("SwipeIn_INST"))
+	{
+		PlayAnimation(Animations["SwipeIn_INST"]);
+	}
+}
+
+void UPDUpgradesWidget::SwipeOut()
+{
+	if (Animations.Contains("SwipeOut_INST"))
+	{
+		PlayAnimation(Animations["SwipeOut_INST"]);
+	}
 }
 
 void UPDUpgradesWidget::OnUpgradeButtonClicked()
