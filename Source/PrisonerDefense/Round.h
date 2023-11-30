@@ -24,12 +24,17 @@ public:
 
 	int GetPowerReward() const;
 	int GetMaxHealth() const;
+	int GetMovementSpeed() const;
 
 	void Tick(float DeltaTime);
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		// Max health for prisoners this round
 		int MaxHealth = 2;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		// Movement speed for prisoners this round
+		int MovementSpeed = 100;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		// How many prisoners to spawn this round

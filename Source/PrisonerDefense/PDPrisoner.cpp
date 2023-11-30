@@ -47,7 +47,6 @@ void APDPrisoner::Damage(int Damage)
 void APDPrisoner::OnDefeat()
 {
 	Defeated = true;
-	//Destroy();
 }
 
 // Called when the game starts or when spawned
@@ -59,6 +58,7 @@ void APDPrisoner::BeginPlay()
 	Player = GameMode->GetPlayer();
 
 	MaxHealth = GameMode->GetNewMaxHealth();
+	MovementSpeed = GameMode->GetNewMovementSpeed();
 
 	Health = MaxHealth;
 	HealthWidget = Cast<UPDHealthWidget>(Widget->GetWidget());

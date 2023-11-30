@@ -62,6 +62,7 @@ public:
 	FOnLossSignature OnLoss;
 
 	int GetNewMaxHealth() const;
+	int GetNewMovementSpeed() const;
 
 	UFUNCTION()
 		void StartRound();

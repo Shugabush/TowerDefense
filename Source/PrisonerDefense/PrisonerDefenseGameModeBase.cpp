@@ -50,6 +50,16 @@ int APrisonerDefenseGameModeBase::GetNewMaxHealth() const
 	return 2;
 }
 
+int APrisonerDefenseGameModeBase::GetNewMovementSpeed() const
+{
+	FGameRound Round;
+	if (GetCurrentRound(Round))
+	{
+		return Round.GetMovementSpeed();
+	}
+	return 100;
+}
+
 void APrisonerDefenseGameModeBase::StartRound()
 {
 	FGameRound Round;

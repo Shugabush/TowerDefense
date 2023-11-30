@@ -26,6 +26,11 @@ int FGameRound::GetMaxHealth() const
 	return MaxHealth;
 }
 
+int FGameRound::GetMovementSpeed() const
+{
+	return MovementSpeed;
+}
+
 void FGameRound::Tick(float DeltaTime)
 {
 	if (PrisonersSpawned < PrisonersToSpawn)
