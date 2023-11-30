@@ -257,6 +257,11 @@ void APDPlayer::SpawnPowerGenerator()
 
 void APDPlayer::ChangeSelectedTower(APDTower* NewSelectedTower)
 {
+	if (SelectedTower == NewSelectedTower)
+	{
+		return;
+	}
+
 	if (SelectedTower != nullptr)
 	{
 		SelectedTower->OnTowerDeselected();
