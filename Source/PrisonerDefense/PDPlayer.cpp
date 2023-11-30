@@ -112,8 +112,14 @@ void APDPlayer::BeginPlay()
 
 void APDPlayer::OnMouseClicked()
 {
-	ChangeSelectedTower(PendingSelectedTower);
-	PlaceTower();
+	if (ActiveTower == nullptr || SelectedTowerSlot == nullptr)
+	{
+		ChangeSelectedTower(PendingSelectedTower);
+	}
+	else
+	{
+		PlaceTower();
+	}
 }
 
 // Called every frame
