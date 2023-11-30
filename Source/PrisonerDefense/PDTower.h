@@ -30,10 +30,10 @@ public:
 		virtual void OnMouseExit();
 
 	UFUNCTION()
-		virtual void OnTowerSelected();
+		virtual void OnTowerSelected(APDTower* PreviouslySelectedTower);
 
 	UFUNCTION()
-		virtual void OnTowerDeselected();
+		virtual void OnTowerDeselected(APDTower* NewSelectedTower);
 	
 protected:
 	// Called when the game starts or when spawned
@@ -68,13 +68,13 @@ protected:
 		void RecieveOnMouseExit();
 
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnTowerSelected"))
-		void RecieveOnTowerSelected();
+		void RecieveOnTowerSelected(APDTower* PreviouslySelectedTower);
 
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Upgrade"))
 		void RecieveUpgrade();
 
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnTowerDeselected"))
-		void RecieveOnTowerDeselected();
+		void RecieveOnTowerDeselected(APDTower* NewSelectedTower);
 
 	TArray<int> UpgradeCosts;
 

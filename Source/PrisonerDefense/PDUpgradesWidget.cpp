@@ -129,6 +129,7 @@ void UPDUpgradesWidget::SwipeIn()
 	if (Animations.Contains("SwipeIn_INST"))
 	{
 		PlayAnimation(Animations["SwipeIn_INST"]);
+		GEngine->AddOnScreenDebugMessage(0, 1, FColor::Blue, TEXT("In"));
 	}
 }
 
@@ -137,6 +138,7 @@ void UPDUpgradesWidget::SwipeOut()
 	if (Animations.Contains("SwipeOut_INST"))
 	{
 		PlayAnimation(Animations["SwipeOut_INST"]);
+		GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, TEXT("Out"));
 	}
 }
 

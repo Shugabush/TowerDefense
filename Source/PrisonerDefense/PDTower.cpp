@@ -48,20 +48,26 @@ void APDTower::OnMouseExit()
 	RecieveOnMouseExit();
 }
 
-void APDTower::OnTowerSelected()
+void APDTower::OnTowerSelected(APDTower* PreviouslySelectedTower)
 {
 	Player->GetHUD()->EnableWidget<UPDUpgradesWidget>(UPDUpgradesWidget::StaticClass(), UpgradesWidget);
 	UpgradesWidget->SetParentTower(this);
 	UpgradesWidget->InitializeUpgradeCosts(UpgradeCosts);
 	UpgradesWidget->SetDescription(GetUpgradeDescription());
-	UpgradesWidget->SwipeIn();
-	RecieveOnTowerSelected();
+	if (PreviouslySelectedTower == nullptr)
+	{
+		UpgradesWidget->SwipeIn();
+	}
+	RecieveOnTowerSelected(PreviouslySelectedTower);
 }
 
-void APDTower::OnTowerDeselected()
+void APDTower::OnTowerDeselected(APDTower* NewSelectedTower)
 {
-	UpgradesWidget->SwipeOut();
-	RecieveOnTowerDeselected();
+	if (NewSelectedTower == nullptr)
+	{
+		UpgradesWidget->SwipeOut();
+	}
+	RecieveOnTowerDeselected(NewSelectedTower);
 }
 
 // Called when the game starts or when spawned
@@ -106,7 +112,7 @@ void APDTower::Upgrade()
 
 void APDTower::OnTowerPlaced()
 {
-	OnTowerSelected();
+
 }
 
 int APDTower::GetCurrentUpgradeIndex() const

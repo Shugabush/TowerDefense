@@ -112,6 +112,7 @@ void APDPlayer::BeginPlay()
 
 void APDPlayer::OnMouseClicked()
 {
+	ChangeSelectedTower(PendingSelectedTower);
 	PlaceTower();
 }
 
