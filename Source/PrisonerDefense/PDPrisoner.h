@@ -48,7 +48,9 @@ public:
 		// Widget property as health widget
 		class UPDHealthWidget* HealthWidget;
 
-	bool IsDefeated() const;
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		bool IsDefeated() const;
+
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		class UCapsuleComponent* Capsule;

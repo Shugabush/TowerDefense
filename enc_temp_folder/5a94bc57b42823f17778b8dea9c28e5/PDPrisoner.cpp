@@ -47,7 +47,7 @@ void APDPrisoner::Damage(int Damage)
 void APDPrisoner::OnDefeat()
 {
 	Defeated = true;
-	//Destroy();
+	Destroy();
 }
 
 // Called when the game starts or when spawned
@@ -71,12 +71,6 @@ void APDPrisoner::BeginPlay()
 void APDPrisoner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (Defeated)
-	{
-		HealthWidget->SetVisibility(ESlateVisibility::Hidden);
-		return;
-	}
 
 	FVector targetPatrolPoint;
 	FVector previousPatrolPoint;
