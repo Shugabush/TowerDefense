@@ -112,7 +112,7 @@ void APDPlayer::BeginPlay()
 
 void APDPlayer::OnMouseClicked()
 {
-	ChangeSelectedTower(PendingSelectedTower);
+	ChangeSelectedTower(ActiveTower);
 	PlaceTower();
 }
 
@@ -192,8 +192,6 @@ void APDPlayer::PlaceTower()
 	SelectedTowerSlot->Tower = ActiveTower;
 	ActiveTower->ParentSlot = SelectedTowerSlot;
 	ActiveTower->OnTowerPlaced();
-
-	ChangeSelectedTower(ActiveTower);
 
 	ActiveTower = nullptr;
 	SelectedTowerSlot = nullptr;
