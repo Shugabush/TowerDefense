@@ -160,11 +160,13 @@ void APrisonerDefenseGameModeBase::Tick(float DeltaTime)
 
 void APrisonerDefenseGameModeBase::Victory()
 {
+	GameRunning = false;
 	OnVictory.Broadcast();
 }
 
 void APrisonerDefenseGameModeBase::Loss()
 {
+	GameRunning = false;
 	OnLoss.Broadcast();
 }
 

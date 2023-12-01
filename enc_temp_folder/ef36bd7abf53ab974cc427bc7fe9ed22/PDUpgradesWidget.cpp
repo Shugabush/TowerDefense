@@ -129,9 +129,9 @@ void UPDUpgradesWidget::SwipeIn()
 	if (Animations.Contains("SwipeIn_INST"))
 	{
 		float AnimTime = 0;
-		if (IsPlayingAnimation() && Animations.Contains("SwipeOut_INST"))
+		if (Animations.Contains("SwipeOut_INST"))
 		{
-			float EndTime = Animations["SwipeOut_INST"]->GetEndTime();
+			float EndTime = Animations["SwipeIn_INST"]->GetEndTime();
 			AnimTime = EndTime - GetAnimationCurrentTime(Animations["SwipeOut_INST"]);
 		}
 
@@ -145,7 +145,7 @@ void UPDUpgradesWidget::SwipeOut()
 	if (Animations.Contains("SwipeOut_INST"))
 	{
 		float AnimTime = 0;
-		if (IsPlayingAnimation() && Animations.Contains("SwipeIn_INST"))
+		if (Animations.Contains("SwipeIn_INST"))
 		{
 			float EndTime = Animations["SwipeIn_INST"]->GetEndTime();
 			AnimTime = EndTime - GetAnimationCurrentTime(Animations["SwipeIn_INST"]);

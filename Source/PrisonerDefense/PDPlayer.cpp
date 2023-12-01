@@ -126,7 +126,7 @@ void APDPlayer::OnMouseClicked()
 void APDPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 	if (GameMode->GameIsRunning())
 	{
 		PlayerController->GetMousePosition(MousePosition.X, MousePosition.Y);

@@ -128,7 +128,10 @@ void APDTower::Tick(float DeltaTime)
 void APDTower::Upgrade()
 {
 	CurrentUpgradeIndex++;
-	UpgradesWidget->SetDescription(GetUpgradeDescription());
+	if (UpgradesWidget != nullptr)
+	{
+		UpgradesWidget->SetDescription(GetUpgradeDescription());
+	}
 	RecieveUpgrade();
 }
 
