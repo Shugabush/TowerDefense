@@ -29,7 +29,6 @@ public:
 	bool OutOfTime() const;
 	void Reset();
 
-	float GetTimeLimit() const;
 	float GetTimeElapsed() const;
 	float GetTimeRemaining() const;
 

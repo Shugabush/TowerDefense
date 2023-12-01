@@ -37,11 +37,6 @@ void FCooldownTimer::Reset()
 	TimeElapsed = 0;
 }
 
-float FCooldownTimer::GetTimeLimit() const
-{
-	return TimeLimit;
-}
-
 float FCooldownTimer::GetTimeElapsed() const
 {
 	return TimeElapsed;
@@ -54,10 +49,10 @@ float FCooldownTimer::GetTimeRemaining() const
 
 float FCooldownTimer::GetFractionOfTimeElapsed() const
 {
-	return GetTimeElapsed() / GetTimeLimit();
+	return GetTimeElapsed() / TimeLimit;
 }
 
 float FCooldownTimer::GetFractionOfTimeRemaining() const
 {
-	return GetTimeRemaining() / GetTimeLimit();
+	return GetTimeRemaining() / TimeLimit;
 }

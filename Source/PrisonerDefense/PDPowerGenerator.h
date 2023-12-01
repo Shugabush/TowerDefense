@@ -17,12 +17,12 @@ struct FPowerGeneratorUpgrade
 	GENERATED_BODY()
 public:
 	int GetPowerCost() const;
-	int GetNewPowerPerSecond() const;
+	int GetAdditionalPowerPerSecond() const;
 private:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		int PowerCost = 100;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		int NewPowerPerSecond;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
+		int AdditionalPowerPerSecond = 5;
 };
 
 UCLASS()
@@ -41,6 +41,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void OnRoundEnded() override;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -50,11 +52,14 @@ public:
 private:
 	FCooldownTimer Timer;
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		TArray<FPowerGeneratorUpgrade> Upgrades;
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-		int PowerPerSecond = 2;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
+		float PowerPerSecond = 2;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
+		float PowerPerSecondMultiplierPerRound = 1.25f;
 
 	bool TryGetCurrentUpgrade(FPowerGeneratorUpgrade& Upgrade) const;
 };

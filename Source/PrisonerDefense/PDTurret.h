@@ -43,8 +43,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void OnRoundEnded() override;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		float RotationLerpSpeed = 5;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
+		// Attack cooldown's timer will multiply by this amount after each round
+		// Set to 1 if you don't want that effect
+		float CooldownMultiplierPerRound = 0.9f;
 
 public:	
 	// Called every frame

@@ -104,7 +104,7 @@ void APDTower::OnRoundEnded()
 {
 	if (UpgradesWidget != nullptr)
 	{
-		UpgradesWidget->UpdateDisplay();
+		UpgradesWidget->SetDescription(GetUpgradeDescription());
 	}
 }
 

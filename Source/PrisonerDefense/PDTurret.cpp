@@ -45,11 +45,11 @@ FText APDTurret::GetUpgradeDescription() const
 {
 	FTurretUpgrade Upgrade;
 
-	FString Description = "Max Level";
+	float CurrentCooldown = AttackCooldown.TimeLimit;
+	FString Description = "Max Level\nShoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 2, 1) + " seconds";
 
 	if (TryGetCurrentUpgrade(Upgrade))
 	{
-		float CurrentCooldown = AttackCooldown.TimeLimit;
 		float NewCooldown = CurrentCooldown * Upgrade.GetAttackCooldownMultiplier();
 
 		UCustomUtils::Round(NewCooldown, 2);
@@ -73,6 +73,13 @@ void APDTurret::BeginPlay()
 		UpgradeCosts.Add(Upgrade.GetPowerCost());
 	}
 	FireParticles->Deactivate();
+}
+
+void APDTurret::OnRoundEnded()
+{
+	AttackCooldown.TimeLimit *= CooldownMultiplierPerRound;
+
+	Super::OnRoundEnded();
 }
 
 // Called every frame
@@ -153,6 +160,8 @@ void APDTurret::Upgrade()
 
 	AttackCooldown.TimeLimit *= Upgrade.GetAttackCooldownMultiplier();
 	VolumeTriggerRadius = VolumeTrigger->GetUnscaledSphereRadius();
+	RangeIndicatorScale = RangeIndicator->GetRelativeScale3D();
+
 	VolumeTrigger->SetSphereRadius(VolumeTriggerRadius + Upgrade.GetAdditionalRangeScale());
 	RangeIndicator->SetRelativeScale3D(RangeIndicatorScale + FVector(Upgrade.GetAdditionalRangeScale(), Upgrade.GetAdditionalRangeScale(), 0));
 	

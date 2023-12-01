@@ -17,9 +17,9 @@ int FPowerGeneratorUpgrade::GetPowerCost() const
 	return PowerCost;
 }
 
-int FPowerGeneratorUpgrade::GetNewPowerPerSecond() const
+int FPowerGeneratorUpgrade::GetAdditionalPowerPerSecond() const
 {
-	return NewPowerPerSecond;
+	return AdditionalPowerPerSecond;
 }
 
 
@@ -40,9 +40,9 @@ FText APDPowerGenerator::GetUpgradeDescription() const
 	FPowerGeneratorUpgrade Upgrade;
 	if (!TryGetCurrentUpgrade(Upgrade))
 	{
-		return FText::FromString("Max Level");
+		return FText::FromString("Max Level\n " + FString::FromInt(PowerPerSecond) + " per second");
 	}
-	return FText::FromString(FString::FromInt(PowerPerSecond) + "->" + FString::FromInt(Upgrade.GetNewPowerPerSecond()) + " per second");
+	return FText::FromString(FString::FromInt(PowerPerSecond) + "->" + FString::FromInt(PowerPerSecond + Upgrade.GetAdditionalPowerPerSecond()) + " per second");
 }
 
 // Called when the game starts or when spawned
@@ -56,6 +56,13 @@ void APDPowerGenerator::BeginPlay()
 	{
 		UpgradeCosts.Add(Upgrade.GetPowerCost());
 	}
+}
+
+void APDPowerGenerator::OnRoundEnded()
+{
+	PowerPerSecond *= PowerPerSecondMultiplierPerRound;
+
+	Super::OnRoundEnded();
 }
 
 // Called every frame
@@ -94,7 +101,7 @@ void APDPowerGenerator::Upgrade()
 	FPowerGeneratorUpgrade Upgrade;
 	if (!TryGetCurrentUpgrade(Upgrade)) return;
 
-	PowerPerSecond = Upgrade.GetNewPowerPerSecond();
+	PowerPerSecond += Upgrade.GetAdditionalPowerPerSecond();
 	Timer.TimeLimit = 1.f / PowerPerSecond;
 	
 	Super::Upgrade();
