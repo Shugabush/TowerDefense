@@ -95,6 +95,9 @@ void APDTower::BeginPlay()
 	Player = GameMode->GetPlayer();
 
 	MeshData = MeshRenderData(Mesh, "Color");
+
+	VolumeTriggerRadius = VolumeTrigger->GetUnscaledSphereRadius();
+	RangeIndicatorScale = RangeIndicator->GetRelativeScale3D();
 }
 
 void APDTower::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

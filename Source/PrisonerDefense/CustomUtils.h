@@ -18,4 +18,10 @@ private:
 public:
 	UFUNCTION()
 		static APDPlayer* GetWorldPlayer(UObject* const WorldContextObject, const int32 PlayerIndex);
+
+	UFUNCTION()
+		static void Round(float& Value, const int DecimalPlaces);
+
+	UFUNCTION()
+		static FString SanitizeFloat(float Value, const int MaxDecimalPlaces, const int MinDecimalPlaces = 0);
 };

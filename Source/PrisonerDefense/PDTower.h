@@ -65,6 +65,11 @@ protected:
 
 	int CurrentUpgradeIndex;
 
+	// Starting radius for volume trigger
+	float VolumeTriggerRadius;
+	// Starting scale for range indicator
+	FVector RangeIndicatorScale;
+
 	MeshRenderData MeshData;
 
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnMouseEnter"))

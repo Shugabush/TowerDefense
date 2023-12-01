@@ -6,10 +6,12 @@
 #include "PDPrisoner.h"
 #include "PDBullet.h"
 #include "PDUpgradesWidget.h"
+#include "CustomUtils.h"
 
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SphereComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 
 #include "Kismet/KismetMathLibrary.h"
@@ -19,9 +21,14 @@ int FTurretUpgrade::GetPowerCost() const
 	return PowerCost;
 }
 
-FCooldownTimer FTurretUpgrade::GetNewAttackCooldown() const
+float FTurretUpgrade::GetAdditionalRangeScale() const
 {
-	return NewAttackCooldown;
+	return AdditionalRangeScale;
+}
+
+float FTurretUpgrade::GetAttackCooldownMultiplier() const
+{
+	return AttackCooldownMultiplier;
 }
 
 // Sets default values
@@ -43,10 +50,15 @@ FText APDTurret::GetUpgradeDescription() const
 	if (TryGetCurrentUpgrade(Upgrade))
 	{
 		float CurrentCooldown = AttackCooldown.TimeLimit;
-		float NewCooldown = Upgrade.GetNewAttackCooldown().TimeLimit;
+		float NewCooldown = CurrentCooldown * Upgrade.GetAttackCooldownMultiplier();
 
-		Description = "Shoots every " + FString::SanitizeFloat(CurrentCooldown) + "->" +
-			FString::SanitizeFloat(NewCooldown) + " seconds" + "\n (" + FString::SanitizeFloat(1.f / NewCooldown) + " times per second)";
+		UCustomUtils::Round(NewCooldown, 2);
+
+		float NewCooldownReciprocal = 1.f / NewCooldown;
+		UCustomUtils::Round(NewCooldownReciprocal, 2);
+
+		Description = "Shoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 2, 1) + "->" +
+			UCustomUtils::SanitizeFloat(NewCooldown, 2) + " seconds" + "\n (" + UCustomUtils::SanitizeFloat(NewCooldownReciprocal, 2) + " times per second)";
 	}
 	return FText::FromString(Description);
 }
@@ -139,8 +151,11 @@ void APDTurret::Upgrade()
 	FTurretUpgrade Upgrade;
 	if (!TryGetCurrentUpgrade(Upgrade)) return;
 
-	AttackCooldown.TimeLimit = Upgrade.GetNewAttackCooldown().TimeLimit;
-
+	AttackCooldown.TimeLimit *= Upgrade.GetAttackCooldownMultiplier();
+	VolumeTriggerRadius = VolumeTrigger->GetUnscaledSphereRadius();
+	VolumeTrigger->SetSphereRadius(VolumeTriggerRadius + Upgrade.GetAdditionalRangeScale());
+	RangeIndicator->SetRelativeScale3D(RangeIndicatorScale + FVector(Upgrade.GetAdditionalRangeScale(), Upgrade.GetAdditionalRangeScale(), 0));
+	
 	Super::Upgrade();
 }
 

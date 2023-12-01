@@ -228,6 +228,8 @@ void APDPlayer::UpdateTower()
 
 void APDPlayer::CheckForTowerSelection()
 {
+	if (UpgradesWidget == nullptr) { return; }
+
 	APDTower* LastPendingSelectedTower = PendingSelectedTower;
 	if (ResultActor != nullptr)
 	{

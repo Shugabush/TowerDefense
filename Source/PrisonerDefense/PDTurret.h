@@ -17,12 +17,15 @@ struct FTurretUpgrade
 	GENERATED_BODY()
 public:
 	int GetPowerCost() const;
-	FCooldownTimer GetNewAttackCooldown() const;
+	float GetAdditionalRangeScale() const;
+	float GetAttackCooldownMultiplier() const;
 private:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		int PowerCost = 100;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-		FCooldownTimer NewAttackCooldown;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
+		float AdditionalRangeScale = 0.1f;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
+		float AttackCooldownMultiplier = 0.5f;
 };
 
 UCLASS()
@@ -40,7 +43,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		float RotationLerpSpeed = 5;
 
 public:	
@@ -60,20 +63,19 @@ public:
 	virtual void OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
 
 private:
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		TSubclassOf<class APDBullet> BulletBlueprint;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		FCooldownTimer AttackCooldown;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		TArray<FTurretUpgrade> Upgrades;
 
 	UPROPERTY()
 		TArray<APDPrisoner*> LookAtTargets;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		// Particles to play when this turret fires
 		UParticleSystemComponent* FireParticles;
 
