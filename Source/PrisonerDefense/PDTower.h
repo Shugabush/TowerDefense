@@ -17,7 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	APDTower();
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 		class APDTowerSlot* ParentSlot;
 
 	UFUNCTION()
@@ -41,6 +41,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+		virtual void OnRoundStarted();
 
 	UFUNCTION()
 		virtual void OnRoundEnded();

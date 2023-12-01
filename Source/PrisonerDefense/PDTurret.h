@@ -87,4 +87,7 @@ private:
 		class APDPrisoner* GetClosestTarget() const;
 
 	bool TryGetCurrentUpgrade(FTurretUpgrade& Upgrade) const;
+	
+	// Will not rely on any bool inside the particle system itself for activated
+	bool ParticlesActivated;
 };

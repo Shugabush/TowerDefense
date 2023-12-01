@@ -97,7 +97,13 @@ void APDTower::BeginPlay()
 	VolumeTriggerRadius = VolumeTrigger->GetUnscaledSphereRadius();
 	RangeIndicatorScale = RangeIndicator->GetRelativeScale3D();
 
+	GameMode->OnRoundStarted.AddDynamic(this, &APDTower::OnRoundStarted);
 	GameMode->OnRoundEnded.AddDynamic(this, &APDTower::OnRoundEnded);
+}
+
+void APDTower::OnRoundStarted()
+{
+
 }
 
 void APDTower::OnRoundEnded()

@@ -62,9 +62,18 @@ void APDPowerGenerator::BeginPlay()
 	}
 }
 
+void APDPowerGenerator::OnRoundStarted()
+{
+	GenerationParticles->SetActive(true);
+
+	Super::OnRoundStarted();
+}
+
 void APDPowerGenerator::OnRoundEnded()
 {
 	PowerPerSecond *= PowerPerSecondMultiplierPerRound;
+
+	GenerationParticles->SetActive(false);
 
 	Super::OnRoundEnded();
 }
@@ -83,7 +92,6 @@ void APDPowerGenerator::Tick(float DeltaTime)
 		{
 			// If power per second is more than fps, than we need to add more than one power on at least some frames
 			Player->GetWidget()->UpdatePower(PowerPerSecond / Fps);
-			GenerationParticles->Activate(true);
 		}
 		else
 		{
@@ -91,7 +99,6 @@ void APDPowerGenerator::Tick(float DeltaTime)
 			{
 				// Update power
 				Player->GetWidget()->UpdatePower(1);
-				GenerationParticles->Activate(true);
 				Timer.Reset();
 			}
 			else
@@ -111,6 +118,14 @@ void APDPowerGenerator::Upgrade()
 	Timer.TimeLimit = 1.f / PowerPerSecond;
 	
 	Super::Upgrade();
+}
+
+void APDPowerGenerator::OnTowerPlaced()
+{
+	if (Player != nullptr && Player->GetGameMode() != nullptr)
+	{
+		GenerationParticles->SetActive(Player->GetGameMode()->RoundIsRunning());
+	}
 }
 
 bool APDPowerGenerator::TryGetCurrentUpgrade(FPowerGeneratorUpgrade& Upgrade) const

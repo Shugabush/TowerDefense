@@ -93,6 +93,7 @@ void APDTurret::Tick(float DeltaTime)
 		// Look at the closest object in the look at target list
 		APDPrisoner* LookAtTarget = GetClosestTarget();
 		
+		bool ShouldActivateParticles = false;
 		if (LookAtTarget != nullptr)
 		{
 			float ForwardDirectionDotProduct = FVector::DotProduct(GetActorForwardVector(), LookAtTarget->GetActorForwardVector());
@@ -107,7 +108,8 @@ void APDTurret::Tick(float DeltaTime)
 				{
 					// Damage the prisoner
 					LookAtTarget->Damage(DeltaTime / AttackCooldown.TimeLimit);
-					FireParticles->Activate(true);
+
+					ShouldActivateParticles = true;
 				}
 			}
 			else
@@ -118,7 +120,8 @@ void APDTurret::Tick(float DeltaTime)
 					{
 						// Damage the prisoner
 						LookAtTarget->Damage(1);
-						FireParticles->Activate(true);
+						
+						ShouldActivateParticles = true;
 
 						AttackCooldown.Reset();
 					}
@@ -136,7 +139,17 @@ void APDTurret::Tick(float DeltaTime)
 
 			SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
 		}
-		
+
+		if (ShouldActivateParticles && !ParticlesActivated)
+		{
+			FireParticles->Activate();
+			ParticlesActivated = true;
+		}
+		else if (ParticlesActivated)
+		{
+			FireParticles->Deactivate();
+			ParticlesActivated = false;
+		}
 	}
 }
 

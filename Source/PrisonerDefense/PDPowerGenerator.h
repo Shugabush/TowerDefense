@@ -42,12 +42,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void OnRoundStarted() override;
 	virtual void OnRoundEnded() override;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Upgrade() override;
+
+	virtual void OnTowerPlaced() override;
 	
 private:
 	FCooldownTimer Timer;
