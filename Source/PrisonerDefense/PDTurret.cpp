@@ -46,19 +46,19 @@ FText APDTurret::GetUpgradeDescription() const
 	FTurretUpgrade Upgrade;
 
 	float CurrentCooldown = AttackCooldown.TimeLimit;
-	FString Description = "Max Level\nShoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 2, 1) + " seconds";
+	FString Description = "Max Level\nShoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 3, 1) + " seconds";
 
 	if (TryGetCurrentUpgrade(Upgrade))
 	{
 		float NewCooldown = CurrentCooldown * Upgrade.GetAttackCooldownMultiplier();
 
-		UCustomUtils::Round(NewCooldown, 2);
+		UCustomUtils::Round(NewCooldown, 3);
 
 		float NewCooldownReciprocal = 1.f / NewCooldown;
-		UCustomUtils::Round(NewCooldownReciprocal, 2);
+		UCustomUtils::Round(NewCooldownReciprocal, 3);
 
 		Description = "Shoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 2, 1) + "->" +
-			UCustomUtils::SanitizeFloat(NewCooldown, 2) + " seconds" + "\n (" + UCustomUtils::SanitizeFloat(NewCooldownReciprocal, 2) + " times per second)";
+			UCustomUtils::SanitizeFloat(NewCooldown, 3) + " seconds" + "\n (" + UCustomUtils::SanitizeFloat(NewCooldownReciprocal, 3) + " times per second)";
 	}
 	return FText::FromString(Description);
 }
@@ -105,7 +105,9 @@ void APDTurret::Tick(float DeltaTime)
 				// We may have to damage the prisoner more than once on a given frame
 				if (LookAngle < 5.f)
 				{
+					// Damage the prisoner
 					LookAtTarget->Damage(DeltaTime / AttackCooldown.TimeLimit);
+					FireParticles->Activate(true);
 				}
 			}
 			else

@@ -186,11 +186,11 @@ void APDPlayer::PlaceTower()
 
 	if (HasTurret())
 	{
-		Widget->UpdatePower(-Widget->GetTurretCost());
+		Widget->PurchaseTurret();
 	}
 	else if (HasPowerGenerator())
 	{
-		Widget->UpdatePower(-Widget->GetPowerGeneratorCost());
+		Widget->PurchasePowerGenerator();
 	}
 
 	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);

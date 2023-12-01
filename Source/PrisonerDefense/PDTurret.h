@@ -71,9 +71,6 @@ public:
 
 private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
-		TSubclassOf<class APDBullet> BulletBlueprint;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		FCooldownTimer AttackCooldown;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))

@@ -11,6 +11,7 @@
 
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 
 int FPowerGeneratorUpgrade::GetPowerCost() const
 {
@@ -28,6 +29,9 @@ APDPowerGenerator::APDPowerGenerator() : APDTower()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	GenerationParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("GenerationParticles"));
+	GenerationParticles->AttachTo(RootComponent);
 }
 
 UStaticMeshComponent* APDPowerGenerator::GetMesh() const
@@ -79,6 +83,7 @@ void APDPowerGenerator::Tick(float DeltaTime)
 		{
 			// If power per second is more than fps, than we need to add more than one power on at least some frames
 			Player->GetWidget()->UpdatePower(PowerPerSecond / Fps);
+			GenerationParticles->Activate(true);
 		}
 		else
 		{
@@ -86,6 +91,7 @@ void APDPowerGenerator::Tick(float DeltaTime)
 			{
 				// Update power
 				Player->GetWidget()->UpdatePower(1);
+				GenerationParticles->Activate(true);
 				Timer.Reset();
 			}
 			else

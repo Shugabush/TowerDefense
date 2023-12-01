@@ -61,5 +61,9 @@ private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		float PowerPerSecondMultiplierPerRound = 1.25f;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
+		// Particles to play when this power generator generates power
+		UParticleSystemComponent* GenerationParticles;
+
 	bool TryGetCurrentUpgrade(FPowerGeneratorUpgrade& Upgrade) const;
 };

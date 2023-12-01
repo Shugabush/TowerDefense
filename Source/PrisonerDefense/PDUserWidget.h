@@ -4,12 +4,6 @@
 
 #include "CoreMinimal.h"
 
-#include "Components/Button.h"
-#include "Components/TextBlock.h"
-
-#include "PDPlayer.h"
-#include "PDPurchaseWidget.h"
-
 #include "Blueprint/UserWidget.h"
 #include "PDUserWidget.generated.h"
 
@@ -34,7 +28,18 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetPowerGeneratorCost() const;
 
+	UFUNCTION(BlueprintCallable)
+		void PurchaseTurret();
+
+	UFUNCTION(BlueprintCallable)
+		void PurchasePowerGenerator();
+
+	UFUNCTION(BlueprintCallable)
+		class APDPlayer* GetPlayer() const;
+
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+	class APrisonerDefenseGameModeBase* GetGameMode() const;
 protected:
 	virtual void NativeConstruct() override;
 
@@ -57,34 +62,33 @@ protected:
 		void OnRoundEnded();
 
 private:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		class UPDPurchaseWidget* TurretPurchasable;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UPDPurchaseWidget* TurretPurchasable;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		class UPDPurchaseWidget* PowerGeneratorPurchasable;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UPDPurchaseWidget* PowerGeneratorPurchasable;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		class UTextBlock* PowerText;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UTextBlock* PowerText;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		class UTextBlock* RoundText;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UTextBlock* RoundText;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		class UButton* PlayButton;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UButton* PlayButton;
+	UPROPERTY(BlueprintReadOnly, Category = "Widget", meta = (AllowPrivateAccess = true))
+		class APrisonerDefenseGameModeBase* GameMode;
 
 	UPROPERTY()
-		APDPlayer* OwningPlayer;
+		class APDPlayer* OwningPlayer;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		FString PowerTextPrefix = "Power: ";
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		FString RoundTextPrefix = "Round: ";
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		int Power = 500;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
-		int TurretCost = 100;
 };

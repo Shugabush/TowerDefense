@@ -178,6 +178,8 @@ void UPDUpgradesWidget::UpdateDisplay()
 
 void UPDUpgradesWidget::OnUpgradeButtonClicked()
 {
+	if (ParentTower == nullptr) return;
+
 	int UpgradeCost;
 	int NewUpgradeCost;
 	if (TryGetCurrentUpgradeCost(UpgradeCost) && CanAffordNextUpgrade())

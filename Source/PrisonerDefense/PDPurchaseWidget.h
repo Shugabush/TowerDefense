@@ -4,16 +4,11 @@
 
 #include "CoreMinimal.h"
 
-#include "Components/Button.h"
-#include "Components/TextBlock.h"
-#include "Components/PanelWidget.h"
-
 #include "Blueprint/UserWidget.h"
 #include "PDPurchaseWidget.generated.h"
 
-class UPDUserWidget;
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPurchaseSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonClickedSignature);
 
 /**
  * 
@@ -30,7 +25,10 @@ protected:
 
 public:
 	UPROPERTY()
-		UPDUserWidget* ParentWidget;
+		class UPDUserWidget* ParentWidget;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnButtonClickedSignature OnButtonClicked;
 
 	UPROPERTY(BlueprintAssignable)
 		FOnPurchaseSignature OnPurchase;
@@ -38,20 +36,26 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetPrice() const;
 
-	void SetButtonEnabled(bool Enabled);
+	UFUNCTION(BlueprintCallable)
+		void SetButtonEnabled(bool Enabled);
+
+	void OnPurchased();
 
 private:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
-		UTexture2D* ButtonIcon;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
+		class UTexture2D* ButtonIcon;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		int Price = 100;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UButton* PurchaseButton;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
+		int PriceIncreasePerPurchase = 25;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		class UButton* PurchaseButton;
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UTextBlock* PriceText;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		class UTextBlock* PriceText;
 
 	UFUNCTION(BlueprintCallable)
 		void TryPurchase();

@@ -3,6 +3,11 @@
 
 #include "PDPurchaseWidget.h"
 
+#include "Components/Button.h"
+#include "Components/TextBlock.h"
+#include "Components/PanelWidget.h"
+#include "PrisonerDefenseGameModeBase.h"
+
 #include "PDUserWidget.h"
 
 void UPDPurchaseWidget::NativeConstruct()
@@ -39,10 +44,17 @@ void UPDPurchaseWidget::SetButtonEnabled(bool Enabled)
 	PriceText->SetIsEnabled(Enabled);
 }
 
+void UPDPurchaseWidget::OnPurchased()
+{
+	Price += PriceIncreasePerPurchase;
+	PriceText->SetText(FText::FromString(FString::FromInt(Price) + " Power"));
+	OnPurchase.Broadcast();
+}
+
 void UPDPurchaseWidget::TryPurchase()
 {
 	if (ParentWidget != nullptr && ParentWidget->GetPower() >= Price)
 	{
-		OnPurchase.Broadcast();
+		OnButtonClicked.Broadcast();
 	}
 }

@@ -37,22 +37,14 @@ int UPDUserWidget::GetPowerGeneratorCost() const
 
 void UPDUserWidget::PurchaseTurret()
 {
-	// Store current price because OnPurchased will change it
-	// We need to update power after purchase has been made or else it will check
-	// whether the player can afford it using the old price
-	int CurrentPrice = GetTurretCost();
+	Power -= GetTurretCost();
 	TurretPurchasable->OnPurchased();
-	UpdatePower(-CurrentPrice);
 }
 
 void UPDUserWidget::PurchasePowerGenerator()
 {
-	// Store current price because OnPurchased will change it
-	// We need to update power after purchase has been made or else it will check
-	// whether the player can afford it using the old price
-	int CurrentPrice = GetPowerGeneratorCost();
+	Power -= GetPowerGeneratorCost();
 	PowerGeneratorPurchasable->OnPurchased();
-	UpdatePower(-CurrentPrice);
 }
 
 APDPlayer* UPDUserWidget::GetPlayer() const
