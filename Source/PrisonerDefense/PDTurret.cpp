@@ -140,15 +140,21 @@ void APDTurret::Tick(float DeltaTime)
 			SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
 		}
 
+		if (ParticlesActivated)
+		{
+			ParticleTimer += DeltaTime;
+		}
+
 		if (ShouldActivateParticles && !ParticlesActivated)
 		{
 			FireParticles->Activate();
 			ParticlesActivated = true;
 		}
-		else if (ParticlesActivated)
+		else if (ParticlesActivated && ParticleTimer >= 0.25f)
 		{
 			FireParticles->Deactivate();
 			ParticlesActivated = false;
+			ParticleTimer = 0;
 		}
 	}
 }

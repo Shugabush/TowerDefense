@@ -90,4 +90,6 @@ private:
 	
 	// Will not rely on any bool inside the particle system itself for activated
 	bool ParticlesActivated;
+
+	float ParticleTimer;
 };
