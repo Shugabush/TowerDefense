@@ -150,7 +150,7 @@ void APDTurret::Tick(float DeltaTime)
 			FireParticles->Activate();
 			ParticlesActivated = true;
 		}
-		else if (ParticlesActivated && ParticleTimer >= 0.25f)
+		else if (ParticlesActivated && ParticleTimer >= MinParticlePlayTime)
 		{
 			FireParticles->Deactivate();
 			ParticlesActivated = false;

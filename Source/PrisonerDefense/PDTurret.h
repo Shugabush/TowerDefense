@@ -92,4 +92,6 @@ private:
 	bool ParticlesActivated;
 
 	float ParticleTimer;
+
+	const float MinParticlePlayTime = 0.25f;
 };
