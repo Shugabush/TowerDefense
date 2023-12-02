@@ -20,7 +20,6 @@ private:
 public:
 	FCooldownTimer();
 	FCooldownTimer(float timeLimit);
-	~FCooldownTimer();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float TimeLimit;

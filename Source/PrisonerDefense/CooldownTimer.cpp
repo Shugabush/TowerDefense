@@ -15,11 +15,6 @@ FCooldownTimer::FCooldownTimer(float timeLimit)
 	TimeLimit = timeLimit;
 }
 
-FCooldownTimer::~FCooldownTimer()
-{
-	
-}
-
 void FCooldownTimer::Tick(float time)
 {
 	TimeElapsed += time;

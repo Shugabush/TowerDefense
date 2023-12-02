@@ -43,21 +43,15 @@ APDPlayer* APrisonerDefenseGameModeBase::GetPlayer() const
 int APrisonerDefenseGameModeBase::GetNewMaxHealth() const
 {
 	FGameRound Round;
-	if (GetCurrentRound(Round))
-	{
-		return Round.GetMaxHealth();
-	}
-	return 2;
+	ensureAlwaysMsgf(GetCurrentRound(Round), TEXT("Out of bounds access to round was prevented!"));
+	return Round.GetMaxHealth();
 }
 
 int APrisonerDefenseGameModeBase::GetNewMovementSpeed() const
 {
 	FGameRound Round;
-	if (GetCurrentRound(Round))
-	{
-		return Round.GetMovementSpeed();
-	}
-	return 100;
+	ensureAlwaysMsgf(GetCurrentRound(Round), TEXT("Out of bounds access to round was prevented!"));
+	return Round.GetMovementSpeed();
 }
 
 void APrisonerDefenseGameModeBase::StartRound()

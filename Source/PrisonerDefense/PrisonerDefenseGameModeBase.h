@@ -40,8 +40,11 @@ private:
 	UPROPERTY()
 		class APDPlayer* Player;
 
-	class APDHUD* HUD;
-	class UPDUserWidget* Widget;
+	UPROPERTY()
+		class APDHUD* HUD;
+
+	UPROPERTY()
+		class UPDUserWidget* Widget;
 
 	bool GameRunning = false;
 
