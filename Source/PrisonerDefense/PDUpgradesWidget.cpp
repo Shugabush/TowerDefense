@@ -78,6 +78,11 @@ FReply UPDUpgradesWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, c
 	return FReply::Handled();
 }
 
+FReply UPDUpgradesWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	return FReply::Handled();
+}
+
 FReply UPDUpgradesWidget::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	return FReply::Handled();
