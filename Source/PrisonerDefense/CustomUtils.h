@@ -23,5 +23,5 @@ public:
 		static void Round(float& Value, const int DecimalPlaces);
 
 	UFUNCTION()
-		static FString SanitizeFloat(float Value, const int MaxDecimalPlaces, const int MinDecimalPlaces = 0);
+		static FString SanitizeFloat(float Value, const int MaxDecimalPlaces = 0, const int MinDecimalPlaces = 0);
 };

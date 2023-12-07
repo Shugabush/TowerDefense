@@ -24,7 +24,7 @@ class PRISONERDEFENSE_API IDamageable
 protected:
 public:
 	UFUNCTION()
-		virtual void Damage(int Damage);
+		virtual void Damage(const float Damage);
 
 	UFUNCTION()
 		virtual void OnDefeat();

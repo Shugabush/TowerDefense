@@ -54,8 +54,6 @@ void APDPowerGenerator::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Timer = FCooldownTimer(1.0f / PowerPerSecond);
-
 	for (FPowerGeneratorUpgrade Upgrade : Upgrades)
 	{
 		UpgradeCosts.Add(Upgrade.GetPowerCost());
@@ -88,24 +86,7 @@ void APDPowerGenerator::Tick(float DeltaTime)
 	{
 		float Fps = 1.f / DeltaTime;
 
-		if (PowerPerSecond > Fps)
-		{
-			// If power per second is more than fps, than we need to add more than one power on at least some frames
-			Player->GetWidget()->UpdatePower(PowerPerSecond / Fps);
-		}
-		else
-		{
-			if (Timer.OutOfTime())
-			{
-				// Update power
-				Player->GetWidget()->UpdatePower(1);
-				Timer.Reset();
-			}
-			else
-			{
-				Timer.Tick(DeltaTime);
-			}
-		}
+		Player->UpdatePower(PowerPerSecond / Fps);
 	}
 }
 
@@ -115,7 +96,6 @@ void APDPowerGenerator::Upgrade()
 	if (!TryGetCurrentUpgrade(Upgrade)) return;
 
 	PowerPerSecond += Upgrade.GetAdditionalPowerPerSecond();
-	Timer.TimeLimit = 1.f / PowerPerSecond;
 	
 	Super::Upgrade();
 }
@@ -130,7 +110,7 @@ void APDPowerGenerator::OnTowerPlaced()
 
 bool APDPowerGenerator::TryGetCurrentUpgrade(FPowerGeneratorUpgrade& Upgrade) const
 {
-	if (!Upgrades.IsValidIndex(CurrentUpgradeIndex)) { return false; }
+	if (IsMaxLevel()) return false;
 	
 	Upgrade = Upgrades[CurrentUpgradeIndex];
 	return true;

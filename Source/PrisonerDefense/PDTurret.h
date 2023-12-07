@@ -78,7 +78,7 @@ private:
 		TArray<FTurretUpgrade> Upgrades;
 
 	UPROPERTY()
-		TArray<APDPrisoner*> LookAtTargets;
+		TSet<APDPrisoner*> LookAtTargets;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		// Particles to play when this turret fires

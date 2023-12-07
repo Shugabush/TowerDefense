@@ -7,6 +7,7 @@
 #include "Components/TextBlock.h"
 #include "Components/PanelWidget.h"
 #include "PrisonerDefenseGameModeBase.h"
+#include "CustomUtils.h"
 
 #include "PDUserWidget.h"
 
@@ -19,7 +20,7 @@ void UPDPurchaseWidget::NativeConstruct()
 
 	PurchaseButton->OnClicked.AddDynamic(this, &UPDPurchaseWidget::TryPurchase);
 
-	PriceText->SetText(FText::FromString(FString::FromInt(Price) + " Power"));
+	PriceText->SetText(FText::FromString(UCustomUtils::SanitizeFloat(Price, 2) + " Power"));
 }
 
 void UPDPurchaseWidget::SynchronizeProperties()
@@ -30,7 +31,7 @@ void UPDPurchaseWidget::SynchronizeProperties()
 	PurchaseButton->WidgetStyle.Hovered.SetResourceObject(ButtonIcon);
 	PurchaseButton->WidgetStyle.Pressed.SetResourceObject(ButtonIcon);
 	PurchaseButton->WidgetStyle.Disabled.SetResourceObject(ButtonIcon);
-	PriceText->SetText(FText::FromString(FString::FromInt(Price) + " Power"));
+	PriceText->SetText(FText::FromString(UCustomUtils::SanitizeFloat(Price, 2) + " Power"));
 }
 
 int UPDPurchaseWidget::GetPrice() const
@@ -47,13 +48,13 @@ void UPDPurchaseWidget::SetButtonEnabled(bool Enabled)
 void UPDPurchaseWidget::OnPurchased()
 {
 	Price += PriceIncreasePerPurchase;
-	PriceText->SetText(FText::FromString(FString::FromInt(Price) + " Power"));
+	PriceText->SetText(FText::FromString(UCustomUtils::SanitizeFloat(Price, 2) + " Power"));
 	OnPurchase.Broadcast();
 }
 
 void UPDPurchaseWidget::TryPurchase()
 {
-	if (ParentWidget != nullptr && ParentWidget->GetPower() >= Price)
+	if (ParentWidget != nullptr && ParentWidget->GetPlayerPower() >= Price)
 	{
 		OnButtonClicked.Broadcast();
 	}

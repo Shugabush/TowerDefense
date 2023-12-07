@@ -313,6 +313,13 @@ void APDPlayer::OnPowerGeneratorButtonClicked()
 	}
 }
 
+void APDPlayer::UpdatePower(const float AdditionalPower)
+{
+	Power += AdditionalPower;
+
+	OnPowerChanged.Broadcast(Power);
+}
+
 bool APDPlayer::HasTurret() const
 {
 	if (ActiveTower == nullptr) { return false; }
@@ -327,5 +334,10 @@ bool APDPlayer::HasPowerGenerator() const
 
 	APDPowerGenerator* ActivePowerGenerator = Cast<APDPowerGenerator>(ActiveTower);
 	return ActivePowerGenerator != nullptr;
+}
+
+float APDPlayer::GetPower() const
+{
+	return Power;
 }
 

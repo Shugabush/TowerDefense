@@ -73,7 +73,7 @@ void APrisonerDefenseGameModeBase::EndRound()
 	FGameRound Round;
 	if (GetCurrentRound(Round))
 	{
-		Widget->UpdatePower(Round.GetPowerReward());
+		Player->UpdatePower(Round.GetPowerReward());
 	}
 	RoundIndex++;
 	if (GetCurrentRound(Round))

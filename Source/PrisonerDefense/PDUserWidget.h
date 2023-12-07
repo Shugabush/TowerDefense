@@ -17,10 +17,7 @@ class PRISONERDEFENSE_API UPDUserWidget : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-		int GetPower() const;
-
-	UFUNCTION(BlueprintCallable)
-		void UpdatePower(const int additionalPower);
+		float GetPlayerPower() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetTurretCost() const;
@@ -28,20 +25,21 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		int GetPowerGeneratorCost() const;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		class APDPlayer* GetPlayer() const;
+
 	UFUNCTION(BlueprintCallable)
 		void PurchaseTurret();
 
 	UFUNCTION(BlueprintCallable)
 		void PurchasePowerGenerator();
 
-	UFUNCTION(BlueprintCallable)
-		class APDPlayer* GetPlayer() const;
-
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
-
 	class APrisonerDefenseGameModeBase* GetGameMode() const;
 protected:
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+		void OnPowerUpdated(const float PowerValue);
 
 	UFUNCTION()
 		void OnTurretButtonClicked();
@@ -88,7 +86,4 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		FString RoundTextPrefix = "Round: ";
-	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
-		int Power = 500;
 };

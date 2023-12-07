@@ -203,7 +203,7 @@ void UPDUpgradesWidget::OnUpgradeButtonClicked()
 	int NewUpgradeCost;
 	if (TryGetCurrentUpgradeCost(UpgradeCost) && CanAffordNextUpgrade())
 	{
-		PlayerWidget->UpdatePower(-UpgradeCost);
+		PlayerWidget->GetPlayer()->UpdatePower(-UpgradeCost);
 		CurrentUpgradeIndex++;
 
 		ParentTower->Upgrade();
@@ -226,5 +226,5 @@ bool UPDUpgradesWidget::CanAffordNextUpgrade() const
 	{
 		return false;
 	}
-	return PlayerWidget->GetPower() >= GetCurrentUpgradeCost();
+	return PlayerWidget->GetPlayerPower() >= GetCurrentUpgradeCost();
 }

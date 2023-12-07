@@ -30,13 +30,13 @@ APDPrisoner::APDPrisoner()
 	RootComponent = Capsule;
 }
 
-void APDPrisoner::Damage(int Damage)
+void APDPrisoner::Damage(const float Damage)
 {
 	Health -= Damage;
-	HealthWidget->SetMeterFill((float)Health / MaxHealth);
+	HealthWidget->SetMeterFill(Health / MaxHealth);
 	if (Player != nullptr)
 	{
-		Player->GetWidget()->UpdatePower(PowerReward);
+		Player->UpdatePower(PowerReward);
 	}
 	if (Health <= 0)
 	{
@@ -84,7 +84,7 @@ void APDPrisoner::Tick(float DeltaTime)
 	bool gotTargetPoint = TryGetTargetPoint(targetPatrolPoint);
 	bool gotPreviousPoint = TryGetPreviousPoint(previousPatrolPoint);
 
-	if (Cage != nullptr && gotTargetPoint && TryGetPreviousPoint(previousPatrolPoint))
+	if (gotTargetPoint && gotPreviousPoint)
 	{
 		FVector lerpedPosition;
 
@@ -108,7 +108,7 @@ void APDPrisoner::Tick(float DeltaTime)
 		}
 		else
 		{
-			TargetIndex++;
+			TargetPatrolIndex++;
 			lerpedPosition = targetPatrolPoint;
 		}
 
@@ -150,11 +150,11 @@ bool APDPrisoner::IsDefeated() const
 
 bool APDPrisoner::TryGetTargetPoint(FVector& TargetPoint) const
 {
-	return Cage->TryGetPatrolPoint(TargetIndex, TargetPoint);
+	return Cage != nullptr && Cage->TryGetPatrolPoint(TargetPatrolIndex, TargetPoint);
 }
 
 bool APDPrisoner::TryGetPreviousPoint(FVector& PreviousPoint) const
 {
-	return Cage->TryGetPatrolPoint(TargetIndex - 1, PreviousPoint);
+	return Cage != nullptr && Cage->TryGetPatrolPoint(TargetPatrolIndex - 1, PreviousPoint);
 }
 

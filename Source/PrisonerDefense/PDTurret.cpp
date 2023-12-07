@@ -64,7 +64,13 @@ FText APDTurret::GetUpgradeDescription() const
 FText APDTurret::GetCurrentDescription() const
 {
 	float CurrentCooldown = AttackCooldown.TimeLimit;
-	FString Description = "Shoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 3, 1) + " seconds";
+	UCustomUtils::Round(CurrentCooldown, 3);
+
+	float CooldownReciprocal = 1.f / CurrentCooldown;
+	UCustomUtils::Round(CooldownReciprocal, 3);
+
+	FString Description = "Shoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 3, 1) + " seconds" + "\n (" +
+		UCustomUtils::SanitizeFloat(CooldownReciprocal, 3) + " times per second)";
 	if (IsMaxLevel())
 	{
 		Description.InsertAt(0, "Max Level\n");
@@ -77,7 +83,7 @@ void APDTurret::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (FTurretUpgrade Upgrade : Upgrades)
+	for (const FTurretUpgrade& Upgrade : Upgrades)
 	{
 		UpgradeCosts.Add(Upgrade.GetPowerCost());
 	}
@@ -102,6 +108,8 @@ void APDTurret::Tick(float DeltaTime)
 	{
 		// Look at the closest object in the look at target list
 		APDPrisoner* LookAtTarget = GetClosestTarget();
+
+		const float LookAngleThreshold = 5.f;
 		
 		bool ShouldActivateParticles = false;
 		if (LookAtTarget != nullptr)
@@ -114,7 +122,7 @@ void APDTurret::Tick(float DeltaTime)
 			if (AttackCooldown.TimeLimit <= DeltaTime)
 			{
 				// We may have to damage the prisoner more than once on a given frame
-				if (LookAngle < 5.f)
+				if (LookAngle < LookAngleThreshold)
 				{
 					// Damage the prisoner
 					LookAtTarget->Damage(DeltaTime / AttackCooldown.TimeLimit);
@@ -126,7 +134,7 @@ void APDTurret::Tick(float DeltaTime)
 			{
 				if (AttackCooldown.OutOfTime())
 				{
-					if (LookAngle < 5.f)
+					if (LookAngle < LookAngleThreshold)
 					{
 						// Damage the prisoner
 						LookAtTarget->Damage(1);
@@ -202,12 +210,11 @@ void APDTurret::Upgrade()
 APDPrisoner* APDTurret::GetClosestTarget() const
 {
 	float closestDst = 10000;
-	int targetIndex = -1;
 
-	for (size_t i = 0; i < LookAtTargets.Num(); i++)
-	{
-		APDPrisoner* target = LookAtTargets[i];
-		
+	APDPrisoner* closestTarget = nullptr;
+
+	for (auto target : LookAtTargets)
+	{	
 		// Don't use any defeated prisoners as look targets
 		if (target->IsDefeated())
 		{
@@ -218,17 +225,10 @@ APDPrisoner* APDTurret::GetClosestTarget() const
 		if (dstToTarget < closestDst)
 		{
 			closestDst = dstToTarget;
-			targetIndex = i;
+			closestTarget = target;
 		}
 	}
-	if (LookAtTargets.IsValidIndex(targetIndex))
-	{
-		return LookAtTargets[targetIndex];
-	}
-	else
-	{
-		return nullptr;
-	}
+	return closestTarget;
 }
 
 void APDTurret::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -251,7 +251,7 @@ void APDTurret::OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedCompone
 
 bool APDTurret::TryGetCurrentUpgrade(FTurretUpgrade& Upgrade) const
 {
-	if (!Upgrades.IsValidIndex(CurrentUpgradeIndex)) { return false; }
+	if (IsMaxLevel()) return false;
 
 	Upgrade = Upgrades[CurrentUpgradeIndex];
 

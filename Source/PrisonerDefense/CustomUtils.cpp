@@ -38,7 +38,10 @@ void UCustomUtils::Round(float& Value, const int DecimalPlaces)
 
 FString UCustomUtils::SanitizeFloat(float Value, const int MaxDecimalPlaces, const int MinDecimalPlaces)
 {
-    assert(MaxDecimalPlaces >= MinDecimalPlaces && "The minimum decimal places cannot be greater than the maximum decimal places!");
+    if (!ensure(MaxDecimalPlaces >= MinDecimalPlaces))
+    {
+        GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, TEXT("The minimum decimal places cannot be greater than the maximum decimal places!"));
+    }
 
     UCustomUtils::Round(Value, MaxDecimalPlaces);
 
@@ -61,7 +64,7 @@ FString UCustomUtils::SanitizeFloat(float Value, const int MaxDecimalPlaces, con
         Str += FString::FromInt(ModuloValue);
     }
 
-    while (Str.EndsWith("0") && CurrentDecimal >= MinDecimalPlaces)
+    while (Str.EndsWith("0") && CurrentDecimal > MinDecimalPlaces)
     {
         Str.RemoveFromEnd("0");
         CurrentDecimal--;

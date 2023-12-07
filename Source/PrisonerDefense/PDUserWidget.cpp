@@ -5,24 +5,16 @@
 #include "PDPlayer.h"
 #include "PrisonerDefenseGameModeBase.h"
 #include "PDPurchaseWidget.h"
+#include "CustomUtils.h"
 
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 
 #include "Kismet/GameplayStatics.h"
 
-int UPDUserWidget::GetPower() const
+float UPDUserWidget::GetPlayerPower() const
 {
-	return Power;
-}
-
-void UPDUserWidget::UpdatePower(const int additionalPower)
-{
-	Power += additionalPower;
-	PowerText->SetText(FText::FromString(PowerTextPrefix + FString::FromInt(Power)));
-	
-	TurretPurchasable->SetButtonEnabled(Power >= TurretPurchasable->GetPrice());
-	PowerGeneratorPurchasable->SetButtonEnabled(Power >= PowerGeneratorPurchasable->GetPrice());
+	return OwningPlayer->GetPower();
 }
 
 int UPDUserWidget::GetTurretCost() const
@@ -35,6 +27,11 @@ int UPDUserWidget::GetPowerGeneratorCost() const
 	return PowerGeneratorPurchasable->GetPrice();
 }
 
+APDPlayer* UPDUserWidget::GetPlayer() const
+{
+	return OwningPlayer;
+}
+
 void UPDUserWidget::PurchaseTurret()
 {
 	// Store current price because OnPurchased will change it
@@ -42,7 +39,7 @@ void UPDUserWidget::PurchaseTurret()
 	// whether the player can afford it using the old price
 	int CurrentPrice = GetTurretCost();
 	TurretPurchasable->OnPurchased();
-	UpdatePower(-CurrentPrice);
+	OwningPlayer->UpdatePower(-CurrentPrice);
 }
 
 void UPDUserWidget::PurchasePowerGenerator()
@@ -52,17 +49,7 @@ void UPDUserWidget::PurchasePowerGenerator()
 	// whether the player can afford it using the old price
 	int CurrentPrice = GetPowerGeneratorCost();
 	PowerGeneratorPurchasable->OnPurchased();
-	UpdatePower(-CurrentPrice);
-}
-
-APDPlayer* UPDUserWidget::GetPlayer() const
-{
-	return OwningPlayer;
-}
-
-void UPDUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-{
-	Super::NativeTick(MyGeometry, InDeltaTime);
+	OwningPlayer->UpdatePower(-CurrentPrice);
 }
 
 APrisonerDefenseGameModeBase* UPDUserWidget::GetGameMode() const
@@ -80,7 +67,7 @@ void UPDUserWidget::NativeConstruct()
 	TurretPurchasable->ParentWidget = this;
 	PowerGeneratorPurchasable->ParentWidget = this;
 
-	PowerText->SetText(FText::FromString(PowerTextPrefix + FString::FromInt(Power)));
+	PowerText->SetText(FText::FromString(PowerTextPrefix + UCustomUtils::SanitizeFloat(GetPlayerPower(), 2, 2)));
 	RoundText->SetText(FText::FromString(RoundTextPrefix + FString::FromInt(GameMode->GetCurrentRoundNumber())));
 
 	TurretPurchasable->OnButtonClicked.AddDynamic(this, &UPDUserWidget::OnTurretButtonClicked);
@@ -91,6 +78,16 @@ void UPDUserWidget::NativeConstruct()
 	GameMode->OnRoundChanged.AddDynamic(this, &UPDUserWidget::OnRoundChanged);
 	GameMode->OnRoundStarted.AddDynamic(this, &UPDUserWidget::OnRoundStarted);
 	GameMode->OnRoundEnded.AddDynamic(this, &UPDUserWidget::OnRoundEnded);
+
+	OwningPlayer->OnPowerChanged.AddDynamic(this, &UPDUserWidget::OnPowerUpdated);
+}
+
+void UPDUserWidget::OnPowerUpdated(const float PowerValue)
+{
+	PowerText->SetText(FText::FromString(PowerTextPrefix + UCustomUtils::SanitizeFloat(PowerValue, 2, 2)));
+
+	TurretPurchasable->SetButtonEnabled(PowerValue >= TurretPurchasable->GetPrice());
+	PowerGeneratorPurchasable->SetButtonEnabled(PowerValue >= PowerGeneratorPurchasable->GetPrice());
 }
 
 void UPDUserWidget::OnTurretButtonClicked()

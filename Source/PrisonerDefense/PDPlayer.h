@@ -7,6 +7,8 @@
 #include "GameFramework/Character.h"
 #include "PDPlayer.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPowerChangedSignature, float, PowerValue);
+
 UCLASS()
 class PRISONERDEFENSE_API APDPlayer : public APawn
 {
@@ -49,8 +51,14 @@ public:
 	UFUNCTION()
 		void OnPowerGeneratorButtonClicked();
 
+	UFUNCTION()
+		void UpdatePower(const float AdditionalPower);
+
 	bool HasTurret() const;
 	bool HasPowerGenerator() const;
+	float GetPower() const;
+
+	FOnPowerChangedSignature OnPowerChanged;
 
 private:
 	UFUNCTION()
@@ -110,4 +118,7 @@ private:
 
 	UPROPERTY()
 		class UPDUpgradesWidget* UpgradesWidget;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		float Power = 500.f;
 };

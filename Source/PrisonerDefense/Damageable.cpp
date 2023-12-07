@@ -4,7 +4,7 @@
 
 // Add default functionality here for any IIDamageable functions that are not pure virtual.
 
-void IDamageable::Damage(int Damage)
+void IDamageable::Damage(const float Damage)
 {
 
 }

@@ -53,8 +53,6 @@ public:
 	virtual void OnTowerPlaced() override;
 	
 private:
-	FCooldownTimer Timer;
-
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		TArray<FPowerGeneratorUpgrade> Upgrades;
 

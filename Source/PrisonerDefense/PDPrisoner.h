@@ -19,16 +19,16 @@ public:
 	// Sets default values for this pawn's properties
 	APDPrisoner();
 
-	virtual void Damage(int Damage) override;
+	virtual void Damage(const float Damage) override;
 	virtual void OnDefeat() override;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	int Health;
+	float Health;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-		int MaxHealth = 1;
+		float MaxHealth = 2;
 
 public:	
 	// Called every frame
@@ -58,7 +58,7 @@ private:
 		class USkeletalMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		// Power that the player earns by damaging this prisoner
-		int PowerReward = 10;
+		float PowerReward = 10;
 
 	UPROPERTY()
 		class APDPlayer* Player;
@@ -68,7 +68,7 @@ private:
 	
 	bool Defeated = false;
 
-	int TargetIndex;
+	int TargetPatrolIndex;
 	bool TryGetTargetPoint(FVector& TargetPoint) const;
 	bool TryGetPreviousPoint(FVector& PreviousPoint) const;
 	
