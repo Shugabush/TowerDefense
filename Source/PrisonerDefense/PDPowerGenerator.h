@@ -69,4 +69,6 @@ private:
 		UParticleSystemComponent* GenerationParticles;
 
 	bool TryGetCurrentUpgrade(FPowerGeneratorUpgrade& Upgrade) const;
+
+	bool IsMaxLevel() const;
 };

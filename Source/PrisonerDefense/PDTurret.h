@@ -38,6 +38,7 @@ public:
 	APDTurret();
 
 	virtual FText GetUpgradeDescription() const override;
+	virtual FText GetCurrentDescription() const override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -87,6 +88,8 @@ private:
 		class APDPrisoner* GetClosestTarget() const;
 
 	bool TryGetCurrentUpgrade(FTurretUpgrade& Upgrade) const;
+
+	bool IsMaxLevel() const;
 	
 	// Will not rely on any bool inside the particle system itself for activated
 	bool ParticlesActivated;

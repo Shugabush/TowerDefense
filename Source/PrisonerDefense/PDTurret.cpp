@@ -44,21 +44,30 @@ APDTurret::APDTurret() : APDTower()
 FText APDTurret::GetUpgradeDescription() const
 {
 	FTurretUpgrade Upgrade;
+	FString Description = "";
 
-	float CurrentCooldown = AttackCooldown.TimeLimit;
-	FString Description = "Max Level\nShoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 3, 1) + " seconds";
+	float NewCooldown = AttackCooldown.TimeLimit * Upgrade.GetAttackCooldownMultiplier();
 
 	if (TryGetCurrentUpgrade(Upgrade))
 	{
-		float NewCooldown = CurrentCooldown * Upgrade.GetAttackCooldownMultiplier();
-
 		UCustomUtils::Round(NewCooldown, 3);
 
 		float NewCooldownReciprocal = 1.f / NewCooldown;
 		UCustomUtils::Round(NewCooldownReciprocal, 3);
 
-		Description = "Shoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 3, 1) + "->" +
-			UCustomUtils::SanitizeFloat(NewCooldown, 3) + " seconds" + "\n (" + UCustomUtils::SanitizeFloat(NewCooldownReciprocal, 3) + " times per second)";
+		Description = "Shoots every " +  UCustomUtils::SanitizeFloat(NewCooldown, 3) + " seconds" + "\n (" +
+			UCustomUtils::SanitizeFloat(NewCooldownReciprocal, 3) + " times per second)";
+	}
+	return FText::FromString(Description);
+}
+
+FText APDTurret::GetCurrentDescription() const
+{
+	float CurrentCooldown = AttackCooldown.TimeLimit;
+	FString Description = "Shoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 3, 1) + " seconds";
+	if (IsMaxLevel())
+	{
+		Description.InsertAt(0, "Max Level\n");
 	}
 	return FText::FromString(Description);
 }
@@ -247,4 +256,9 @@ bool APDTurret::TryGetCurrentUpgrade(FTurretUpgrade& Upgrade) const
 	Upgrade = Upgrades[CurrentUpgradeIndex];
 
 	return true;
+}
+
+bool APDTurret::IsMaxLevel() const
+{
+	return !Upgrades.IsValidIndex(CurrentUpgradeIndex);
 }

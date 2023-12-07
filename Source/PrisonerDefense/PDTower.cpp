@@ -85,6 +85,11 @@ FText APDTower::GetUpgradeDescription() const
 	return FText();
 }
 
+FText APDTower::GetCurrentDescription() const
+{
+	return FText();
+}
+
 // Called when the game starts or when spawned
 void APDTower::BeginPlay()
 {
@@ -137,7 +142,8 @@ void APDTower::Upgrade()
 	CurrentUpgradeIndex++;
 	if (UpgradesWidget != nullptr)
 	{
-		UpgradesWidget->SetDescription(GetUpgradeDescription());
+		UpgradesWidget->SetUpgradeDescription(GetUpgradeDescription());
+		UpgradesWidget->SetCurrentDescription(GetCurrentDescription());
 	}
 	RecieveUpgrade();
 }

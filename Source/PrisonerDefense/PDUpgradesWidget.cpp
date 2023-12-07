@@ -127,9 +127,14 @@ void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int>& TargetCosts)
 	}
 }
 
-void UPDUpgradesWidget::SetDescription(FText Description)
+void UPDUpgradesWidget::SetUpgradeDescription(FText Description)
 {
 	UpgradeDescription->SetText(Description);
+}
+
+void UPDUpgradesWidget::SetCurrentDescription(FText Description)
+{
+	CurrentDescription->SetText(Description);
 }
 
 void UPDUpgradesWidget::SwipeIn()
@@ -168,7 +173,8 @@ void UPDUpgradesWidget::UpdateDisplay()
 {
 	if (ParentTower != nullptr)
 	{
-		SetDescription(ParentTower->GetUpgradeDescription());
+		SetUpgradeDescription(ParentTower->GetUpgradeDescription());
+		SetCurrentDescription(ParentTower->GetCurrentDescription());
 	}
 
 	int NewUpgradeCost;

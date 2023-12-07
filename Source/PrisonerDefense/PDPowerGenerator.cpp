@@ -136,3 +136,8 @@ bool APDPowerGenerator::TryGetCurrentUpgrade(FPowerGeneratorUpgrade& Upgrade) co
 	return true;
 }
 
+bool APDPowerGenerator::IsMaxLevel() const
+{
+	return !Upgrades.IsValidIndex(CurrentUpgradeIndex);
+}
+

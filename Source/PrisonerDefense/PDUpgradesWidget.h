@@ -26,7 +26,8 @@ public:
 
 	void InitializeUpgradeCosts(const TArray<int>& TargetCosts);
 
-	void SetDescription(FText Description);
+	void SetUpgradeDescription(FText Description);
+	void SetCurrentDescription(FText Description);
 
 	void SwipeIn();
 	void SwipeOut();
@@ -55,6 +56,9 @@ private:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		class UTextBlock* UpgradeDescription;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		class UTextBlock* CurrentDescription;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		// Icon that will display the selected tower

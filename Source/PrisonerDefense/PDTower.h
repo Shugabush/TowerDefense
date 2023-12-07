@@ -37,6 +37,9 @@ public:
 
 	UFUNCTION()
 		virtual FText GetUpgradeDescription() const;
+
+	UFUNCTION()
+		virtual FText GetCurrentDescription() const;
 	
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
