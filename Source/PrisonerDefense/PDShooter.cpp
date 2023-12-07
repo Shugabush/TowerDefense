@@ -58,7 +58,7 @@ FText APDShooter::GetUpgradeDescription() const
 		Description = "Shoots every " +  UCustomUtils::SanitizeFloat(NewCooldown, 3) + " seconds" + "\n (" +
 			UCustomUtils::SanitizeFloat(NewCooldownReciprocal, 3) + " times per second)";
 	}
-	return FText::FromString(Description);
+	return FText::FromString("Upgrade\n" + Description);
 }
 
 FText APDShooter::GetCurrentDescription() const
@@ -75,7 +75,7 @@ FText APDShooter::GetCurrentDescription() const
 	{
 		Description.InsertAt(0, "Max Level\n");
 	}
-	return FText::FromString(Description);
+	return FText::FromString("Current\n" + Description);
 }
 
 // Called when the game starts or when spawned

@@ -67,7 +67,6 @@ void APDTower::OnTowerSelected(APDTower* PreviouslySelectedTower)
 	{
 		UpgradesWidget->SwipeIn();
 	}
-	UpgradesWidget->SetTowerIcon(Icon);
 	RecieveOnTowerSelected(PreviouslySelectedTower);
 }
 
@@ -83,12 +82,17 @@ void APDTower::OnTowerDeselected(APDTower* NewSelectedTower)
 
 FText APDTower::GetUpgradeDescription() const
 {
-	return FText();
+	return FText::FromString("Upgrade\n");
 }
 
 FText APDTower::GetCurrentDescription() const
 {
-	return FText();
+	return FText::FromString("Current\n");
+}
+
+UTexture2D* APDTower::GetIcon() const
+{
+	return Icon;
 }
 
 // Called when the game starts or when spawned

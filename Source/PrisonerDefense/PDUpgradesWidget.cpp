@@ -171,11 +171,10 @@ void UPDUpgradesWidget::SwipeOut()
 
 void UPDUpgradesWidget::UpdateDisplay()
 {
-	if (ParentTower != nullptr)
-	{
-		SetUpgradeDescription(ParentTower->GetUpgradeDescription());
-		SetCurrentDescription(ParentTower->GetCurrentDescription());
-	}
+	if (ParentTower == nullptr) return;
+
+	SetUpgradeDescription(ParentTower->GetUpgradeDescription());
+	SetCurrentDescription(ParentTower->GetCurrentDescription());
 
 	int NewUpgradeCost;
 
@@ -188,11 +187,8 @@ void UPDUpgradesWidget::UpdateDisplay()
 		UpgradeCostText->SetText(FText::GetEmpty());
 		UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
 	}
-}
 
-void UPDUpgradesWidget::SetTowerIcon(UTexture2D* Texture)
-{
-	TowerIcon->SetBrushFromTexture(Texture);
+	TowerIcon->SetBrushFromTexture(ParentTower->GetIcon());
 }
 
 void UPDUpgradesWidget::OnUpgradeButtonClicked()

@@ -40,6 +40,8 @@ public:
 
 	UFUNCTION()
 		virtual FText GetCurrentDescription() const;
+
+	UTexture2D* GetIcon() const;
 	
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))

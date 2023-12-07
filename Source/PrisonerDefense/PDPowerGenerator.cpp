@@ -48,7 +48,7 @@ FText APDPowerGenerator::GetUpgradeDescription() const
 	{
 		Description = UCustomUtils::SanitizeFloat(PowerPerSecond + Upgrade.GetAdditionalPowerPerSecond(), 2, 2) + " power per second";
 	}
-	return FText::FromString(Description);
+	return FText::FromString("Upgrade\n" + Description);
 }
 
 FText APDPowerGenerator::GetCurrentDescription() const
@@ -58,7 +58,7 @@ FText APDPowerGenerator::GetCurrentDescription() const
 	{
 		Description.InsertAt(0, "Max Level\n");
 	}
-	return FText::FromString(Description);
+	return FText::FromString("Current\n" + Description);
 }
 
 // Called when the game starts or when spawned

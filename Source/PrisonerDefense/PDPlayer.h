@@ -37,6 +37,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void OnMouseClicked();
+	virtual void OnMouseUp();
 
 public:	
 	// Called every frame
@@ -124,4 +125,6 @@ private:
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		float Power = 500.f;
+
+	const float MaxPower = 1000000000;
 };

@@ -34,8 +34,6 @@ public:
 
 	void UpdateDisplay();
 
-	void SetTowerIcon(UTexture2D* Texture);
-
 protected:
 	virtual void NativeConstruct() override;
 

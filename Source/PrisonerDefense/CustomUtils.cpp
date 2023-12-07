@@ -32,8 +32,8 @@ void UCustomUtils::Round(float& Value, const int DecimalPlaces)
 {
     int ExpMultiplier = FMath::Pow(10, DecimalPlaces);
 
-    int ExpValue = FMath::RoundToInt(Value * ExpMultiplier);
-    Value = (float)ExpValue / ExpMultiplier;
+    float ExpValue = FMath::RoundToFloat(Value * ExpMultiplier);
+    Value = ExpValue / ExpMultiplier;
 }
 
 FString UCustomUtils::SanitizeFloat(float Value, const int MaxDecimalPlaces, const int MinDecimalPlaces)

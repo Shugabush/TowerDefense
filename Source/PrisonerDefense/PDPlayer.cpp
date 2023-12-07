@@ -112,6 +112,11 @@ void APDPlayer::BeginPlay()
 
 void APDPlayer::OnMouseClicked()
 {
+	
+}
+
+void APDPlayer::OnMouseUp()
+{
 	if (ActiveTower == nullptr || SelectedTowerSlot == nullptr)
 	{
 		ChangeSelectedTower(PendingSelectedTower);
@@ -126,6 +131,8 @@ void APDPlayer::OnMouseClicked()
 void APDPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	Power = FMath::Clamp<float>(Power, 0, MaxPower);
 	
 	if (GameMode->GameIsRunning())
 	{
@@ -150,6 +157,7 @@ void APDPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	InputComponent->BindAction("MouseLeftClick", IE_Pressed, this, &APDPlayer::OnMouseClicked);
+	InputComponent->BindAction("MouseLeftClick", IE_Released, this, &APDPlayer::OnMouseUp);
 	InputComponent->BindAction("PauseButton", IE_Pressed, this, &APDPlayer::TogglePause).bExecuteWhenPaused = true;
 }
 
@@ -317,6 +325,8 @@ void APDPlayer::UpdatePower(const float AdditionalPower)
 {
 	Power += AdditionalPower;
 
+	Power = FMath::Clamp<float>(Power, 0, MaxPower);
+
 	OnPowerChanged.Broadcast(Power);
 }
 
@@ -347,6 +357,7 @@ void APDPlayer::SpawnOrClearTower(TSubclassOf<APDTower> TowerBlueprint)
 	{
 		// Clear tower
 		ClearTower();
+		return;
 	}
 
 	// Only spawn a new tower if ActiveTower doesn't exist and the game isn't paused
