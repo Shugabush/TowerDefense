@@ -42,8 +42,11 @@ public:
 	void OnPurchased();
 
 private:
+	UPROPERTY(EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
+		TSubclassOf<class APDTower> TowerBlueprint;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
-		class UTexture2D* ButtonIcon;
+		UTexture2D* ButtonIcon;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		int Price = 100;
@@ -58,5 +61,5 @@ private:
 		class UTextBlock* PriceText;
 
 	UFUNCTION(BlueprintCallable)
-		void TryPurchase();
+		void ButtonClicked();
 };

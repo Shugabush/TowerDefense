@@ -16,13 +16,13 @@ struct FPowerGeneratorUpgrade
 {
 	GENERATED_BODY()
 public:
-	int GetPowerCost() const;
-	int GetAdditionalPowerPerSecond() const;
+	float GetPowerCost() const;
+	float GetAdditionalPowerPerSecond() const;
 private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
-		int PowerCost = 100;
+		float PowerCost = 100;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
-		int AdditionalPowerPerSecond = 5;
+		float AdditionalPowerPerSecond = 5;
 };
 
 UCLASS()
@@ -37,6 +37,7 @@ public:
 	class UStaticMeshComponent* GetMesh() const;
 
 	virtual FText GetUpgradeDescription() const override;
+	virtual FText GetCurrentDescription() const override;
 
 protected:
 	// Called when the game starts or when spawned

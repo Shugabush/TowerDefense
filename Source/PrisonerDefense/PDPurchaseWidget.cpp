@@ -8,6 +8,7 @@
 #include "Components/PanelWidget.h"
 #include "PrisonerDefenseGameModeBase.h"
 #include "CustomUtils.h"
+#include "PDPlayer.h"
 
 #include "PDUserWidget.h"
 
@@ -18,7 +19,7 @@ void UPDPurchaseWidget::NativeConstruct()
 	PurchaseButton->WidgetStyle.Pressed.SetResourceObject(ButtonIcon);
 	PurchaseButton->WidgetStyle.Disabled.SetResourceObject(ButtonIcon);
 
-	PurchaseButton->OnClicked.AddDynamic(this, &UPDPurchaseWidget::TryPurchase);
+	PurchaseButton->OnClicked.AddDynamic(this, &UPDPurchaseWidget::ButtonClicked);
 
 	PriceText->SetText(FText::FromString(UCustomUtils::SanitizeFloat(Price, 2) + " Power"));
 }
@@ -52,10 +53,11 @@ void UPDPurchaseWidget::OnPurchased()
 	OnPurchase.Broadcast();
 }
 
-void UPDPurchaseWidget::TryPurchase()
+void UPDPurchaseWidget::ButtonClicked()
 {
 	if (ParentWidget != nullptr && ParentWidget->GetPlayerPower() >= Price)
 	{
+		ParentWidget->GetPlayer()->SpawnOrClearTower(TowerBlueprint);
 		OnButtonClicked.Broadcast();
 	}
 }

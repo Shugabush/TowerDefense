@@ -22,6 +22,7 @@ APDTower::APDTower()
 	PrimaryActorTick.bCanEverTick = true;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	RootComponent->SetMobility(EComponentMobility::Type::Movable);
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
@@ -139,13 +140,13 @@ void APDTower::Tick(float DeltaTime)
 
 void APDTower::Upgrade()
 {
+	RecievePreUpgrade(CurrentUpgradeIndex);
 	CurrentUpgradeIndex++;
 	if (UpgradesWidget != nullptr)
 	{
-		UpgradesWidget->SetUpgradeDescription(GetUpgradeDescription());
-		UpgradesWidget->SetCurrentDescription(GetCurrentDescription());
+		UpgradesWidget->UpdateDisplay();
 	}
-	RecieveUpgrade();
+	RecievePostUpgrade(CurrentUpgradeIndex);
 }
 
 void APDTower::OnTowerPlaced()

@@ -8,17 +8,18 @@
 #include "PDUpgradesWidget.h"
 #include "PrisonerDefenseGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "CustomUtils.h"
 
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 
-int FPowerGeneratorUpgrade::GetPowerCost() const
+float FPowerGeneratorUpgrade::GetPowerCost() const
 {
 	return PowerCost;
 }
 
-int FPowerGeneratorUpgrade::GetAdditionalPowerPerSecond() const
+float FPowerGeneratorUpgrade::GetAdditionalPowerPerSecond() const
 {
 	return AdditionalPowerPerSecond;
 }
@@ -41,12 +42,23 @@ UStaticMeshComponent* APDPowerGenerator::GetMesh() const
 
 FText APDPowerGenerator::GetUpgradeDescription() const
 {
+	FString Description = "";
 	FPowerGeneratorUpgrade Upgrade;
-	if (!TryGetCurrentUpgrade(Upgrade))
+	if (TryGetCurrentUpgrade(Upgrade))
 	{
-		return FText::FromString("Max Level\n " + FString::FromInt(PowerPerSecond) + " per second");
+		Description = UCustomUtils::SanitizeFloat(PowerPerSecond + Upgrade.GetAdditionalPowerPerSecond(), 2, 2) + " power per second";
 	}
-	return FText::FromString(FString::FromInt(PowerPerSecond) + "->" + FString::FromInt(PowerPerSecond + Upgrade.GetAdditionalPowerPerSecond()) + " per second");
+	return FText::FromString(Description);
+}
+
+FText APDPowerGenerator::GetCurrentDescription() const
+{
+	FString Description = UCustomUtils::SanitizeFloat(PowerPerSecond, 2, 2) + " power per second";
+	if (IsMaxLevel())
+	{
+		Description.InsertAt(0, "Max Level\n");
+	}
+	return FText::FromString(Description);
 }
 
 // Called when the game starts or when spawned

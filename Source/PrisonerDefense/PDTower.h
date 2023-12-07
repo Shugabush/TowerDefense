@@ -42,7 +42,7 @@ public:
 		virtual FText GetCurrentDescription() const;
 	
 private:
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 		UTexture2D* Icon;
 
 protected:
@@ -58,7 +58,7 @@ protected:
 	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		class UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
@@ -94,8 +94,11 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnTowerSelected"))
 		void RecieveOnTowerSelected(APDTower* PreviouslySelectedTower);
 
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Upgrade"))
-		void RecieveUpgrade();
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "PreUpgrade"))
+		void RecievePreUpgrade(int UpgradeIndex);
+
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "PostUpgrade"))
+		void RecievePostUpgrade(int UpgradeIndex);
 
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnTowerDeselected"))
 		void RecieveOnTowerDeselected(APDTower* NewSelectedTower);
@@ -123,7 +126,11 @@ public:
 	// Get a copy array of upgrade costs
 	TArray<int> GetUpgradeCosts() const;
 
-	void BlendMeshColors(FLinearColor newColor);
-	void SetMeshColors(FLinearColor newColor);
-	void ResetMeshColors();
+	UFUNCTION(BlueprintCallable)
+		void BlendMeshColors(FLinearColor newColor);
+	UFUNCTION(BlueprintCallable)
+		void SetMeshColors(FLinearColor newColor);
+
+	UFUNCTION(BlueprintCallable)
+		void ResetMeshColors();
 };

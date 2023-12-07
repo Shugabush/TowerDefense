@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "PDTurret.h"
+#include "PDShooter.h"
 #include "PDTurretSlot.h"
 #include "PDPrisoner.h"
 #include "PDBullet.h"
@@ -16,23 +16,23 @@
 
 #include "Kismet/KismetMathLibrary.h"
 
-int FTurretUpgrade::GetPowerCost() const
+int FShooterUpgrade::GetPowerCost() const
 {
 	return PowerCost;
 }
 
-float FTurretUpgrade::GetAdditionalRangeScale() const
+float FShooterUpgrade::GetAdditionalRangeScale() const
 {
 	return AdditionalRangeScale;
 }
 
-float FTurretUpgrade::GetAttackCooldownMultiplier() const
+float FShooterUpgrade::GetAttackCooldownMultiplier() const
 {
 	return AttackCooldownMultiplier;
 }
 
 // Sets default values
-APDTurret::APDTurret() : APDTower()
+APDShooter::APDShooter() : APDTower()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -41,9 +41,9 @@ APDTurret::APDTurret() : APDTower()
 	FireParticles->AttachTo(RootComponent);
 }
 
-FText APDTurret::GetUpgradeDescription() const
+FText APDShooter::GetUpgradeDescription() const
 {
-	FTurretUpgrade Upgrade;
+	FShooterUpgrade Upgrade;
 	FString Description = "";
 
 	float NewCooldown = AttackCooldown.TimeLimit * Upgrade.GetAttackCooldownMultiplier();
@@ -61,7 +61,7 @@ FText APDTurret::GetUpgradeDescription() const
 	return FText::FromString(Description);
 }
 
-FText APDTurret::GetCurrentDescription() const
+FText APDShooter::GetCurrentDescription() const
 {
 	float CurrentCooldown = AttackCooldown.TimeLimit;
 	UCustomUtils::Round(CurrentCooldown, 3);
@@ -79,11 +79,11 @@ FText APDTurret::GetCurrentDescription() const
 }
 
 // Called when the game starts or when spawned
-void APDTurret::BeginPlay()
+void APDShooter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (const FTurretUpgrade& Upgrade : Upgrades)
+	for (const FShooterUpgrade& Upgrade : Upgrades)
 	{
 		UpgradeCosts.Add(Upgrade.GetPowerCost());
 	}
@@ -91,7 +91,7 @@ void APDTurret::BeginPlay()
 	FireParticles->Deactivate();
 }
 
-void APDTurret::OnRoundEnded()
+void APDShooter::OnRoundEnded()
 {
 	AttackCooldown.TimeLimit *= CooldownMultiplierPerRound;
 
@@ -99,7 +99,7 @@ void APDTurret::OnRoundEnded()
 }
 
 // Called every frame
-void APDTurret::Tick(float DeltaTime)
+void APDShooter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -155,7 +155,7 @@ void APDTurret::Tick(float DeltaTime)
 			TargetRotation.X = 0;
 			TargetRotation.Y = 0;
 
-			SetActorRotation(FQuat::FastLerp(GetActorRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
+			Mesh->SetWorldRotation(FQuat::FastLerp(Mesh->GetComponentRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
 		}
 
 		if (ParticlesActivated)
@@ -177,24 +177,9 @@ void APDTurret::Tick(float DeltaTime)
 	}
 }
 
-void APDTurret::BlendMeshColors(FLinearColor newColor)
+void APDShooter::Upgrade()
 {
-	MeshData.BlendColors(newColor);
-}
-
-void APDTurret::SetMeshColors(FLinearColor newColor)
-{
-	MeshData.SetColors(newColor);
-}
-
-void APDTurret::ResetMeshColors()
-{
-	MeshData.ResetColors();
-}
-
-void APDTurret::Upgrade()
-{
-	FTurretUpgrade Upgrade;
+	FShooterUpgrade Upgrade;
 	if (!TryGetCurrentUpgrade(Upgrade)) return;
 
 	AttackCooldown.TimeLimit *= Upgrade.GetAttackCooldownMultiplier();
@@ -207,7 +192,7 @@ void APDTurret::Upgrade()
 	Super::Upgrade();
 }
 
-APDPrisoner* APDTurret::GetClosestTarget() const
+APDPrisoner* APDShooter::GetClosestTarget() const
 {
 	float closestDst = 10000;
 
@@ -231,7 +216,7 @@ APDPrisoner* APDTurret::GetClosestTarget() const
 	return closestTarget;
 }
 
-void APDTurret::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void APDShooter::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	APDPrisoner* prisoner = Cast<APDPrisoner>(OtherActor);
 	if (prisoner != nullptr)
@@ -240,7 +225,7 @@ void APDTurret::OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedCompo
 	}
 }
 
-void APDTurret::OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void APDShooter::OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	APDPrisoner* prisoner = Cast<APDPrisoner>(OtherActor);
 	if (prisoner != nullptr)
@@ -249,7 +234,7 @@ void APDTurret::OnVolumeTriggerEndOverlap(UPrimitiveComponent* OverlappedCompone
 	}
 }
 
-bool APDTurret::TryGetCurrentUpgrade(FTurretUpgrade& Upgrade) const
+bool APDShooter::TryGetCurrentUpgrade(FShooterUpgrade& Upgrade) const
 {
 	if (IsMaxLevel()) return false;
 
@@ -258,7 +243,7 @@ bool APDTurret::TryGetCurrentUpgrade(FTurretUpgrade& Upgrade) const
 	return true;
 }
 
-bool APDTurret::IsMaxLevel() const
+bool APDShooter::IsMaxLevel() const
 {
 	return !Upgrades.IsValidIndex(CurrentUpgradeIndex);
 }

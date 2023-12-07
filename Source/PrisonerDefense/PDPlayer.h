@@ -60,6 +60,9 @@ public:
 
 	FOnPowerChangedSignature OnPowerChanged;
 
+	UFUNCTION()
+		void SpawnOrClearTower(TSubclassOf<class APDTower> TowerBlueprint);
+
 private:
 	UFUNCTION()
 		void ClearTower();
@@ -83,7 +86,7 @@ private:
 		class APlayerController* PlayerController;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-		TSubclassOf<class APDTurret> TurretReference;
+		TSubclassOf<class APDShooter> TurretReference;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		TSubclassOf<class APDPowerGenerator> PowerGeneratorReference;
@@ -98,12 +101,12 @@ private:
 		class APDTowerSlot* SelectedTowerSlot;
 
 	UPROPERTY()
-		APDTower* PendingSelectedTower;
+		class APDTower* PendingSelectedTower;
 
 	UPROPERTY()
-		APDTower* SelectedTower;
+		class APDTower* SelectedTower;
 
-	void ChangeSelectedTower(APDTower* NewSelectedTower);
+	void ChangeSelectedTower(class APDTower* NewSelectedTower);
 
 	UPROPERTY()
 		class APrisonerDefenseGameModeBase* GameMode;

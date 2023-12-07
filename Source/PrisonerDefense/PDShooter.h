@@ -8,11 +8,11 @@
 #include "PDTower.h"
 
 #include "GameFramework/Actor.h"
-#include "PDTurret.generated.h"
+#include "PDShooter.generated.h"
 
 USTRUCT(BlueprintType)
 // Turret upgrade blueprint
-struct FTurretUpgrade
+struct FShooterUpgrade
 {
 	GENERATED_BODY()
 public:
@@ -29,13 +29,13 @@ private:
 };
 
 UCLASS()
-class PRISONERDEFENSE_API APDTurret : public APDTower
+class PRISONERDEFENSE_API APDShooter : public APDTower
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	APDTurret();
+	APDShooter();
 
 	virtual FText GetUpgradeDescription() const override;
 	virtual FText GetCurrentDescription() const override;
@@ -57,11 +57,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	void BlendMeshColors(FLinearColor newColor);
-	void SetMeshColors(FLinearColor newColor);
-	void ResetMeshColors();
-
 	virtual void Upgrade() override;
 
 	FQuat TargetRotation;
@@ -75,7 +70,7 @@ private:
 		FCooldownTimer AttackCooldown;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
-		TArray<FTurretUpgrade> Upgrades;
+		TArray<FShooterUpgrade> Upgrades;
 
 	UPROPERTY()
 		TSet<APDPrisoner*> LookAtTargets;
@@ -87,7 +82,7 @@ private:
 	UFUNCTION()
 		class APDPrisoner* GetClosestTarget() const;
 
-	bool TryGetCurrentUpgrade(FTurretUpgrade& Upgrade) const;
+	bool TryGetCurrentUpgrade(FShooterUpgrade& Upgrade) const;
 
 	bool IsMaxLevel() const;
 	

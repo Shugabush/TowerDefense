@@ -3,7 +3,7 @@
 
 #include "PDPlayer.h"
 
-#include "PDTurret.h"
+#include "PDShooter.h"
 #include "PDTower.h"
 #include "PDPowerGenerator.h"
 #include "PDPrisonerCage.h"
@@ -174,7 +174,7 @@ void APDPlayer::SpawnTurret()
 	// Only spawn a new turret if ActiveTurret doesn't exist and the game isn't paused
 	if (ActiveTower == nullptr && !PlayerController->IsPaused())
 	{
-		ActiveTower = GetWorld()->SpawnActor<APDTurret>(TurretReference);
+		ActiveTower = GetWorld()->SpawnActor<APDShooter>(TurretReference);
 		ActiveMesh = ActiveTower->GetMesh();
 	}
 }
@@ -324,7 +324,7 @@ bool APDPlayer::HasTurret() const
 {
 	if (ActiveTower == nullptr) { return false; }
 
-	APDTurret* ActiveTurret = Cast<APDTurret>(ActiveTower);
+	APDShooter* ActiveTurret = Cast<APDShooter>(ActiveTower);
 	return ActiveTurret != nullptr;
 }
 
@@ -339,5 +339,21 @@ bool APDPlayer::HasPowerGenerator() const
 float APDPlayer::GetPower() const
 {
 	return Power;
+}
+
+void APDPlayer::SpawnOrClearTower(TSubclassOf<APDTower> TowerBlueprint)
+{
+	if (ActiveTower != nullptr)
+	{
+		// Clear tower
+		ClearTower();
+	}
+
+	// Only spawn a new tower if ActiveTower doesn't exist and the game isn't paused
+	if (ActiveTower == nullptr && !PlayerController->IsPaused())
+	{
+		ActiveTower = GetWorld()->SpawnActor<APDTower>(TowerBlueprint);
+		ActiveMesh = ActiveTower->GetMesh();
+	}
 }
 

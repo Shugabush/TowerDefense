@@ -70,8 +70,8 @@ void UPDUserWidget::NativeConstruct()
 	PowerText->SetText(FText::FromString(PowerTextPrefix + UCustomUtils::SanitizeFloat(GetPlayerPower(), 2, 2)));
 	RoundText->SetText(FText::FromString(RoundTextPrefix + FString::FromInt(GameMode->GetCurrentRoundNumber())));
 
-	TurretPurchasable->OnButtonClicked.AddDynamic(this, &UPDUserWidget::OnTurretButtonClicked);
-	PowerGeneratorPurchasable->OnButtonClicked.AddDynamic(this, &UPDUserWidget::OnPowerGeneratorButtonClicked);
+	//TurretPurchasable->OnButtonClicked.AddDynamic(this, &UPDUserWidget::OnTurretButtonClicked);
+	//PowerGeneratorPurchasable->OnButtonClicked.AddDynamic(this, &UPDUserWidget::OnPowerGeneratorButtonClicked);
 
 	PlayButton->OnClicked.AddDynamic(this, &UPDUserWidget::OnPlayButtonClicked);
 

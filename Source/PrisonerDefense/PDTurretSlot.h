@@ -32,5 +32,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY()
-		class APDTurret* Turret;
+		class APDShooter* Turret;
 };
