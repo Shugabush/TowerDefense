@@ -4,9 +4,6 @@
 
 #include "CoreMinimal.h"
 
-#include "Components/Button.h"
-#include "Components/TextBlock.h"
-
 #include "Blueprint/UserWidget.h"
 #include "PDUpgradesWidget.generated.h"
 
@@ -36,6 +33,8 @@ public:
 
 	void UpdateDisplay();
 
+	void SetTowerIcon(UTexture2D* Texture);
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -50,12 +49,16 @@ protected:
 	
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UButton* UpgradeButton;
+		class UButton* UpgradeButton;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UTextBlock* UpgradeCostText;
+		class UTextBlock* UpgradeCostText;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		UTextBlock* UpgradeDescription;
+		class UTextBlock* UpgradeDescription;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		// Icon that will display the selected tower
+		class UImage* TowerIcon;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
 		TArray<int> UpgradeCosts;

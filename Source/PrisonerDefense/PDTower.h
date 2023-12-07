@@ -38,6 +38,10 @@ public:
 	UFUNCTION()
 		virtual FText GetUpgradeDescription() const;
 	
+private:
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+		UTexture2D* Icon;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

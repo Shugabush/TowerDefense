@@ -120,11 +120,6 @@ void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int>& TargetCosts)
 		UpgradeCostText->SetText(FText::FromString(FString::FromInt(UpgradeCost) + " Power"));
 		UpgradeButton->SetVisibility(ESlateVisibility::Visible);
 	}
-	else
-	{
-		UpgradeCostText->SetText(FText::GetEmpty());
-		UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
-	}
 }
 
 void UPDUpgradesWidget::SetDescription(FText Description)

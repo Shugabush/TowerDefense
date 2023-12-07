@@ -66,6 +66,7 @@ void APDTower::OnTowerSelected(APDTower* PreviouslySelectedTower)
 	{
 		UpgradesWidget->SwipeIn();
 	}
+	UpgradesWidget->SetTowerIcon(Icon);
 	RecieveOnTowerSelected(PreviouslySelectedTower);
 }
 

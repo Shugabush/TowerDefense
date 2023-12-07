@@ -57,7 +57,7 @@ FText APDTurret::GetUpgradeDescription() const
 		float NewCooldownReciprocal = 1.f / NewCooldown;
 		UCustomUtils::Round(NewCooldownReciprocal, 3);
 
-		Description = "Shoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 2, 1) + "->" +
+		Description = "Shoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 3, 1) + "->" +
 			UCustomUtils::SanitizeFloat(NewCooldown, 3) + " seconds" + "\n (" + UCustomUtils::SanitizeFloat(NewCooldownReciprocal, 3) + " times per second)";
 	}
 	return FText::FromString(Description);
@@ -72,6 +72,7 @@ void APDTurret::BeginPlay()
 	{
 		UpgradeCosts.Add(Upgrade.GetPowerCost());
 	}
+
 	FireParticles->Deactivate();
 }
 
