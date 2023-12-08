@@ -26,9 +26,9 @@ float FShooterUpgrade::GetAdditionalRangeScale() const
 	return AdditionalRangeScale;
 }
 
-float FShooterUpgrade::GetAttackCooldownMultiplier() const
+float FShooterUpgrade::GetAttackDamageMultiplier() const
 {
-	return AttackCooldownMultiplier;
+	return AttackDamageMultiplier;
 }
 
 // Sets default values
@@ -46,31 +46,23 @@ FText APDShooter::GetUpgradeDescription() const
 	FShooterUpgrade Upgrade;
 	FString Description = "";
 
-	float NewCooldown = AttackCooldown.TimeLimit * Upgrade.GetAttackCooldownMultiplier();
+	float NewDamagePerSecond = DamagePerSecond * Upgrade.GetAttackDamageMultiplier();
 
 	if (TryGetCurrentUpgrade(Upgrade))
 	{
-		UCustomUtils::Round(NewCooldown, 3);
+		UCustomUtils::Round(NewDamagePerSecond, 3);
 
-		float NewCooldownReciprocal = 1.f / NewCooldown;
-		UCustomUtils::Round(NewCooldownReciprocal, 3);
-
-		Description = "Shoots every " +  UCustomUtils::SanitizeFloat(NewCooldown, 3) + " seconds" + "\n (" +
-			UCustomUtils::SanitizeFloat(NewCooldownReciprocal, 3) + " times per second)";
+		Description = "Shoots " + UCustomUtils::SanitizeFloat(NewDamagePerSecond, 3) + " times per second";
 	}
 	return FText::FromString("Upgrade\n" + Description);
 }
 
 FText APDShooter::GetCurrentDescription() const
 {
-	float CurrentCooldown = AttackCooldown.TimeLimit;
-	UCustomUtils::Round(CurrentCooldown, 3);
+	float CurrentDamagePerSecond = DamagePerSecond;
+	UCustomUtils::Round(CurrentDamagePerSecond, 3);
 
-	float CooldownReciprocal = 1.f / CurrentCooldown;
-	UCustomUtils::Round(CooldownReciprocal, 3);
-
-	FString Description = "Shoots every " + UCustomUtils::SanitizeFloat(CurrentCooldown, 3, 1) + " seconds" + "\n (" +
-		UCustomUtils::SanitizeFloat(CooldownReciprocal, 3) + " times per second)";
+	FString Description = "Shoots " + UCustomUtils::SanitizeFloat(CurrentDamagePerSecond, 3, 1) + " times per second";
 	if (IsMaxLevel())
 	{
 		Description.InsertAt(0, "Max Level\n");
@@ -93,7 +85,7 @@ void APDShooter::BeginPlay()
 
 void APDShooter::OnRoundEnded()
 {
-	AttackCooldown.TimeLimit *= CooldownMultiplierPerRound;
+	DamagePerSecond *= DamageMultiplierPerRound;
 
 	Super::OnRoundEnded();
 }
@@ -109,53 +101,20 @@ void APDShooter::Tick(float DeltaTime)
 		// Look at the closest object in the look at target list
 		APDPrisoner* LookAtTarget = GetClosestTarget();
 
-		const float LookAngleThreshold = 5.f;
-		
 		bool ShouldActivateParticles = false;
 		if (LookAtTarget != nullptr)
 		{
-			float ForwardDirectionDotProduct = FVector::DotProduct(GetActorForwardVector(), LookAtTarget->GetActorForwardVector());
-			float LengthProduct = GetActorForwardVector().Size() * LookAtTarget->GetActorForwardVector().Size();
+			// We may have to damage the prisoner more than once on a given frame
+			LookAtTarget->Damage(DamagePerSecond * DeltaTime);
 
-			float LookAngle = FMath::Acos(ForwardDirectionDotProduct / LengthProduct);
-
-			if (AttackCooldown.TimeLimit <= DeltaTime)
-			{
-				// We may have to damage the prisoner more than once on a given frame
-				if (LookAngle < LookAngleThreshold)
-				{
-					// Damage the prisoner
-					LookAtTarget->Damage(DeltaTime / AttackCooldown.TimeLimit);
-
-					ShouldActivateParticles = true;
-				}
-			}
-			else
-			{
-				if (AttackCooldown.OutOfTime())
-				{
-					if (LookAngle < LookAngleThreshold)
-					{
-						// Damage the prisoner
-						LookAtTarget->Damage(1);
-						
-						ShouldActivateParticles = true;
-
-						AttackCooldown.Reset();
-					}
-				}
-				else
-				{
-					AttackCooldown.Tick(DeltaTime);
-				}
-			}
+			ShouldActivateParticles = true;
 
 			TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LookAtTarget->GetActorLocation()).Quaternion();
 
 			TargetRotation.X = 0;
 			TargetRotation.Y = 0;
 
-			Mesh->SetWorldRotation(FQuat::FastLerp(Mesh->GetComponentRotation().Quaternion(), TargetRotation, DeltaTime * RotationLerpSpeed));
+			Mesh->SetWorldRotation(TargetRotation);
 		}
 
 		if (ParticlesActivated)
@@ -182,7 +141,7 @@ void APDShooter::Upgrade()
 	FShooterUpgrade Upgrade;
 	if (!TryGetCurrentUpgrade(Upgrade)) return;
 
-	AttackCooldown.TimeLimit *= Upgrade.GetAttackCooldownMultiplier();
+	DamagePerSecond *= Upgrade.GetAttackDamageMultiplier();
 	VolumeTriggerRadius = VolumeTrigger->GetUnscaledSphereRadius();
 	RangeIndicatorScale = RangeIndicator->GetRelativeScale3D();
 

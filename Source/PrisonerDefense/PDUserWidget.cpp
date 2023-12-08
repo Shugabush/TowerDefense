@@ -9,6 +9,7 @@
 
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Components/PanelWidget.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -32,23 +33,15 @@ APDPlayer* UPDUserWidget::GetPlayer() const
 	return OwningPlayer;
 }
 
-void UPDUserWidget::PurchaseTurret()
+void UPDUserWidget::PurchaseTargetWidget()
 {
-	// Store current price because OnPurchased will change it
-	// We need to update power after purchase has been made or else it will check
-	// whether the player can afford it using the old price
-	int CurrentPrice = GetTurretCost();
-	TurretPurchasable->OnPurchased();
-	OwningPlayer->UpdatePower(-CurrentPrice);
-}
+	if (TargetPurchasable == nullptr) return;
 
-void UPDUserWidget::PurchasePowerGenerator()
-{
 	// Store current price because OnPurchased will change it
 	// We need to update power after purchase has been made or else it will check
 	// whether the player can afford it using the old price
-	int CurrentPrice = GetPowerGeneratorCost();
-	PowerGeneratorPurchasable->OnPurchased();
+	float CurrentPrice = TargetPurchasable->GetPrice();
+	TargetPurchasable->OnPurchased();
 	OwningPlayer->UpdatePower(-CurrentPrice);
 }
 
@@ -64,8 +57,17 @@ void UPDUserWidget::NativeConstruct()
 	GameMode = Cast<APrisonerDefenseGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	OwningPlayer = GetOwningPlayerPawn<APDPlayer>();
-	TurretPurchasable->ParentWidget = this;
-	PowerGeneratorPurchasable->ParentWidget = this;
+
+	TArray<UWidget*> WidgetChildren = Panel->GetAllChildren();
+	for (auto Widget : WidgetChildren)
+	{
+		UPDPurchaseWidget* PurchaseWidget = Cast<UPDPurchaseWidget>(Widget);
+		if (PurchaseWidget != nullptr)
+		{
+			ChildPurchaseWidgets.Add(PurchaseWidget);
+			PurchaseWidget->ParentWidget = this;
+		}
+	}
 
 	PowerText->SetText(FText::FromString(PowerTextPrefix + UCustomUtils::SanitizeFloat(GetPlayerPower(), 2, 2)));
 	RoundText->SetText(FText::FromString(RoundTextPrefix + FString::FromInt(GameMode->GetCurrentRoundNumber())));
@@ -83,18 +85,10 @@ void UPDUserWidget::OnPowerUpdated(const float PowerValue)
 {
 	PowerText->SetText(FText::FromString(PowerTextPrefix + UCustomUtils::SanitizeFloat(PowerValue, 2, 2)));
 
-	TurretPurchasable->SetButtonEnabled(PowerValue >= TurretPurchasable->GetPrice());
-	PowerGeneratorPurchasable->SetButtonEnabled(PowerValue >= PowerGeneratorPurchasable->GetPrice());
-}
-
-void UPDUserWidget::OnTurretButtonClicked()
-{
-	OwningPlayer->OnTurretButtonClicked();
-}
-
-void UPDUserWidget::OnPowerGeneratorButtonClicked()
-{
-	OwningPlayer->OnPowerGeneratorButtonClicked();
+	for (auto Purchasable : ChildPurchaseWidgets)
+	{
+		Purchasable->OnPowerUpdated(PowerValue);
+	}
 }
 
 void UPDUserWidget::OnPlayButtonClicked()
@@ -102,7 +96,7 @@ void UPDUserWidget::OnPlayButtonClicked()
 	OwningPlayer->GetGameMode()->StartRound();
 }
 
-void UPDUserWidget::OnRoundChanged(int NewRound)
+void UPDUserWidget::OnRoundChanged(const int NewRound)
 {
 	RoundText->SetText(FText::FromString(RoundTextPrefix + FString::FromInt(NewRound)));
 }

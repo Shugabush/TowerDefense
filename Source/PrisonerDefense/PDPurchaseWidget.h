@@ -34,10 +34,13 @@ public:
 		FOnPurchaseSignature OnPurchase;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-		int GetPrice() const;
+		float GetPrice() const;
 
 	UFUNCTION(BlueprintCallable)
 		void SetButtonEnabled(bool Enabled);
+
+	UFUNCTION(BlueprintCallable)
+		void OnPowerUpdated(const float PowerValue);
 
 	void OnPurchased();
 
@@ -49,10 +52,10 @@ private:
 		UTexture2D* ButtonIcon;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
-		int Price = 100;
+		float Price = 100.f;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true))
-		int PriceIncreasePerPurchase = 25;
+		float PriceIncreasePerPurchase = 25.f;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		class UButton* PurchaseButton;

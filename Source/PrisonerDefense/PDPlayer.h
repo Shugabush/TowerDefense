@@ -47,16 +47,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
-		void OnTurretButtonClicked();
-
-	UFUNCTION()
-		void OnPowerGeneratorButtonClicked();
-
-	UFUNCTION()
 		void UpdatePower(const float AdditionalPower);
 
-	bool HasTurret() const;
-	bool HasPowerGenerator() const;
 	float GetPower() const;
 
 	FOnPowerChangedSignature OnPowerChanged;
@@ -76,9 +68,6 @@ private:
 
 	UPROPERTY()
 		AActor* ResultActor;
-
-	void SpawnTurret();
-	void SpawnPowerGenerator();
 
 	UPROPERTY()
 		class UCameraComponent* Camera;

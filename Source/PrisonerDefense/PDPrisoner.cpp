@@ -36,7 +36,7 @@ void APDPrisoner::Damage(const float Damage)
 	HealthWidget->SetMeterFill(Health / MaxHealth);
 	if (Player != nullptr)
 	{
-		Player->UpdatePower(PowerReward);
+		Player->UpdatePower(PowerReward * Damage);
 	}
 	if (Health <= 0)
 	{

@@ -35,7 +35,7 @@ void UPDPurchaseWidget::SynchronizeProperties()
 	PriceText->SetText(FText::FromString(UCustomUtils::SanitizeFloat(Price, 2) + " Power"));
 }
 
-int UPDPurchaseWidget::GetPrice() const
+float UPDPurchaseWidget::GetPrice() const
 {
 	return Price;
 }
@@ -44,6 +44,11 @@ void UPDPurchaseWidget::SetButtonEnabled(bool Enabled)
 {
 	PurchaseButton->SetIsEnabled(Enabled);
 	PriceText->SetIsEnabled(Enabled);
+}
+
+void UPDPurchaseWidget::OnPowerUpdated(const float PowerValue)
+{
+	SetButtonEnabled(PowerValue >= Price);
 }
 
 void UPDPurchaseWidget::OnPurchased()
@@ -58,6 +63,7 @@ void UPDPurchaseWidget::ButtonClicked()
 	if (ParentWidget != nullptr && ParentWidget->GetPlayerPower() >= Price)
 	{
 		ParentWidget->GetPlayer()->SpawnOrClearTower(TowerBlueprint);
+		ParentWidget->TargetPurchasable = this;
 		OnButtonClicked.Broadcast();
 	}
 }

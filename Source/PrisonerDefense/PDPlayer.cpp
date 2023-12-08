@@ -171,35 +171,12 @@ void APDPlayer::ClearTower()
 	}
 }
 
-void APDPlayer::SpawnTurret()
-{
-	if (HasPowerGenerator())
-	{
-		// Clear power generator
-		ClearTower();
-	}
-
-	// Only spawn a new turret if ActiveTurret doesn't exist and the game isn't paused
-	if (ActiveTower == nullptr && !PlayerController->IsPaused())
-	{
-		ActiveTower = GetWorld()->SpawnActor<APDShooter>(TurretReference);
-		ActiveMesh = ActiveTower->GetMesh();
-	}
-}
-
 void APDPlayer::PlaceTower()
 {
 	// Can't place the tower if it doesn't exist or the mouse isn't hovering over a tower slot
 	if (ActiveTower == nullptr || SelectedTowerSlot == nullptr) { return; }
 
-	if (HasTurret())
-	{
-		Widget->PurchaseTurret();
-	}
-	else if (HasPowerGenerator())
-	{
-		Widget->PurchasePowerGenerator();
-	}
+	Widget->PurchaseTargetWidget();
 
 	ActiveMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Block);
 
@@ -259,22 +236,6 @@ void APDPlayer::CheckForTowerSelection()
 	UpgradesWidget->SetParentTower(SelectedTower);
 }
 
-void APDPlayer::SpawnPowerGenerator()
-{
-	if (HasTurret())
-	{
-		// Clear existing turret
-		ClearTower();
-	}
-
-	// Only spawn a new power generator if ActivePowerGenerator doesn't exist and the game isn't paused
-	if (ActiveTower == nullptr && !PlayerController->IsPaused())
-	{
-		ActiveTower = GetWorld()->SpawnActor<APDPowerGenerator>(PowerGeneratorReference);
-		ActiveMesh = ActiveTower->GetMesh();
-	}
-}
-
 void APDPlayer::ChangeSelectedTower(APDTower* NewSelectedTower)
 {
 	if (SelectedTower == NewSelectedTower)
@@ -297,30 +258,6 @@ void APDPlayer::ChangeSelectedTower(APDTower* NewSelectedTower)
 	}
 }
 
-void APDPlayer::OnTurretButtonClicked()
-{
-	if (HasTurret())
-	{
-		ClearTower();
-	}
-	else
-	{
-		SpawnTurret();
-	}
-}
-
-void APDPlayer::OnPowerGeneratorButtonClicked()
-{
-	if (HasPowerGenerator())
-	{
-		ClearTower();
-	}
-	else
-	{
-		SpawnPowerGenerator();
-	}
-}
-
 void APDPlayer::UpdatePower(const float AdditionalPower)
 {
 	Power += AdditionalPower;
@@ -328,22 +265,6 @@ void APDPlayer::UpdatePower(const float AdditionalPower)
 	Power = FMath::Clamp<float>(Power, 0, MaxPower);
 
 	OnPowerChanged.Broadcast(Power);
-}
-
-bool APDPlayer::HasTurret() const
-{
-	if (ActiveTower == nullptr) { return false; }
-
-	APDShooter* ActiveTurret = Cast<APDShooter>(ActiveTower);
-	return ActiveTurret != nullptr;
-}
-
-bool APDPlayer::HasPowerGenerator() const
-{
-	if (ActiveTower == nullptr) { return false; }
-
-	APDPowerGenerator* ActivePowerGenerator = Cast<APDPowerGenerator>(ActiveTower);
-	return ActivePowerGenerator != nullptr;
 }
 
 float APDPlayer::GetPower() const

@@ -29,12 +29,13 @@ public:
 		class APDPlayer* GetPlayer() const;
 
 	UFUNCTION(BlueprintCallable)
-		void PurchaseTurret();
-
-	UFUNCTION(BlueprintCallable)
-		void PurchasePowerGenerator();
+		void PurchaseTargetWidget();
 
 	class APrisonerDefenseGameModeBase* GetGameMode() const;
+
+	UPROPERTY()
+		class UPDPurchaseWidget* TargetPurchasable;
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -42,16 +43,10 @@ protected:
 		void OnPowerUpdated(const float PowerValue);
 
 	UFUNCTION()
-		void OnTurretButtonClicked();
-
-	UFUNCTION()
-		void OnPowerGeneratorButtonClicked();
-
-	UFUNCTION()
 		void OnPlayButtonClicked();
 
 	UFUNCTION()
-		void OnRoundChanged(int NewRound);
+		void OnRoundChanged(const int NewRound);
 
 	UFUNCTION()
 		void OnRoundStarted();
@@ -60,6 +55,12 @@ protected:
 		void OnRoundEnded();
 
 private:
+	UPROPERTY()
+		TArray<class UPDPurchaseWidget*> ChildPurchaseWidgets;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
+		class UPanelWidget* Panel;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		class UPDPurchaseWidget* TurretPurchasable;
 

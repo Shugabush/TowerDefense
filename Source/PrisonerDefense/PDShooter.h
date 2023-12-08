@@ -18,14 +18,14 @@ struct FShooterUpgrade
 public:
 	int GetPowerCost() const;
 	float GetAdditionalRangeScale() const;
-	float GetAttackCooldownMultiplier() const;
+	float GetAttackDamageMultiplier() const;
 private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		int PowerCost = 100;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		float AdditionalRangeScale = 0.1f;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
-		float AttackCooldownMultiplier = 0.5f;
+		float AttackDamageMultiplier = 2.f;
 };
 
 UCLASS()
@@ -52,7 +52,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		// Attack cooldown's timer will multiply by this amount after each round
 		// Set to 1 if you don't want that effect
-		float CooldownMultiplierPerRound = 0.9f;
+		float DamageMultiplierPerRound = 0.9f;
 
 public:	
 	// Called every frame
@@ -67,7 +67,7 @@ public:
 
 private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
-		FCooldownTimer AttackCooldown;
+		float DamagePerSecond = 1.f;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		TArray<FShooterUpgrade> Upgrades;
