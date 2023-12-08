@@ -39,7 +39,7 @@ protected:
 
 	void AssignAnimations();
 
-	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	TMap<FString, UWidgetAnimation*> Animations;
 
@@ -48,6 +48,11 @@ protected:
 	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	
 private:
+	FButtonStyle EnabledPurchaseButtonStyle;
+
+	UPROPERTY(EditAnywhere, Category = "Widget", meta = (AllowprivateAccess = true))
+		FButtonStyle DisabledPurchaseButtonStyle;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		class UButton* UpgradeButton;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))

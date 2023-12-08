@@ -72,7 +72,7 @@ void UPDUpgradesWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 		CurrentUpgradeIndex = ParentTower->GetCurrentUpgradeIndex();
 	}
 
-	UpgradeButton->SetStyle(CanAffordNextUpgrade() ? EnabledPurchaseButtonStyle : DisabledPurchaseButtonStyle);
+	UpgradeButton->SetIsEnabled(CanAffordNextUpgrade());
 }
 
 FReply UPDUpgradesWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -125,14 +125,12 @@ void UPDUpgradesWidget::InitializeUpgradeCosts(const TArray<int>& TargetCosts)
 	if (TryGetCurrentUpgradeCost(UpgradeCost))
 	{
 		UpgradeCostText->SetText(FText::FromString(FString::FromInt(UpgradeCost) + " Power"));
-		//UpgradeButton->SetVisibility(ESlateVisibility::Visible);
-		UpgradeButton->SetStyle(EnabledPurchaseButtonStyle);
+		UpgradeButton->SetVisibility(ESlateVisibility::Visible);
 	}
 	else
 	{
 		UpgradeCostText->SetText(FText::GetEmpty());
-		//UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
-		UpgradeButton->SetStyle(DisabledPurchaseButtonStyle);
+		UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
@@ -194,8 +192,7 @@ void UPDUpgradesWidget::UpdateDisplay()
 	else
 	{
 		UpgradeCostText->SetText(FText::GetEmpty());
-		//UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
-		UpgradeButton->SetStyle(DisabledPurchaseButtonStyle);
+		UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	TowerIcon->SetBrushFromTexture(ParentTower->GetIcon());
@@ -221,8 +218,7 @@ void UPDUpgradesWidget::OnUpgradeButtonClicked()
 		else
 		{
 			UpgradeCostText->SetText(FText::GetEmpty());
-			//UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
-			UpgradeButton->SetStyle(DisabledPurchaseButtonStyle);
+			UpgradeButton->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }
