@@ -12,7 +12,6 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "PrisonerDefenseGameModeBase.h"
-#include <cassert>
 
 // Sets default values
 APDPrisoner::APDPrisoner()
@@ -62,7 +61,6 @@ void APDPrisoner::BeginPlay()
 
 	Health = MaxHealth;
 	HealthWidget = Cast<UPDHealthWidget>(Widget->GetWidget());
-	assert(HealthWidget != nullptr && HealthWidget != NULL && "Failed to get health widget. Maybe you need to respecify the type of widget to spawn");
 
 	HealthWidget->SetMeterFill(1);
 }

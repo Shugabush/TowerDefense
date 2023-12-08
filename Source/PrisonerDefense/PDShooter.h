@@ -54,12 +54,19 @@ protected:
 		// Set to 1 if you don't want that effect
 		float DamageMultiplierPerRound = 0.9f;
 
+	UFUNCTION()
+		virtual void OnFire(class APDPrisoner* LookTarget, const float TargetDamage);
+
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnFire"))
+		void RecieveOnFire(class APDPrisoner* LookTarget, const float TargetDamage);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual void Upgrade() override;
 
-	FQuat TargetRotation;
+	UPROPERTY(BlueprintReadOnly)
+		FQuat TargetRotation;
 
 	virtual void OnVolumeTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
@@ -67,7 +74,7 @@ public:
 
 private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
-		float DamagePerSecond = 1.f;
+		float DamageRate = 1.f;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		TArray<FShooterUpgrade> Upgrades;

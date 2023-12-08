@@ -20,12 +20,6 @@ public:
 		float GetPlayerPower() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-		int GetTurretCost() const;
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-		int GetPowerGeneratorCost() const;
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
 		class APDPlayer* GetPlayer() const;
 
 	UFUNCTION(BlueprintCallable)
@@ -60,12 +54,6 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		class UPanelWidget* Panel;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		class UPDPurchaseWidget* TurretPurchasable;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
-		class UPDPurchaseWidget* PowerGeneratorPurchasable;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Widget", meta = (AllowPrivateAccess = true, BindWidget))
 		class UTextBlock* PowerText;

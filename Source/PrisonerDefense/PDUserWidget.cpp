@@ -18,16 +18,6 @@ float UPDUserWidget::GetPlayerPower() const
 	return OwningPlayer->GetPower();
 }
 
-int UPDUserWidget::GetTurretCost() const
-{
-	return TurretPurchasable->GetPrice();
-}
-
-int UPDUserWidget::GetPowerGeneratorCost() const
-{
-	return PowerGeneratorPurchasable->GetPrice();
-}
-
 APDPlayer* UPDUserWidget::GetPlayer() const
 {
 	return OwningPlayer;

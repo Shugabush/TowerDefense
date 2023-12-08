@@ -46,7 +46,7 @@ FText APDShooter::GetUpgradeDescription() const
 	FShooterUpgrade Upgrade;
 	FString Description = "";
 
-	float NewDamagePerSecond = DamagePerSecond * Upgrade.GetAttackDamageMultiplier();
+	float NewDamagePerSecond = DamageRate * Upgrade.GetAttackDamageMultiplier();
 
 	if (TryGetCurrentUpgrade(Upgrade))
 	{
@@ -59,7 +59,7 @@ FText APDShooter::GetUpgradeDescription() const
 
 FText APDShooter::GetCurrentDescription() const
 {
-	float CurrentDamagePerSecond = DamagePerSecond;
+	float CurrentDamagePerSecond = DamageRate;
 	UCustomUtils::Round(CurrentDamagePerSecond, 3);
 
 	FString Description = "Shoots " + UCustomUtils::SanitizeFloat(CurrentDamagePerSecond, 3, 1) + " times per second";
@@ -85,9 +85,14 @@ void APDShooter::BeginPlay()
 
 void APDShooter::OnRoundEnded()
 {
-	DamagePerSecond *= DamageMultiplierPerRound;
+	DamageRate *= DamageMultiplierPerRound;
 
 	Super::OnRoundEnded();
+}
+
+void APDShooter::OnFire(APDPrisoner* LookTarget, const float TargetDamage)
+{
+	RecieveOnFire(LookTarget, TargetDamage);
 }
 
 // Called every frame
@@ -105,8 +110,9 @@ void APDShooter::Tick(float DeltaTime)
 		if (LookAtTarget != nullptr)
 		{
 			// We may have to damage the prisoner more than once on a given frame
-			LookAtTarget->Damage(DamagePerSecond * DeltaTime);
+			//LookAtTarget->Damage(DamagePerSecond * DeltaTime);
 
+			OnFire(LookAtTarget, DamageRate * DeltaTime);
 			ShouldActivateParticles = true;
 
 			TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LookAtTarget->GetActorLocation()).Quaternion();
@@ -141,7 +147,7 @@ void APDShooter::Upgrade()
 	FShooterUpgrade Upgrade;
 	if (!TryGetCurrentUpgrade(Upgrade)) return;
 
-	DamagePerSecond *= Upgrade.GetAttackDamageMultiplier();
+	DamageRate *= Upgrade.GetAttackDamageMultiplier();
 	VolumeTriggerRadius = VolumeTrigger->GetUnscaledSphereRadius();
 	RangeIndicatorScale = RangeIndicator->GetRelativeScale3D();
 

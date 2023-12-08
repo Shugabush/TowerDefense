@@ -19,8 +19,11 @@ public:
 	// Sets default values for this pawn's properties
 	APDPrisoner();
 
-	virtual void Damage(const float Damage) override;
-	virtual void OnDefeat() override;
+	UFUNCTION(BlueprintCallable)
+		virtual void Damage(const float Damage) override;
+
+	UFUNCTION(BlueprintCallable)
+		virtual void OnDefeat() override;
 
 protected:
 	// Called when the game starts or when spawned
