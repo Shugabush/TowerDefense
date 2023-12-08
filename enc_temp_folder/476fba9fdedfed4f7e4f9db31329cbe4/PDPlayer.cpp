@@ -69,14 +69,12 @@ void APDPlayer::TogglePause()
 	if (HUD != nullptr)
 	{
 		TSubclassOf<UPDPauseWidget> PauseWidgetClass = UPDPauseWidget::StaticClass();
-		TSubclassOf<UPDUserWidget> UserWidgetClass = UPDUserWidget::StaticClass();
 		UPDPauseWidget* PauseWidget = nullptr;
 
 		if (PlayerController->IsPaused())
 		{
 			// Resume
 			HUD->DisableWidget(PauseWidgetClass);
-			HUD->EnableWidget(UserWidgetClass);
 			GetWorld()->GetWorldSettings()->SetTimeDilation(1);
 			PlayerController->SetPause(false);
 			PauseWidgetClass->GetDefaultObject<UPDPauseWidget>()->Resume();
@@ -84,8 +82,7 @@ void APDPlayer::TogglePause()
 		else
 		{
 			// Pause
-			HUD->EnableWidget<UPDPauseWidget>(PauseWidgetClass, PauseWidget, false);
-			HUD->DisableWidget(UserWidgetClass);
+			HUD->EnableWidget<UPDPauseWidget>(UPDPauseWidget::StaticClass(), PauseWidget, false);
 			GetWorld()->GetWorldSettings()->SetTimeDilation(0);
 			PlayerController->SetPause(true);
 			PauseWidgetClass->GetDefaultObject<UPDPauseWidget>()->Pause();
