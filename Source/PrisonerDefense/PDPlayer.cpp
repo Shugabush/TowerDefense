@@ -132,6 +132,16 @@ void APDPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Not the best way to do this, but these need to be initialized
+	if (Widget == nullptr)
+	{
+		Widget = HUD->GetWidget<UPDUserWidget>(UPDUserWidget::StaticClass());
+	}
+	if (UpgradesWidget == nullptr)
+	{
+		UpgradesWidget = HUD->GetWidget<UPDUpgradesWidget>(UPDUpgradesWidget::StaticClass());
+	}
+
 	Power = FMath::Clamp<float>(Power, 0, MaxPower);
 	
 	if (GameMode->GameIsRunning())

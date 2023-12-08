@@ -46,7 +46,7 @@ private:
 		float SpawnInterval = 1.25f;
 
 	UPROPERTY()
-		class APrisonerDefenseGameModeBase* GameMode;
+		class APrisonerDefenseGameModeBase* GameMode = nullptr;
 
 	UPROPERTY()
 		TArray<class APDPrisoner*> Prisoners;
