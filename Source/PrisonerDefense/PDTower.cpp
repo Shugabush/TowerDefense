@@ -104,6 +104,13 @@ void APDTower::BeginPlay()
 	Player = GameMode->GetPlayer();
 
 	MeshData = MeshRenderData(Mesh, "Color");
+	for (auto ExtraMesh : ExtraMeshes)
+	{
+		if (ExtraMesh != nullptr)
+		{
+			ExtraMeshData.Add(MeshRenderData(ExtraMesh, "Color"));
+		}
+	}
 
 	VolumeTriggerRadius = VolumeTrigger->GetUnscaledSphereRadius();
 	RangeIndicatorScale = RangeIndicator->GetRelativeScale3D();
@@ -172,16 +179,28 @@ TArray<int> APDTower::GetUpgradeCosts() const
 void APDTower::BlendMeshColors(FLinearColor newColor)
 {
 	MeshData.BlendColors(newColor);
+	for (auto Data : ExtraMeshData)
+	{
+		Data.BlendColors(newColor);
+	}
 }
 
 void APDTower::SetMeshColors(FLinearColor newColor)
 {
 	MeshData.SetColors(newColor);
+	for (auto Data : ExtraMeshData)
+	{
+		Data.SetColors (newColor);
+	}
 }
 
 void APDTower::ResetMeshColors()
 {
 	MeshData.ResetColors();
+	for (auto Data : ExtraMeshData)
+	{
+		Data.ResetColors();
+	}
 }
 
 UStaticMeshComponent* APDTower::GetMesh()

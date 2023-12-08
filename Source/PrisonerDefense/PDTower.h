@@ -63,6 +63,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
 		class UStaticMeshComponent* Mesh;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess = true))
+		TArray<UMeshComponent*> ExtraMeshes;
+
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 		class USphereComponent* VolumeTrigger;
 
@@ -86,6 +89,8 @@ protected:
 	FVector RangeIndicatorScale;
 
 	MeshRenderData MeshData;
+
+	TArray<MeshRenderData> ExtraMeshData;
 
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnMouseEnter"))
 		void RecieveOnMouseEnter();
