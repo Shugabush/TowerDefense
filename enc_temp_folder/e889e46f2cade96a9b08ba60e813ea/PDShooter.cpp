@@ -46,9 +46,10 @@ FText APDShooter::GetUpgradeDescription() const
 	FShooterUpgrade Upgrade;
 	FString Description = "";
 
+	float NewDamagePerSecond = DamageRate * Upgrade.GetAttackDamageMultiplier();
+
 	if (TryGetCurrentUpgrade(Upgrade))
 	{
-		float NewDamagePerSecond = DamageRate * Upgrade.GetAttackDamageMultiplier();
 		UCustomUtils::Round(NewDamagePerSecond, 3);
 
 		Description = "Shoots " + UCustomUtils::SanitizeFloat(NewDamagePerSecond, 3) + " times per second";
